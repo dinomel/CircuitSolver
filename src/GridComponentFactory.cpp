@@ -1,6 +1,6 @@
-#include "model/ResistorComponent.h"
-#include "model/CapacitorComponent.h"
-#include "model/InductorComponent.h"
+#include "model/ResistorGridComponent.h"
+#include "model/CapacitorGridComponent.h"
+#include "model/InductorGridComponent.h"
 #include <gui/Properties.h>
 
 IGridComponent::Tool IGridComponent::currentTool = IGridComponent::Tool::Selector;
@@ -14,23 +14,23 @@ gui::Properties IGridComponent::_inductorPropertes;
 
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
-IGridComponent *IGridComponent::createResistorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
-    ResistorComponent *pComp = new ResistorComponent(initPoint, fillColor, lineColor);
+    ResistorGridComponent *pComp = new ResistorGridComponent(10, initPoint, fillColor, lineColor);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createCapacitorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
-    CapacitorComponent *pComp = new CapacitorComponent(initPoint, fillColor, lineColor);
+    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, initPoint, fillColor, lineColor);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createInductorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
-    InductorComponent *pComp = new InductorComponent(initPoint, fillColor, lineColor);
+    InductorGridComponent *pComp = new InductorGridComponent(1, initPoint, fillColor, lineColor);
     pComp->init();
     return pComp;
 }
@@ -58,19 +58,19 @@ void IGridComponent::initProperties()
         return;
 
     {
-        ResistorComponent sh({0, 0}, td::ColorID::SysText, td::ColorID::SysText);
+        ResistorGridComponent sh(0, {0, 0}, td::ColorID::SysText, td::ColorID::SysText);
         _resistorProperties.reserve(11);
         sh.initProperties(&_resistorProperties);
     }
 
     {
-        CapacitorComponent sh({0, 0}, td::ColorID::SysText, td::ColorID::SysText);
+        CapacitorGridComponent sh(0, {0, 0}, td::ColorID::SysText, td::ColorID::SysText);
         _capacitorPropertes.reserve(12);
         sh.initProperties(&_capacitorPropertes);
     }
 
     {
-        CapacitorComponent sh({0, 0}, td::ColorID::SysText, td::ColorID::SysText);
+        CapacitorGridComponent sh(0, {0, 0}, td::ColorID::SysText, td::ColorID::SysText);
         _inductorPropertes.reserve(12);
         sh.initProperties(&_inductorPropertes);
     }

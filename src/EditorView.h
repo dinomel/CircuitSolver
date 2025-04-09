@@ -155,28 +155,28 @@ protected:
         break;
         case IGridComponent::Tool::AddWire:
         {
-            _pCreatingComponent = IGridComponent::createInductorComponent(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            _pCreatingComponent = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddResistor:
         {
-            _pCreatingComponent = IGridComponent::createResistorComponent(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            _pCreatingComponent = IGridComponent::createResistor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddCapacitor:
         {
-            _pCreatingComponent = IGridComponent::createCapacitorComponent(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            _pCreatingComponent = IGridComponent::createCapacitor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddInductor:
         {
-            _pCreatingComponent = IGridComponent::createInductorComponent(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            _pCreatingComponent = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }

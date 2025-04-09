@@ -44,11 +44,11 @@ public:
     virtual void release() = 0;
 
     // GridComponentFactory
-    static IGridComponent *createResistorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createResistor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
-    static IGridComponent *createCapacitorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createCapacitor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
-    static IGridComponent *createInductorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
     // Factory tool
     static IGridComponent::Tool currentTool;

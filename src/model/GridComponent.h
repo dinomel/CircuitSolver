@@ -7,6 +7,7 @@
 
 #pragma once
 #include "IGridComponent.h"
+#include "../core/Component.h"
 
 class GridComponent : public IGridComponent
 {
@@ -39,6 +40,8 @@ public:
     virtual ~GridComponent()
     {
     }
+
+    virtual Component *getComponent() = 0;
 
     virtual void draw() const
     {

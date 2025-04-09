@@ -1,5 +1,5 @@
 //
-//  CapacitorComponent.h
+//  ResistorGridComponent.h
 //  CircuitSolver
 //
 //  Created by Dino Melunovic on 8. 4. 2025..
@@ -7,19 +7,29 @@
 
 #pragma once
 #include "GridComponent.h"
+#include "../core/Resistor.h"
+#include "../core/Component.h"
 
-class CapacitorComponent : public GridComponent
+class ResistorGridComponent : public GridComponent
 {
+protected:
+    Resistor _resistor;
+
 public:
-    CapacitorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(initPoint, 20, 40, fillColor, lineColor)
+    ResistorGridComponent(double resistance, const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+        : GridComponent(initPoint, 40, 16, fillColor, lineColor), _resistor(resistance)
     {
         //        _endPoint.translate(150, 120);
     }
 
+    virtual Component *getComponent() override
+    {
+        return &_resistor;
+    }
+
     virtual Type getType() const
     {
-        return Type::Capacitor;
+        return Type::Resistor;
     }
 
     void init()
@@ -48,9 +58,13 @@ public:
             _endPoint,
             _startPoint,
             _endPoint,
+            _startPoint,
+            _endPoint,
+            _startPoint,
+            _endPoint,
         };
         //
-        _shape.createLines(&points[0], 8);
+        _shape.createLines(&points[0], 12);
         //        _shape.createPolyLine(&points[0], 12);
     }
 
@@ -78,19 +92,19 @@ public:
 
     virtual void getValues(gui::PropertyValues &propValues) const
     {
-        //        td::Variant x(_rect.left);
-        //        propValues.setValueByKey((td::UINT4)PropID::Xr, x);
+        //                td::Variant x1(_startPoint.x);
+        //                propValues.setValueByKey((td::UINT4)PropID::Xr, x1);
         //
-        //        td::Variant y(_rect.top);
-        //        propValues.setValueByKey((td::UINT4)PropID::Yr, y);
+        //                td::Variant y1(_startPoint.y);
+        //                propValues.setValueByKey((td::UINT4)PropID::Yr, y1);
         //
-        //        td::Variant w(_rect.width());
-        //        propValues.setValueByKey((td::UINT4)PropID::Width, w);
+        //                td::Variant x2(_endPoint.x);
+        //                propValues.setValueByKey((td::UINT4)PropID::Width, x2);
         //
-        //        td::Variant h(_rect.height());
-        //        propValues.setValueByKey((td::UINT4)PropID::Height, h);
+        //                td::Variant y2(_endPoint.y);
+        //                propValues.setValueByKey((td::UINT4)PropID::Height, y2);
         //
-        //        GridComponent::getValues(propValues);
+        //                GridComponent::getValues(propValues);
     }
 
     virtual void setValues(gui::PropertyValues &propValues)
@@ -166,6 +180,7 @@ public:
         double y_A = _startPoint.y;
         double x_B = _endPoint.x;
         double y_B = _endPoint.y;
+
         double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
         double d_AD = (d_AB - _width) / 2;
         double theta = std::atan2(y_B - y_A, x_B - x_A);
@@ -198,11 +213,15 @@ public:
             point_D,
             point_F,
             point_G,
+            point_G,
+            point_I,
             point_I,
             point_H,
+            point_H,
+            point_F,
             point_E,
             _endPoint,
         };
-        _shape.createLines(&points[0], 8);
+        _shape.createLines(&points[0], 12);
     }
 };

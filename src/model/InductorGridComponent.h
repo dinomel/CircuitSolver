@@ -1,5 +1,5 @@
 //
-//  InductorComponent.h
+//  InductorGridComponent.h
 //  CircuitSolver
 //
 //  Created by Dino Melunovic on 9. 4. 2025..
@@ -7,15 +7,25 @@
 
 #pragma once
 #include "GridComponent.h"
+#include "../core/Inductor.h"
+#include "../core/Component.h"
 
-class InductorComponent : public GridComponent
+class InductorGridComponent : public GridComponent
 {
 
+protected:
+    Inductor _inductor;
+
 public:
-    InductorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(initPoint, 20, 40, fillColor, lineColor)
+    InductorGridComponent(double inductance, const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+        : GridComponent(initPoint, 20, 40, fillColor, lineColor), _inductor(inductance)
     {
         //        _endPoint.translate(150, 120);
+    }
+
+    virtual Component *getComponent() override
+    {
+        return &_inductor;
     }
 
     virtual Type getType() const
