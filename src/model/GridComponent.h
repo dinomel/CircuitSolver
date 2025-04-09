@@ -4,7 +4,7 @@
 //
 //  Created by Dino Melunovic on 8. 4. 2025..
 //
-ß
+
 #pragma once
 #include "IGridComponent.h"
 

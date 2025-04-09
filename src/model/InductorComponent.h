@@ -165,17 +165,17 @@ public:
     virtual void updateEndPoint(const gui::Point &newEndPoint)
     {
         _endPoint = newEndPoint;
-        //        gui::Rect r(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
-        //        _shape.updateRectNodes(r);
-        //        gui::Point points[] = {_startPoint, {_startPoint.x+10, _startPoint.y-10}, _endPoint, {_endPoint.x-10, _endPoint.y+10}};
-        int a = 20;
-        int b = 20;
+        updateLineNodes();
+    }
+
+    virtual void updateLineNodes()
+    {
         double x_A = _startPoint.x;
         double y_A = _startPoint.y;
         double x_B = _endPoint.x;
         double y_B = _endPoint.y;
         double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
-        double d_AD = (d_AB - b) / 2;
+        double d_AD = (d_AB - _width) / 2;
         double theta = std::atan2(y_B - y_A, x_B - x_A);
         double sTheta = sin(theta);
         double cTheta = cos(theta);
@@ -184,14 +184,15 @@ public:
         double y_D = y_A + d_AD * sTheta;
         double x_E = x_B - d_AD * cTheta;
         double y_E = y_B - d_AD * sTheta;
-        double x_G = x_D + a * sTheta;
-        double y_G = y_D - a * cTheta;
-        double x_F = x_D - a * sTheta;
-        double y_F = y_D + a * cTheta;
-        double x_I = x_E + a * sTheta;
-        double y_I = y_E - a * cTheta;
-        double x_H = x_E - a * sTheta;
-        double y_H = y_E + a * cTheta;
+        double halfHeight = _height / 2;
+        double x_G = x_D + halfHeight * sTheta;
+        double y_G = y_D - halfHeight * cTheta;
+        double x_F = x_D - halfHeight * sTheta;
+        double y_F = y_D + halfHeight * cTheta;
+        double x_I = x_E + halfHeight * sTheta;
+        double y_I = y_E - halfHeight * cTheta;
+        double x_H = x_E - halfHeight * sTheta;
+        double y_H = y_E + halfHeight * cTheta;
 
         gui::Point point_D(x_D, y_D);
         gui::Point point_E(x_E, y_E);
@@ -206,16 +207,10 @@ public:
             point_F,
             point_I,
             point_G,
-            //            point_G, point_I,
             point_H,
-            //            point_H, point_F,
             point_E,
             _endPoint,
         };
         _shape.createLines(&points[0], 8);
-    }
-
-    virtual void updateLineNodes()
-    {
     }
 };

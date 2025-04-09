@@ -170,9 +170,6 @@ public:
     {
         _endPoint = newEndPoint;
         updateLineNodes();
-        //        gui::Rect r(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
-        //        _shape.updateRectNodes(r);
-        //        gui::Point points[] = {_startPoint, {_startPoint.x+10, _startPoint.y-10}, _endPoint, {_endPoint.x-10, _endPoint.y+10}};
     }
 
     virtual void updateLineNodes()

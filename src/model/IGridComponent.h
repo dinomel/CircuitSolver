@@ -51,7 +51,7 @@ public:
     static IGridComponent *createResistorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
     static IGridComponent *createCapacitorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
-    
+
     static IGridComponent *createInductorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
     // Factory tool
