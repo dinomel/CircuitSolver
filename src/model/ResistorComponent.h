@@ -10,13 +10,6 @@
 
 class ResistorComponent : public GridComponent
 {
-    enum class PropID : td::UINT4
-    {
-        Xr = 200,
-        Yr,
-        Width,
-        Height
-    };
 
 public:
     ResistorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)

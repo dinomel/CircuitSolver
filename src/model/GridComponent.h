@@ -13,10 +13,10 @@ class GridComponent : public IGridComponent
 
     enum class PropID : td::UINT4
     {
-        Xr = 200,
-        Yr,
-        Width,
-        Height,
+        X1 = 200,
+        Y1,
+        X2,
+        Y2,
         FillColor,
         LineColor
     };
@@ -99,25 +99,25 @@ public:
         td::Variant val(_startPoint.x);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Xr, gui::tr("StartPointX"), val);
+            prop.set((td::UINT4)PropID::X1, gui::tr("StartPointX"), val);
         }
 
         val = td::Variant(_startPoint.y);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Yr, gui::tr("StartPointY"), val);
+            prop.set((td::UINT4)PropID::Y1, gui::tr("StartPointY"), val);
         }
 
         val = td::Variant(_endPoint.x);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Width, gui::tr("EndPointX"), val);
+            prop.set((td::UINT4)PropID::X2, gui::tr("EndPointX"), val);
         }
 
         val = td::Variant(_endPoint.y);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Height, gui::tr("EndPointY"), val);
+            prop.set((td::UINT4)PropID::Y2, gui::tr("EndPointY"), val);
         }
     }
 

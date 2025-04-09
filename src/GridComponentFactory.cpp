@@ -12,9 +12,6 @@ gui::Properties IGridComponent::_resistorProperties;
 gui::Properties IGridComponent::_capacitorPropertes;
 gui::Properties IGridComponent::_inductorPropertes;
 
-gui::Properties IGridComponent::_circProperties;
-gui::Properties IGridComponent::_rectPropertes;
-gui::Properties IGridComponent::_roundRectPropertes;
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
 IGridComponent *IGridComponent::createResistorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)

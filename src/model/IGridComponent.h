@@ -12,10 +12,6 @@ private:
     static gui::Properties _capacitorPropertes;
     static gui::Properties _inductorPropertes;
 
-    static gui::Properties _circProperties;
-    static gui::Properties _rectPropertes;
-    static gui::Properties _roundRectPropertes;
-
 public:
     enum class Type : unsigned char
     {

@@ -158,7 +158,7 @@ public:
     {
         _endPoint = newEndPoint;
         updateLineNodes();
-        }
+    }
 
     virtual void updateLineNodes()
     {
