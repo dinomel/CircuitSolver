@@ -1,0 +1,73 @@
+#pragma once
+#include <gui/Shape.h>
+#include <arch/ArchiveIn.h>
+#include <arch/ArchiveOut.h>
+#include <gui/Properties.h>
+#include <gui/IProperty.h>
+
+class IGridComponent : public gui::IProperty
+{
+private:
+    static gui::Properties _resistorProperties;
+    static gui::Properties _capacitorPropertes;
+    static gui::Properties _inductorPropertes;
+
+    static gui::Properties _circProperties;
+    static gui::Properties _rectPropertes;
+    static gui::Properties _roundRectPropertes;
+
+public:
+    enum class Type : unsigned char
+    {
+        Wire = 0,
+        Resistor,
+        Capacitor,
+        Inductor
+    };
+    enum class Tool
+    {
+        Selector = 0,
+        AddWire,
+        AddResistor,
+        AddCapacitor,
+        AddInductor
+    };
+
+    // IGridComponent interface
+    virtual void draw() const = 0;
+    virtual void getBoundingRect(gui::Rect &boundRect) = 0;
+    virtual bool containsPoint(const gui::Point &pt) const = 0;
+    virtual void load(arch::ArchiveIn &ar) = 0;
+    virtual void save(arch::ArchiveOut &ar) const = 0;
+    virtual Type getType() const = 0;
+    virtual bool canBeSelected(const gui::Point &pt) const = 0;
+    virtual void init() = 0;
+    virtual void translate(const gui::Point &delta) = 0;
+    virtual void updateEndPoint(const gui::Point &newEndPoint) = 0;
+    virtual void updateLineNodes() = 0;
+    virtual void release() = 0;
+
+    // GridComponentFactory
+    static IGridComponent *createResistorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+
+    static IGridComponent *createCapacitorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    
+    static IGridComponent *createInductorComponent(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+
+    // Factory tool
+    static IGridComponent::Tool currentTool;
+
+    // some limits
+    static float maxLineWidth;
+    static gui::CoordType selectionDisance2;
+    static gui::CoordType refreshOffset;
+
+    // PropertyManager
+    static void createProperties(IGridComponent::Type shapeType, gui::Properties &properties);
+
+    static gui::Properties *getProperties(IGridComponent::Type shapeType);
+
+    static td::String *getAttribsDesc();
+
+    static void initProperties();
+};
