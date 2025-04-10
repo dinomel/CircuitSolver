@@ -9,7 +9,8 @@
 #include "GridComponent.h"
 #include "../core/Inductor.h"
 #include "../core/Component.h"
-#include <numbers>
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 class InductorGridComponent : public GridComponent
 {
@@ -152,13 +153,13 @@ public:
         double theta = std::atan2(y_B - y_A, x_B - x_A);
         double sTheta = sin(theta);
         double cTheta = cos(theta);
-        double alpha = std::numbers::pi * 3 / 8 - theta;
+        double alpha = M_PI * 3 / 8 - theta;
         double sAlpha = sin(alpha);
         double cAlpha = cos(alpha);
-        double beta = std::numbers::pi / 4 - theta;
+        double beta = M_PI / 4 - theta;
         double sBeta = sin(beta);
         double cBeta = cos(beta);
-        double gamma = std::numbers::pi * 3 / 8 + theta;
+        double gamma = M_PI * 3 / 8 + theta;
         double sGamma = sin(gamma);
         double cGamma = cos(gamma);
         double d_DF = _width / 3 * 0.3827;
