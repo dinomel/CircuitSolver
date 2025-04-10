@@ -16,11 +16,12 @@
 #include "model/GridModel.h"
 #include <gui/Cursor.h>
 #include <gui/PropertyEditorSwitcher.h>
+#include <iostream>
 
 // global parameters
 extern DefaultSettings g_defaultSettings;
 
-const double deltaKeyboardMove = 30;
+extern const int gridSize;
 
 class EditorView : public gui::Canvas
 {
@@ -141,8 +142,8 @@ protected:
                 {
                     int pos = (int)pSelected->getType();
                     ++pos;
-                    if (_pPropSwitcher)
-                        _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
+                    //                    if (_pPropSwitcher)
+                    //                        _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
                 }
                 else
                 {
@@ -188,6 +189,16 @@ protected:
 
     void onPrimaryButtonReleased(const gui::InputDevice &inputDevice) override
     {
+        if (_lastEvent == LastEvent::Drag && _pSelectedShape)
+        {
+            _pSelectedShape->snapToGrid();
+            reDraw();
+        }
+        if (_lastEvent == LastEvent::Drag && _pCreatingComponent)
+        {
+            _pCreatingComponent->snapToGrid();
+            reDraw();
+        }
         _pCreatingComponent = nullptr;
         _lastEvent = LastEvent::None;
     }
@@ -263,7 +274,7 @@ protected:
             double mult = 1;
             if (key.isCtrlPressed() || key.isCmdPressed())
                 mult = 3;
-            double dMove = deltaKeyboardMove * mult;
+            double dMove = gridSize * mult;
             gui::Key::Virtual vk = key.getVirtual();
             switch (vk)
             {
@@ -316,7 +327,7 @@ protected:
 
 public:
     EditorView()
-        : gui::Canvas({gui::InputDevice::Event::CursorShape, gui::InputDevice::Event::PrimaryClicks, gui::InputDevice::Event::SecondaryClicks, gui::InputDevice::Event::CursorDrag, gui::InputDevice::Event::Zoom, gui::InputDevice::Event::Keyboard}), _callBackDeleteSelectedShape(std::bind(&EditorView::checkDeleteSelectedAnswer, this, std::placeholders::_1))
+        : gui::Canvas({gui::InputDevice::Event::CursorShape, gui::InputDevice::Event::PrimaryClicks, gui::InputDevice::Event::SecondaryClicks, gui::InputDevice::Event::CursorMove, gui::InputDevice::Event::CursorDrag, gui::InputDevice::Event::Zoom, gui::InputDevice::Event::Keyboard}), _callBackDeleteSelectedShape(std::bind(&EditorView::checkDeleteSelectedAnswer, this, std::placeholders::_1))
     {
         //        setCursor(gui::Cursor::Type::Default);
     }

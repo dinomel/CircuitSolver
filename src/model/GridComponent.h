@@ -9,6 +9,8 @@
 #include "IGridComponent.h"
 #include "../core/Component.h"
 
+extern const int gridSize;
+
 class GridComponent : public IGridComponent
 {
 
@@ -46,6 +48,65 @@ public:
     virtual void draw() const
     {
         _shape.drawWire(_lineColor);
+    }
+
+    virtual void translate(const gui::Point &delta)
+    {
+        _startPoint.x += delta.x;
+        _startPoint.y += delta.y;
+        _endPoint.x += delta.x;
+        _endPoint.y += delta.y;
+        updateLineNodes();
+    }
+
+    virtual void snapToGrid()
+    {
+        _startPoint = getClosestGridPoint(_startPoint);
+        _endPoint = getClosestGridPoint(_endPoint);
+        updateLineNodes();
+    }
+
+    virtual void updateEndPoint(const gui::Point &newEndPoint)
+    {
+        _endPoint = newEndPoint;
+        //        _endPoint = IGridComponent::getClosestGridPoint(newEndPoint);
+        updateLineNodes();
+    }
+
+    virtual double distanceToPointSquared(const gui::Point &pt) const
+    {
+        double x0 = pt.x;
+        double y0 = pt.y;
+        double x1 = _startPoint.x;
+        double y1 = _startPoint.y;
+        double x2 = _endPoint.x;
+        double y2 = _endPoint.y;
+
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+
+        double projected = ((x0 - x1) * dx + (y0 - y1) * dy) / (dx * dx + dy * dy);
+
+        if (projected < 0)
+        {
+            return (x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1);
+        }
+        else if (projected > 1)
+        {
+            return (x0 - x2) * (x0 - x2) + (y0 - y2) * (y0 - y2);
+        }
+        else
+        {
+            double numeratorSqRoot = abs((dy * x0 - dx * y0 + (x2 * y1 - y2 * x1)));
+            double denominator = dy * dy + dx * dx * 1;
+            return numeratorSqRoot * numeratorSqRoot / denominator;
+        }
+    }
+
+    virtual bool canBeSelected(const gui::Point &pt) const
+    {
+        return distanceToPointSquared(pt) < 144;
+        return false;
     }
 
     virtual void load(arch::ArchiveIn &ar)

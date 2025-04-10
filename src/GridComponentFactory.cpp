@@ -16,21 +16,21 @@ static cnt::SafeFullVector<td::String> s_attribStrings;
 
 IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
-    ResistorGridComponent *pComp = new ResistorGridComponent(10, initPoint, fillColor, lineColor);
+    ResistorGridComponent *pComp = new ResistorGridComponent(10, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
     pComp->init();
     return pComp;
 }
 
 IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
-    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, initPoint, fillColor, lineColor);
+    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
     pComp->init();
     return pComp;
 }
 
 IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
-    InductorGridComponent *pComp = new InductorGridComponent(1, initPoint, fillColor, lineColor);
+    InductorGridComponent *pComp = new InductorGridComponent(1, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
     pComp->init();
     return pComp;
 }

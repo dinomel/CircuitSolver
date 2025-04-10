@@ -5,6 +5,8 @@
 #include <gui/Properties.h>
 #include <gui/IProperty.h>
 
+extern const int gridSize;
+
 class IGridComponent : public gui::IProperty
 {
 private:
@@ -32,7 +34,6 @@ public:
     // IGridComponent interface
     virtual void draw() const = 0;
     virtual void getBoundingRect(gui::Rect &boundRect) = 0;
-    virtual bool containsPoint(const gui::Point &pt) const = 0;
     virtual void load(arch::ArchiveIn &ar) = 0;
     virtual void save(arch::ArchiveOut &ar) const = 0;
     virtual Type getType() const = 0;
@@ -41,6 +42,8 @@ public:
     virtual void translate(const gui::Point &delta) = 0;
     virtual void updateEndPoint(const gui::Point &newEndPoint) = 0;
     virtual void updateLineNodes() = 0;
+    virtual double distanceToPointSquared(const gui::Point &pt) const = 0;
+    virtual void snapToGrid() = 0;
     virtual void release() = 0;
 
     // GridComponentFactory
@@ -52,6 +55,14 @@ public:
 
     // Factory tool
     static IGridComponent::Tool currentTool;
+
+    static gui::Point getClosestGridPoint(const gui::Point &pt)
+    {
+        return {
+            round(pt.x / gridSize) * gridSize,
+            round(pt.y / gridSize) * gridSize,
+        };
+    }
 
     // some limits
     static float maxLineWidth;

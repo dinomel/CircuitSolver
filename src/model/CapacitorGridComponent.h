@@ -19,7 +19,6 @@ public:
     CapacitorGridComponent(double capacitance, const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
         : GridComponent(initPoint, 20, 40, fillColor, lineColor), _capacitor(capacitance)
     {
-        //        _endPoint.translate(150, 120);
     }
 
     virtual Component *getComponent()
@@ -34,21 +33,6 @@ public:
 
     void init()
     {
-        //        gui::Point points[] = {
-        //            {0, 12}, {16, 12},
-        //            {16, 0}, {16, 24},
-        //            {24, 0}, {24, 24},
-        //            {24, 12}, {40, 12},
-        //            {40, 5}, {40, 19},
-        //            {43, 7}, {43, 17},
-        ////            {46, 10}, {46, 14},
-        //        };
-        //        _shape.createLines(&points[0], 14);
-
-        //        if (r.width() > 0 && r.height() > 0)
-        //        _shape.createRect(r, _lineWidth, _linePattern);
-        //        _shape.createPolyLine(&points[0], 11);
-
         gui::Point points[] = {
             _startPoint,
             _endPoint,
@@ -59,19 +43,12 @@ public:
             _startPoint,
             _endPoint,
         };
-        //
         _shape.createLines(&points[0], 8);
-        //        _shape.createPolyLine(&points[0], 12);
     }
 
     virtual void getBoundingRect(gui::Rect &boundRect)
     {
         boundRect = gui::Rect(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
-    }
-
-    virtual bool containsPoint(const gui::Point &pt) const
-    {
-        return gui::Rect(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y).contains(pt);
     }
 
     virtual void load(arch::ArchiveIn &ar)
@@ -140,34 +117,6 @@ public:
         //            if (rBefore != rAfter)
         //                _shape.updateRectNodes(_rect);
         //        }
-    }
-
-    virtual bool canBeSelected(const gui::Point &pt) const
-    {
-        //        if (_rect.contains(pt))
-        //        {
-        //            if (isWithFill())
-        //                return true;
-        //            auto minDistance = _rect.getMinDistance2(pt);
-        //            if (minDistance <= IGridComponent::selectionDisance2)
-        //                return true;
-        //        }
-        return false;
-    }
-
-    virtual void translate(const gui::Point &delta)
-    {
-
-        //        _rect.translate(delta);
-        //        _shape.translateRectNodes(delta);
-        // or
-        //_shape.updateRectNodes(_rect);
-    }
-
-    virtual void updateEndPoint(const gui::Point &newEndPoint)
-    {
-        _endPoint = newEndPoint;
-        updateLineNodes();
     }
 
     virtual void updateLineNodes()
