@@ -22,7 +22,7 @@ public:
         //        _endPoint.translate(150, 120);
     }
 
-    virtual Component *getComponent() override
+    virtual Component *getComponent()
     {
         return &_resistor;
     }
