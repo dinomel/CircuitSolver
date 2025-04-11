@@ -35,7 +35,6 @@ class EditorView : public gui::Canvas
 
 protected:
     GridModel _model;
-    GridComponent *_pSelectedShape = nullptr;
     GridComponent *_pCreatingComponent = nullptr;
     gui::PropertyEditorSwitcher *_pPropSwitcher = nullptr;
     gui::Point _lastMouseClickPoint;
