@@ -14,8 +14,8 @@ public:
   double maxVoltage;
   double frequency;
 
-  ACVoltageSource(double maxVoltage, double frequency = 50, const td::String &id = "")
-      : SourceComponent("AC Voltage Source", "V", "ac_voltage_source.png", id),
+  ACVoltageSource(double maxVoltage, double frequency = 50)
+      : SourceComponent("AC Voltage Source", "V", "ac_voltage_source.png"),
         maxVoltage(maxVoltage),
         frequency(frequency) {}
 };

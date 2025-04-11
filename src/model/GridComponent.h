@@ -43,6 +43,16 @@ public:
     {
     }
 
+    bool hasLength() const
+    {
+        return !(_startPoint == _endPoint);
+    }
+
+    gui::Point getEndPoint() const
+    {
+        return _endPoint;
+    }
+
     virtual Component *getComponent() = 0;
 
     virtual void draw() const

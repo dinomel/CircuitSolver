@@ -14,7 +14,6 @@ public:
     SourceComponent(
         const td::String &name,
         const td::String &symbol,
-        const td::String &image = "",
-        const td::String &id = "")
-        : Component(name, symbol, image, id) {}
+        const td::String &image = "")
+        : Component(name, symbol, image) {}
 };

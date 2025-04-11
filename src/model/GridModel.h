@@ -7,6 +7,7 @@
 
 #pragma once
 #include "GridComponent.h"
+#include "NodeGridComponent.h"
 #include <cnt/PushBackVector.h>
 #include <arch/FileSerializer.h>
 #include <arch/ArchiveIn.h>
@@ -24,10 +25,16 @@ protected:
         {
             pShape->release();
         }
+
+        for (auto pShape : nodes)
+        {
+            pShape->release();
+        }
     }
 
 public:
     cnt::PushBackVector<GridComponent *> selectedGridComponents;
+    cnt::PushBackVector<NodeGridComponent *> nodes; // Ako cemo crtati nodes ovo mora ovako
 
 public:
     GridModel()
@@ -63,10 +70,19 @@ public:
                 ++nDrawn;
             }
         }
+        for (auto pShape : nodes)
+        {
+            pShape->getBoundingRect(boundingRect);
+            if (boundingRect.intersects(rDraw))
+            {
+                pShape->draw();
+                ++nDrawn;
+            }
+        }
         // mu::dbgLog("#Drawn=%d", nDrawn);
     }
 
-    void appendShape(GridComponent *pShape)
+    void appendGridComponent(GridComponent *pShape)
     {
         gui::Rect boundRect;
         pShape->getBoundingRect(boundRect);
@@ -78,6 +94,32 @@ public:
         //        mu::dbgLog("Model w=%.1f, h=%.1f", _modelSize.width, _modelSize.height);
 
         _gridComponents.push_back(pShape);
+    }
+
+    void appendNodeComponent(NodeGridComponent *pNode)
+    {
+        nodes.push_back(pNode);
+    }
+
+    void appendNode(NodeGridComponent *pNode)
+    {
+        nodes.push_back(pNode);
+    }
+
+    void updateNode(int parentCompID, const gui::Point &newNodePoint)
+    {
+        std::cout << "parentCompID: " << parentCompID << std::endl;
+        for (NodeGridComponent *pC : nodes)
+        {
+            std::cout << "pC parentComponendID: " << pC->parentComponentID << std::endl;
+            if (pC->parentComponentID == parentCompID)
+            {
+                std::cout << "update node Point za pC sa parentID-jem: " << pC->parentComponentID << std::endl;
+                std::cout << "postavlja se na: {" << newNodePoint.x << ", " << newNodePoint.y << "}" << std::endl;
+                pC->updateNodePoint(newNodePoint);
+                return;
+            }
+        }
     }
 
     bool load(const td::String &fileName)

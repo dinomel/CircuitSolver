@@ -11,6 +11,6 @@
 class Wire : public Component
 {
 public:
-    Wire(const td::String &id = "")
-        : Component("Wire", "W", "", id) {}
+    Wire()
+        : Component("Wire", "W", "") {}
 };

@@ -175,7 +175,12 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            _model.appendShape(_pCreatingComponent);
+            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+
+            _model.appendGridComponent(_pCreatingComponent);
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(startNodeComp));
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(endNodeComp));
             reDraw();
         }
         break;
@@ -185,7 +190,12 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            _model.appendShape(_pCreatingComponent);
+            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+
+            _model.appendGridComponent(_pCreatingComponent);
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(startNodeComp));
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(endNodeComp));
             reDraw();
         }
         break;
@@ -195,7 +205,7 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            _model.appendShape(_pCreatingComponent);
+            _model.appendGridComponent(_pCreatingComponent);
             reDraw();
         }
         break;
@@ -205,7 +215,7 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            _model.appendShape(_pCreatingComponent);
+            _model.appendGridComponent(_pCreatingComponent);
             reDraw();
         }
         break;
@@ -228,6 +238,10 @@ protected:
         if (_lastEvent == LastEvent::Drag && _pCreatingComponent)
         {
             _pCreatingComponent->snapToGrid();
+            if (!_pCreatingComponent->hasLength())
+                _model.remove(_pCreatingComponent);
+            else
+                _model.updateNode(_pCreatingComponent->getComponent()->id, _pCreatingComponent->getEndPoint());
             reDraw();
         }
         _pCreatingComponent = nullptr;
@@ -268,6 +282,7 @@ protected:
         if (_pCreatingComponent != nullptr)
         {
             _pCreatingComponent->updateEndPoint(modelPoint);
+            _model.updateNode(_pCreatingComponent->getComponent()->id, _pCreatingComponent->getEndPoint());
             updatePropertyValues();
             _lastMouseClickPoint = modelPoint;
             reDraw();

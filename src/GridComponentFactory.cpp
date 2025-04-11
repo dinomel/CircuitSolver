@@ -1,7 +1,10 @@
 #include "model/ResistorGridComponent.h"
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
+#include "model/NodeGridComponent.h"
 #include <gui/Properties.h>
+
+int Component::nextID = 0;
 
 IGridComponent::Tool IGridComponent::currentTool = IGridComponent::Tool::Selector;
 float IGridComponent::maxLineWidth = 20;
@@ -31,6 +34,13 @@ IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint, td:
 IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
 {
     InductorGridComponent *pComp = new InductorGridComponent(1, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
+    pComp->init();
+    return pComp;
+}
+
+IGridComponent *IGridComponent::createNode(const gui::Point &initPoint, int parentComponentID, td::ColorID fillColor, td::ColorID lineColor)
+{
+    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint), parentComponentID, fillColor, lineColor);
     pComp->init();
     return pComp;
 }

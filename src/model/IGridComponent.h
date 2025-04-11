@@ -53,6 +53,8 @@ public:
 
     static IGridComponent *createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
+    static IGridComponent *createNode(const gui::Point &initPoint, int parentComponentID, td::ColorID fillColor, td::ColorID lineColor);
+
     // Factory tool
     static IGridComponent::Tool currentTool;
 

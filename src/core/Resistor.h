@@ -13,6 +13,6 @@ class Resistor : public PassiveComponent
 public:
     double resistance;
 
-    Resistor(double resistance, const td::String &id = "")
-        : PassiveComponent("Resistor", "R", "resistor.png", id), resistance(resistance) {}
+    Resistor(double resistance)
+        : PassiveComponent("Resistor", "R", "resistor.png"), resistance(resistance) {}
 };

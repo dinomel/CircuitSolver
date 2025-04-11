@@ -13,6 +13,6 @@ class DCVoltageSource : public SourceComponent
 public:
     double voltage;
 
-    DCVoltageSource(double voltage, const td::String &id = "")
-        : SourceComponent("DC Voltage Source", "V", "dc_voltage_source.png", id), voltage(voltage) {}
+    DCVoltageSource(double voltage)
+        : SourceComponent("DC Voltage Source", "V", "dc_voltage_source.png"), voltage(voltage) {}
 };

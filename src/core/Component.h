@@ -4,17 +4,24 @@
 class Component
 {
 public:
-    td::String id;
+    int id;
     td::String name;
     td::String symbol;
     td::String image;
 
+    static int nextID;
+
+    static int getNextID()
+    {
+        nextID++;
+        return nextID;
+    }
+
     Component(
         const td::String &name,
         const td::String &symbol,
-        const td::String &image = "",
-        const td::String &id = "")
-        : id(id),
+        const td::String &image = "")
+        : id(getNextID()),
           name(name),
           symbol(symbol),
           image(image) {}

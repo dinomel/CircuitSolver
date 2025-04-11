@@ -13,6 +13,6 @@ class Capacitor : public PassiveComponent
 public:
     double capacitance;
 
-    Capacitor(double capacitance, const td::String &id = "")
-        : PassiveComponent("Capacitor", "C", "capacitor.png", id), capacitance(capacitance) {}
+    Capacitor(double capacitance)
+        : PassiveComponent("Capacitor", "C", "capacitor.png"), capacitance(capacitance) {}
 };
