@@ -48,6 +48,11 @@ public:
         return !(_startPoint == _endPoint);
     }
 
+    gui::Point getStartPoint() const
+    {
+        return _startPoint;
+    }
+
     gui::Point getEndPoint() const
     {
         return _endPoint;
@@ -79,7 +84,12 @@ public:
     virtual void updateEndPoint(const gui::Point &newEndPoint)
     {
         _endPoint = newEndPoint;
-        //        _endPoint = IGridComponent::getClosestGridPoint(newEndPoint);
+        updateLineNodes();
+    }
+
+    virtual void updateStartPoint(const gui::Point &newEndPoint)
+    {
+        _startPoint = newEndPoint;
         updateLineNodes();
     }
 
@@ -116,7 +126,6 @@ public:
     virtual bool canBeSelected(const gui::Point &pt) const
     {
         return distanceToPointSquared(pt) < 144;
-        return false;
     }
 
     virtual void load(arch::ArchiveIn &ar)

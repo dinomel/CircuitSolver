@@ -12,10 +12,11 @@ class NodeGridComponent : public GridComponent
 {
 public:
     int parentComponentID;
+    bool isStartNode;
 
 public:
-    NodeGridComponent(const gui::Point &point, int parentComponentID, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(point, 0, 0, fillColor, lineColor), parentComponentID(parentComponentID)
+    NodeGridComponent(const gui::Point &point, int parentComponentID, bool isStartNode, td::ColorID fillColor, td::ColorID lineColor)
+        : GridComponent(point, 0, 0, fillColor, lineColor), parentComponentID(parentComponentID), isStartNode(isStartNode)
     {
     }
 
@@ -72,5 +73,10 @@ public:
 
         gui::Circle circle(_startPoint, 1);
         _shape.updateCircleNodes(circle);
+    }
+
+    virtual double distanceToPointSquared(const gui::Point &pt) const
+    {
+        return (_startPoint.x - pt.x) * (_startPoint.x - pt.x) + (_startPoint.y - pt.y) * (_startPoint.y - pt.y);
     }
 };

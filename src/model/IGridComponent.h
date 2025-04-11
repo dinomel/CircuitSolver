@@ -41,6 +41,7 @@ public:
     virtual void init() = 0;
     virtual void translate(const gui::Point &delta) = 0;
     virtual void updateEndPoint(const gui::Point &newEndPoint) = 0;
+    virtual void updateStartPoint(const gui::Point &newEndPoint) = 0;
     virtual void updateLineNodes() = 0;
     virtual double distanceToPointSquared(const gui::Point &pt) const = 0;
     virtual void snapToGrid() = 0;
@@ -53,7 +54,7 @@ public:
 
     static IGridComponent *createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
 
-    static IGridComponent *createNode(const gui::Point &initPoint, int parentComponentID, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode, td::ColorID fillColor, td::ColorID lineColor);
 
     // Factory tool
     static IGridComponent::Tool currentTool;

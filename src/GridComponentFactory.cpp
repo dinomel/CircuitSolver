@@ -38,9 +38,9 @@ IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint, td::
     return pComp;
 }
 
-IGridComponent *IGridComponent::createNode(const gui::Point &initPoint, int parentComponentID, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode, td::ColorID fillColor, td::ColorID lineColor)
 {
-    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint), parentComponentID, fillColor, lineColor);
+    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint), parentComponentID, isStartNode, fillColor, lineColor);
     pComp->init();
     return pComp;
 }

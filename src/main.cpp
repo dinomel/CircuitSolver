@@ -18,7 +18,7 @@ int main(int argc, const char *argv[])
     ResistorGridComponent r2(10, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
     CapacitorGridComponent c(0.01, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
     InductorGridComponent l(1, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-    NodeGridComponent n({0, 0}, 0, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+    NodeGridComponent n({0, 0}, 0, true, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
     std::vector<GridComponent *> components({
         &r1,
         &r2,

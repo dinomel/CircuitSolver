@@ -35,6 +35,7 @@ protected:
 public:
     cnt::PushBackVector<GridComponent *> selectedGridComponents;
     cnt::PushBackVector<NodeGridComponent *> nodes; // Ako cemo crtati nodes ovo mora ovako
+    NodeGridComponent *selectedNode;
 
 public:
     GridModel()
@@ -55,6 +56,16 @@ public:
     void selectComponent(GridComponent *component)
     {
         selectedGridComponents.push_back(component);
+    }
+
+    void selectNode(NodeGridComponent *nodeComponent)
+    {
+        selectedNode = nodeComponent;
+    }
+
+    void unselectNode()
+    {
+        selectedNode = nullptr;
     }
 
     void draw(const gui::Rect &rDraw) const
@@ -106,16 +117,12 @@ public:
         nodes.push_back(pNode);
     }
 
-    void updateNode(int parentCompID, const gui::Point &newNodePoint)
+    void updateNode(int parentCompID, bool isStartNode, const gui::Point &newNodePoint)
     {
-        std::cout << "parentCompID: " << parentCompID << std::endl;
         for (NodeGridComponent *pC : nodes)
         {
-            std::cout << "pC parentComponendID: " << pC->parentComponentID << std::endl;
-            if (pC->parentComponentID == parentCompID)
+            if (pC->parentComponentID == parentCompID && pC->isStartNode == isStartNode)
             {
-                std::cout << "update node Point za pC sa parentID-jem: " << pC->parentComponentID << std::endl;
-                std::cout << "postavlja se na: {" << newNodePoint.x << ", " << newNodePoint.y << "}" << std::endl;
                 pC->updateNodePoint(newNodePoint);
                 return;
             }
@@ -230,8 +237,28 @@ public:
         return _modelSize;
     }
 
+    NodeGridComponent *getSelectedNode(const gui::Point &pt)
+    {
+        size_t nNodeElems = nodes.size();
+        if (nNodeElems == 0)
+            return nullptr;
+        if (nNodeElems != 0)
+        {
+            for (size_t i = nNodeElems; i > 0; --i)
+            {
+                NodeGridComponent *pC = nodes[i - 1];
+                if (pC->canBeSelected(pt))
+                {
+                    return pC;
+                }
+            }
+        }
+        return nullptr;
+    }
+
     GridComponent *getSelectedElement(const gui::Point &pt)
     {
+
         size_t nElems = _gridComponents.size();
         if (nElems == 0)
             return nullptr;
