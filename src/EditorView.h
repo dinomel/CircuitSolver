@@ -156,8 +156,14 @@ protected:
                 if (!isSelected)
                 {
                     // TODO: DINO: Ako drzi shift ne treba clearati selected
-                    _model.clearSelected();
+                    if (!inputDevice.getKey().isShiftPressed())
+                        _model.clearSelected();
                     _model.selectComponent(pSelected);
+                    reDraw();
+                }
+                else if (inputDevice.getKey().isShiftPressed())
+                {
+                    _model.selectedGridComponents.remove(pSelected);
                     reDraw();
                 }
             }
@@ -296,10 +302,6 @@ protected:
 
     bool onKeyPressed(const gui::Key &key) override
     {
-        // call base class
-        if (gui::Canvas::onKeyPressed(key))
-            return true;
-
         cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
 
         if (!selectedComponents.isEmpty())
