@@ -34,8 +34,11 @@ protected:
     td::ColorID _lineColor;
 
 public:
+    bool isSelected;
+
+public:
     GridComponent(const gui::Point &initPoint, double width, double height, td::ColorID fillColor, td::ColorID lineColor)
-        : _width(width), _height(height), _fillColor(fillColor), _lineColor(lineColor), _startPoint(initPoint), _endPoint(initPoint)
+        : _width(width), _height(height), _fillColor(fillColor), _lineColor(lineColor), _startPoint(initPoint), _endPoint(initPoint), isSelected(false)
     {
     }
 
@@ -132,6 +135,11 @@ public:
     virtual void release()
     {
         delete this;
+    }
+
+    void setIsSelected(bool isSel)
+    {
+        isSelected = isSel;
     }
 
     void initProperties(gui::Properties *properties) const

@@ -17,6 +17,7 @@
 #include <gui/Cursor.h>
 #include <gui/PropertyEditorSwitcher.h>
 #include <iostream>
+#include "model/GridComponent.h"
 
 // global parameters
 extern DefaultSettings g_defaultSettings;
@@ -34,8 +35,8 @@ class EditorView : public gui::Canvas
 
 protected:
     GridModel _model;
-    IGridComponent *_pSelectedShape = nullptr;
-    IGridComponent *_pCreatingComponent = nullptr;
+    GridComponent *_pSelectedShape = nullptr;
+    GridComponent *_pCreatingComponent = nullptr;
     gui::PropertyEditorSwitcher *_pPropSwitcher = nullptr;
     gui::Point _lastMouseClickPoint;
     LastEvent _lastEvent = LastEvent::None;
@@ -50,9 +51,13 @@ protected:
 
     void deleteSelectedShape()
     {
-        if (!_pSelectedShape)
+        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        if (selectedComponents.isEmpty())
             return;
-        _model.remove(_pSelectedShape);
+        for (GridComponent *pC : selectedComponents)
+        {
+            _model.remove(pC);
+        }
         _pPropSwitcher->showView(0);
         setFocus(); // to this
         reDraw();
@@ -77,48 +82,52 @@ protected:
     {
         //        mu::dbgLog("x=%.1f y=%.1f w=%.1f h=%.1f", rDraw.left, rDraw.top, rDraw.width(), rDraw.height());
         _model.draw(rDraw);
-        if (_pSelectedShape)
+
+        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        if (selectedComponents.isEmpty())
+            return;
+        for (GridComponent *pC : selectedComponents)
         {
             gui::Rect r;
-            _pSelectedShape->getBoundingRect(r);
+            pC->getBoundingRect(r);
             gui::Shape::drawSelectionRect(r);
         }
     }
 
     bool onActionItem(gui::ActionItemDescriptor &aiDesc) override
     {
-        auto [menuID, firstSubMenuID, lastSubMenuID, actionID] = aiDesc.getIDs();
-        auto pAI = aiDesc.getActionItem();
-
-        if (menuID == 100)
-        {
-            assert(_pSelectedShape);
-            if (!_pSelectedShape)
-                return true;
-            // context menu;
-            switch (actionID)
-            {
-            case 10:
-                // move front
-                // TODO: vjezba
-                if (_model.setBack(_pSelectedShape))
-                    reDraw();
-                break;
-            case 20:
-                // move back
-                // TODO: vjezba
-                if (_model.setFront(_pSelectedShape))
-                    reDraw();
-                break;
-            case 30:
-            {
-                // Delete without checking
-                deleteSelectedShape();
-                break;
-            }
-            }
-            return true;
-        }
+        //        auto [menuID, firstSubMenuID, lastSubMenuID, actionID] = aiDesc.getIDs();
+        //        auto pAI = aiDesc.getActionItem();
+        //
+        //        if (menuID == 100)
+        //        {
+        //            assert(_pSelectedShape);
+        //            if (!_pSelectedShape)
+        //                return true;
+        //            // context menu;
+        //            switch (actionID)
+        //            {
+        //            case 10:
+        //                // move front
+        //                // TODO: vjezba
+        //                if (_model.setBack(_pSelectedShape))
+        //                    reDraw();
+        //                break;
+        //            case 20:
+        //                // move back
+        //                // TODO: vjezba
+        //                if (_model.setFront(_pSelectedShape))
+        //                    reDraw();
+        //                break;
+        //            case 30:
+        //            {
+        //                // Delete without checking
+        //                deleteSelectedShape();
+        //                break;
+        //            }
+        //            }
+        //            return true;
+        //        }
         return false;
     }
 
@@ -133,51 +142,61 @@ protected:
         {
         case IGridComponent::Tool::Selector:
         {
-            IGridComponent *pSelected = _model.getSelectedElement(modelPoint);
-
-            if (_pSelectedShape != pSelected)
+            GridComponent *pSelected = _model.getSelectedElement(modelPoint);
+            if (!pSelected)
             {
+
+                _model.clearSelected();
+                _pPropSwitcher->showView(0);
                 reDraw();
-                if (pSelected)
-                {
-                    int pos = (int)pSelected->getType();
-                    ++pos;
-                    //                    if (_pPropSwitcher)
-                    //                        _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
-                }
-                else
-                {
-                    _pPropSwitcher->showView(0);
-                }
+            }
+
+            else if (!pSelected->isSelected)
+            {
+                // TODO: Ako drzi shift ne treba clearati selected
+                _model.clearSelected();
+                pSelected->setIsSelected(true);
+                reDraw();
             }
             setFocus(); // to this
-            _pSelectedShape = pSelected;
         }
         break;
         case IGridComponent::Tool::AddWire:
         {
-            _pCreatingComponent = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+
+            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
+
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddResistor:
         {
-            _pCreatingComponent = IGridComponent::createResistor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createResistor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+
+            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
+
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddCapacitor:
         {
-            _pCreatingComponent = IGridComponent::createCapacitor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createCapacitor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+
+            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
+
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddInductor:
         {
-            _pCreatingComponent = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+
+            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
+
             _model.appendShape(_pCreatingComponent);
             reDraw();
         }
@@ -189,9 +208,13 @@ protected:
 
     void onPrimaryButtonReleased(const gui::InputDevice &inputDevice) override
     {
-        if (_lastEvent == LastEvent::Drag && _pSelectedShape)
+        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        if (_lastEvent == LastEvent::Drag && !selectedComponents.isEmpty())
         {
-            _pSelectedShape->snapToGrid();
+            for (GridComponent *pC : selectedComponents)
+            {
+                pC->snapToGrid();
+            }
             reDraw();
         }
         if (_lastEvent == LastEvent::Drag && _pCreatingComponent)
@@ -205,22 +228,22 @@ protected:
 
     void onSecondaryButtonPressed(const gui::InputDevice &inputDevice) override
     {
-        if (IGridComponent::currentTool != IGridComponent::Tool::Selector)
-            return;
-
-        if (!_pSelectedShape)
-            return;
-        gui::Rect boundRect;
-        _pSelectedShape->getBoundingRect(boundRect);
-        boundRect.inflate(5.0);
-
-        const gui::Point &modelPoint = inputDevice.getModelPoint();
-        if (!boundRect.contains(modelPoint))
-            return;
-
-        td::BYTE ctxMenuID = 100;
-        Frame::openContextMenu(ctxMenuID, inputDevice);
-        return;
+        //        if (IGridComponent::currentTool != IGridComponent::Tool::Selector)
+        //            return;
+        //
+        //        if (!_pSelectedShape)
+        //            return;
+        //        gui::Rect boundRect;
+        //        _pSelectedShape->getBoundingRect(boundRect);
+        //        boundRect.inflate(5.0);
+        //
+        //        const gui::Point &modelPoint = inputDevice.getModelPoint();
+        //        if (!boundRect.contains(modelPoint))
+        //            return;
+        //
+        //        td::BYTE ctxMenuID = 100;
+        //        Frame::openContextMenu(ctxMenuID, inputDevice);
+        //        return;
     }
 
     void onCursorDragged(const gui::InputDevice &inputDevice) override // onMouseDragged(const gui::Point& modelPoint, td::UINT4 keyModifiers)
@@ -243,11 +266,16 @@ protected:
             return;
         }
 
-        if (_pSelectedShape == nullptr)
+        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        if (selectedComponents.isEmpty())
             return;
-        gui::Point delta(modelPoint.x - _lastMouseClickPoint.x, modelPoint.y - _lastMouseClickPoint.y);
 
-        _pSelectedShape->translate(delta);
+        gui::Point delta(modelPoint.x - _lastMouseClickPoint.x, modelPoint.y - _lastMouseClickPoint.y);
+        for (GridComponent *pC : selectedComponents)
+        {
+            pC->translate(delta);
+        }
+
         updatePropertyValues();
         _lastMouseClickPoint = modelPoint;
         reDraw();
@@ -269,7 +297,9 @@ protected:
         if (gui::Canvas::onKeyPressed(key))
             return true;
 
-        if (_pSelectedShape)
+        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+
+        if (!selectedComponents.isEmpty())
         {
             double mult = 1;
             if (key.isCtrlPressed() || key.isCmdPressed())
@@ -282,7 +312,10 @@ protected:
             case gui::Key::Virtual::NumLeft:
             {
                 gui::Point delta(-dMove, 0);
-                _pSelectedShape->translate(delta);
+                for (GridComponent *pC : selectedComponents)
+                {
+                    pC->translate(delta);
+                }
                 updatePropertyValues();
                 reDraw();
             }
@@ -291,7 +324,10 @@ protected:
             case gui::Key::Virtual::NumRight:
             {
                 gui::Point delta(dMove, 0);
-                _pSelectedShape->translate(delta);
+                for (GridComponent *pC : selectedComponents)
+                {
+                    pC->translate(delta);
+                }
                 updatePropertyValues();
                 reDraw();
             }
@@ -300,7 +336,10 @@ protected:
             case gui::Key::Virtual::NumUp:
             {
                 gui::Point delta(0, -dMove);
-                _pSelectedShape->translate(delta);
+                for (GridComponent *pC : selectedComponents)
+                {
+                    pC->translate(delta);
+                }
                 updatePropertyValues();
                 reDraw();
             }
@@ -309,7 +348,10 @@ protected:
             case gui::Key::Virtual::NumDown:
             {
                 gui::Point delta(0, dMove);
-                _pSelectedShape->translate(delta);
+                for (GridComponent *pC : selectedComponents)
+                {
+                    pC->translate(delta);
+                }
                 updatePropertyValues();
                 reDraw();
             }
@@ -347,17 +389,17 @@ public:
 
     void load(const td::String &fileName)
     {
-        _pSelectedShape = nullptr;
-        if (_pPropSwitcher)
-        {
-            _pPropSwitcher->showView(0);
-        }
-        if (_model.load(fileName))
-        {
-            mu::dbgLog("Shapes opened from file = %s", fileName.c_str());
-        }
-        scale(1.0);
-        reDraw();
+        //        _pSelectedShape = nullptr;
+        //        if (_pPropSwitcher)
+        //        {
+        //            _pPropSwitcher->showView(0);
+        //        }
+        //        if (_model.load(fileName))
+        //        {
+        //            mu::dbgLog("Shapes opened from file = %s", fileName.c_str());
+        //        }
+        //        scale(1.0);
+        //        reDraw();
     }
 
     void setPropSwitcher(gui::PropertyEditorSwitcher *pPropSwitcher)

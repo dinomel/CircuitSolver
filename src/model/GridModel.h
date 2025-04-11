@@ -6,16 +6,15 @@
 //
 
 #pragma once
-#include "IGridComponent.h"
+#include "GridComponent.h"
 #include <cnt/PushBackVector.h>
 #include <arch/FileSerializer.h>
 #include <arch/ArchiveIn.h>
 #include <arch/ArchiveOut.h>
 
-// Interface to 2d shapes (Rect, Circle,...)
 class GridModel
 {
-    cnt::PushBackVector<IGridComponent *, 1024> _gridComponents;
+    cnt::PushBackVector<GridComponent *, 1024> _gridComponents;
     gui::Size _modelSize;
 
 protected:
@@ -38,6 +37,25 @@ public:
         clean();
     }
 
+    void clearSelected()
+    {
+        for (GridComponent *pC : _gridComponents)
+        {
+            pC->setIsSelected(false);
+        }
+    }
+
+    cnt::PushBackVector<GridComponent *, 1024> getSelectedComponents()
+    {
+        cnt::PushBackVector<GridComponent *, 1024> selectedComponents;
+        for (GridComponent *pC : _gridComponents)
+        {
+            if (pC->isSelected)
+                selectedComponents.push_back(pC);
+        }
+        return selectedComponents;
+    }
+
     void draw(const gui::Rect &rDraw) const
     {
         gui::Rect boundingRect;
@@ -54,7 +72,7 @@ public:
         // mu::dbgLog("#Drawn=%d", nDrawn);
     }
 
-    void appendShape(IGridComponent *pShape)
+    void appendShape(GridComponent *pShape)
     {
         gui::Rect boundRect;
         pShape->getBoundingRect(boundRect);
@@ -176,14 +194,14 @@ public:
         return _modelSize;
     }
 
-    IGridComponent *getSelectedElement(const gui::Point &pt)
+    GridComponent *getSelectedElement(const gui::Point &pt)
     {
         size_t nElems = _gridComponents.size();
         if (nElems == 0)
             return nullptr;
         for (size_t i = nElems; i > 0; --i)
         {
-            IGridComponent *pShape = _gridComponents[i - 1];
+            GridComponent *pShape = _gridComponents[i - 1];
             if (pShape->canBeSelected(pt))
             {
                 return pShape;
@@ -192,7 +210,7 @@ public:
         return nullptr;
     }
 
-    void remove(IGridComponent *&pShape)
+    void remove(GridComponent *&pShape)
     {
         if (pShape)
         {
@@ -202,7 +220,7 @@ public:
         }
     }
 
-    bool setFront(IGridComponent *pShape)
+    bool setFront(GridComponent *pShape)
     {
         auto nShapes = _gridComponents.size();
         if (nShapes <= 1)
@@ -219,7 +237,7 @@ public:
         return false;
     }
 
-    bool setBack(IGridComponent *pShape)
+    bool setBack(GridComponent *pShape)
     {
         auto nShapes = _gridComponents.size();
         if (nShapes <= 1)
