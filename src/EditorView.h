@@ -51,7 +51,7 @@ protected:
 
     void deleteSelectedShape()
     {
-        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (selectedComponents.isEmpty())
             return;
         for (GridComponent *pC : selectedComponents)
@@ -83,7 +83,7 @@ protected:
         //        mu::dbgLog("x=%.1f y=%.1f w=%.1f h=%.1f", rDraw.left, rDraw.top, rDraw.width(), rDraw.height());
         _model.draw(rDraw);
 
-        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (selectedComponents.isEmpty())
             return;
         for (GridComponent *pC : selectedComponents)
@@ -145,18 +145,21 @@ protected:
             GridComponent *pSelected = _model.getSelectedElement(modelPoint);
             if (!pSelected)
             {
-
                 _model.clearSelected();
                 _pPropSwitcher->showView(0);
                 reDraw();
             }
-
-            else if (!pSelected->isSelected)
+            else
             {
-                // TODO: Ako drzi shift ne treba clearati selected
-                _model.clearSelected();
-                pSelected->setIsSelected(true);
-                reDraw();
+                bool isSelected = _model.selectedGridComponents.find(pSelected) != -1;
+
+                if (!isSelected)
+                {
+                    // TODO: DINO: Ako drzi shift ne treba clearati selected
+                    _model.clearSelected();
+                    _model.selectComponent(pSelected);
+                    reDraw();
+                }
             }
             setFocus(); // to this
         }
@@ -208,7 +211,7 @@ protected:
 
     void onPrimaryButtonReleased(const gui::InputDevice &inputDevice) override
     {
-        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (_lastEvent == LastEvent::Drag && !selectedComponents.isEmpty())
         {
             for (GridComponent *pC : selectedComponents)
@@ -266,7 +269,7 @@ protected:
             return;
         }
 
-        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (selectedComponents.isEmpty())
             return;
 
@@ -297,7 +300,7 @@ protected:
         if (gui::Canvas::onKeyPressed(key))
             return true;
 
-        cnt::PushBackVector<GridComponent *, 1024> selectedComponents = _model.getSelectedComponents();
+        cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
 
         if (!selectedComponents.isEmpty())
         {

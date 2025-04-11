@@ -27,6 +27,9 @@ protected:
     }
 
 public:
+    cnt::PushBackVector<GridComponent *> selectedGridComponents;
+
+public:
     GridModel()
         : _modelSize(10, 10)
     {
@@ -39,21 +42,12 @@ public:
 
     void clearSelected()
     {
-        for (GridComponent *pC : _gridComponents)
-        {
-            pC->setIsSelected(false);
-        }
+        selectedGridComponents = {};
     }
 
-    cnt::PushBackVector<GridComponent *, 1024> getSelectedComponents()
+    void selectComponent(GridComponent *component)
     {
-        cnt::PushBackVector<GridComponent *, 1024> selectedComponents;
-        for (GridComponent *pC : _gridComponents)
-        {
-            if (pC->isSelected)
-                selectedComponents.push_back(pC);
-        }
-        return selectedComponents;
+        selectedGridComponents.push_back(component);
     }
 
     void draw(const gui::Rect &rDraw) const
@@ -215,6 +209,7 @@ public:
         if (pShape)
         {
             _gridComponents.remove(pShape);
+            selectedGridComponents.remove(pShape);
             pShape->release();
             pShape = nullptr;
         }
