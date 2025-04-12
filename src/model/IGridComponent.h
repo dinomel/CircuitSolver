@@ -46,6 +46,11 @@ public:
     virtual double distanceToPointSquared(const gui::Point &pt) const = 0;
     virtual void snapToGrid() = 0;
     virtual void release() = 0;
+    virtual gui::Point getStartPoint() const = 0;
+    virtual td::Point<int> getStartCoordinate() const = 0;
+    virtual gui::Point getEndPoint() const = 0;
+    virtual td::Point<int> getEndCoordinate() const = 0;
+    virtual bool hasLength() const = 0;
 
     // GridComponentFactory
     static IGridComponent *createResistor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);

@@ -18,7 +18,7 @@ protected:
 
 public:
     PropertyEditors()
-        : gui::PropertyEditorSwitcher(4), _resistorPropEditor(gui::tr("Resistor"), IGridComponent::getProperties(IGridComponent::Type::Resistor)), _capacitorPropEditor(gui::tr("Capacitor"), IGridComponent::getProperties(IGridComponent::Type::Capacitor)), _inductorPropEditor(gui::tr("Inductor"), IGridComponent::getProperties(IGridComponent::Type::Inductor))
+        : gui::PropertyEditorSwitcher(4), _resistorPropEditor("Resistor", IGridComponent::getProperties(IGridComponent::Type::Resistor)), _capacitorPropEditor("Capacitor", IGridComponent::getProperties(IGridComponent::Type::Capacitor)), _inductorPropEditor("Inductor", IGridComponent::getProperties(IGridComponent::Type::Inductor))
     {
         //        setMargins(0, 0, 15, 5);
         addView(&_defaultPropEditor);

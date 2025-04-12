@@ -31,6 +31,61 @@ public:
         return Type::Resistor;
     }
 
+    void initProperties(gui::Properties *properties) const
+    {
+
+        // if (createGroup)
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup("Parameters");
+        }
+
+        td::Variant valR(_resistor.resistance);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Resistance, "Resistance", valR);
+        }
+
+        valR = td::Variant(_resistor.impedance);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Impedance, "Impedance", valR);
+        }
+
+        // group
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup("NodesPosition");
+        }
+
+        td::Point<int> startCoordinate = getStartCoordinate();
+        td::Point<int> endCoordinate = getEndCoordinate();
+
+        td::Variant val(startCoordinate.x);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::X1, "StartNodeX", val);
+        }
+
+        val = td::Variant(startCoordinate.y);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Y1, "StartNodeY", val);
+        }
+
+        val = td::Variant(endCoordinate.x);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::X2, "EndNodeX", val);
+        }
+
+        val = td::Variant(endCoordinate.y);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Y2, "EndNodeY", val);
+        }
+    }
+
     void init()
     {
         gui::Point points[] = {
@@ -69,58 +124,89 @@ public:
 
     virtual void getValues(gui::PropertyValues &propValues) const
     {
-        //                td::Variant x1(_startPoint.x);
-        //                propValues.setValueByKey((td::UINT4)PropID::Xr, x1);
-        //
-        //                td::Variant y1(_startPoint.y);
-        //                propValues.setValueByKey((td::UINT4)PropID::Yr, y1);
-        //
-        //                td::Variant x2(_endPoint.x);
-        //                propValues.setValueByKey((td::UINT4)PropID::Width, x2);
-        //
-        //                td::Variant y2(_endPoint.y);
-        //                propValues.setValueByKey((td::UINT4)PropID::Height, y2);
-        //
-        //                GridComponent::getValues(propValues);
+
+        td::Variant valR(_resistor.resistance);
+        propValues.setValueByKey((td::UINT4)PropID::Resistance, valR);
+
+        td::Variant valX(_resistor.impedance);
+        propValues.setValueByKey((td::UINT4)PropID::Impedance, valX);
+
+        td::Point<int> startCoordinate = getStartCoordinate();
+        td::Point<int> endCoordinate = getEndCoordinate();
+
+        td::Variant x1(startCoordinate.x);
+        propValues.setValueByKey((td::UINT4)PropID::X1, x1);
+
+        td::Variant y1(startCoordinate.y);
+        propValues.setValueByKey((td::UINT4)PropID::Y1, y1);
+
+        td::Variant x2(endCoordinate.x);
+        propValues.setValueByKey((td::UINT4)PropID::X2, x2);
+
+        td::Variant y2(endCoordinate.y);
+        propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
+
+        GridComponent::getValues(propValues);
     }
 
     virtual void setValues(gui::PropertyValues &propValues)
     {
-        //        gui::Rect rBefore(_rect);
-        //        if (isWithLine())
-        //            rBefore.inflate(_lineWidth+IGridComponent::refreshOffset);
+        //                gui::Rect rBefore(_rect);
+        //                if (isWithLine())
+        //                    rBefore.inflate(_lineWidth+IGridComponent::refreshOffset);
         //
-        //        propValues.setRectBeforeUpdate(rBefore);
+        //                propValues.setRectBeforeUpdate(rBefore);
+
+        td::Variant resistance = propValues.getValueByKey((td::UINT4)PropID::Resistance);
+        resistance.getValue(_resistor.resistance);
+
+        td::Variant impedance = propValues.getValueByKey((td::UINT4)PropID::Impedance);
+        impedance.getValue(_resistor.impedance);
+
+        td::Variant x1 = propValues.getValueByKey((td::UINT4)PropID::X1);
+        int startNodeX = 0;
+        x1.getValue(startNodeX);
+        _startPoint.x = startNodeX * gridSize;
+
+        td::Variant y1 = propValues.getValueByKey((td::UINT4)PropID::Y1);
+        int startNodeY = 0;
+        y1.getValue(startNodeY);
+        _startPoint.y = startNodeY * gridSize;
+
+        td::Variant x2 = propValues.getValueByKey((td::UINT4)PropID::X2);
+        int endNodeX = 0;
+        x2.getValue(endNodeX);
+        _endPoint.x = endNodeX * gridSize;
+
+        td::Variant y2 = propValues.getValueByKey((td::UINT4)PropID::Y2);
+        int endNodeY = 0;
+        y2.getValue(endNodeY);
+        _endPoint.y = endNodeY * gridSize;
+
+        //                td::Variant varW = propValues.getValueByKey((td::UINT4)PropID::Width);
+        //                gui::CoordType w;
+        //                varW.getValue(w);
+        //                _rect.setWidth(w);
         //
-        //        td::Variant x = propValues.getValueByKey((td::UINT4)PropID::Xr);
-        //        x.getValue(_rect.left);
+        //                td::Variant varH = propValues.getValueByKey((td::UINT4)PropID::Height);
+        //                gui::CoordType h;
+        //                varH.getValue(h);
+        //                _rect.setHeight(h);
+        //                gui::Rect rectAfter(_rect);
+
+        GridComponent::setValues(propValues);
+        updateLineNodes();
+        //                gui::Rect rAfter(_rect);
+
+        //                if (isWithLine())
+        //                    rAfter.inflate(_lineWidth+IGridComponent::refreshOffset);
+        //                propValues.setRectAfterUpdate(rAfter);
         //
-        //        td::Variant y = propValues.getValueByKey((td::UINT4)PropID::Yr);
-        //        y.getValue(_rect.top);
-        //
-        //        td::Variant varW = propValues.getValueByKey((td::UINT4)PropID::Width);
-        //        gui::CoordType w;
-        //        varW.getValue(w);
-        //        _rect.setWidth(w);
-        //
-        //        td::Variant varH = propValues.getValueByKey((td::UINT4)PropID::Height);
-        //        gui::CoordType h;
-        //        varH.getValue(h);
-        //        _rect.setHeight(h);
-        //        gui::Rect rectAfter(_rect);
-        //
-        //        GridComponent::setValues(propValues);
-        //        gui::Rect rAfter(_rect);
-        //
-        //        if (isWithLine())
-        //            rAfter.inflate(_lineWidth+IGridComponent::refreshOffset);
-        //        propValues.setRectAfterUpdate(rAfter);
-        //
-        //        if (getType() == IGridComponent::Type::Rect)
-        //        {
-        //            if (rBefore != rAfter)
-        //                _shape.updateRectNodes(_rect);
-        //        }
+        //                if (getType() == IGridComponent::Type::Rect)
+        //                {
+        //                    if (rBefore != rAfter)
+        //                        _shape.updateRectNodes(_rect);
+        //                }
     }
 
     virtual void updateLineNodes()

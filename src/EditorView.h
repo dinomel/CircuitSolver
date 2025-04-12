@@ -162,15 +162,34 @@ protected:
 
                 if (!isSelected)
                 {
-                    // TODO: DINO: Ako drzi shift ne treba clearati selected
+                    // nije bilo selectovano
+
                     if (!inputDevice.getKey().isShiftPressed())
                         _model.clearSelected();
                     _model.selectComponent(pSelected);
+
+                    if (_model.selectedGridComponents.size() == 1)
+                    {
+                        int pos = (int)pSelected->getType();
+                        if (_pPropSwitcher)
+                            _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
+                    }
+                    else if (_pPropSwitcher)
+                        _pPropSwitcher->showView(0);
+
                     reDraw();
                 }
                 else if (inputDevice.getKey().isShiftPressed())
                 {
                     _model.selectedGridComponents.remove(pSelected);
+
+                    if (_model.selectedGridComponents.size() == 1)
+                    {
+                        pSelected = _model.selectedGridComponents[0];
+                        int pos = (int)pSelected->getType();
+                        if (_pPropSwitcher)
+                            _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
+                    }
                     reDraw();
                 }
             }

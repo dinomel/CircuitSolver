@@ -12,7 +12,8 @@ class Resistor : public PassiveComponent
 {
 public:
     double resistance;
+    double impedance;
 
-    Resistor(double resistance)
-        : PassiveComponent("Resistor", "R", "resistor.png"), resistance(resistance) {}
+    Resistor(double resistance, double impedance = 0)
+        : PassiveComponent("Resistor", "R", "resistor.png"), resistance(resistance), impedance(impedance) {}
 };

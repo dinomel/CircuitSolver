@@ -14,16 +14,6 @@ extern const int gridSize;
 class GridComponent : public IGridComponent
 {
 
-    enum class PropID : td::UINT4
-    {
-        X1 = 200,
-        Y1,
-        X2,
-        Y2,
-        FillColor,
-        LineColor
-    };
-
 protected:
     gui::Point _startPoint;
     gui::Point _endPoint;
@@ -43,19 +33,48 @@ public:
     {
     }
 
-    bool hasLength() const
+    enum class PropID : td::UINT4
+    {
+        X1 = 200,
+        Y1,
+        X2,
+        Y2,
+        FillColor,
+        LineColor,
+        Resistance,
+        Impedance,
+    };
+
+    virtual bool hasLength() const
     {
         return !(_startPoint == _endPoint);
     }
 
-    gui::Point getStartPoint() const
+    virtual gui::Point getStartPoint() const
     {
         return _startPoint;
     }
 
-    gui::Point getEndPoint() const
+    virtual gui::Point getEndPoint() const
     {
         return _endPoint;
+    }
+
+    virtual td::Point<int> getStartCoordinate() const
+    {
+        return {
+            int(_startPoint.x / gridSize),
+            int(_startPoint.y / gridSize),
+        };
+    }
+
+    virtual td::Point<int> getEndCoordinate() const
+    {
+
+        return {
+            int(_endPoint.x / gridSize),
+            int(_endPoint.y / gridSize),
+        };
     }
 
     virtual Component *getComponent() = 0;
@@ -159,48 +178,48 @@ public:
         // if (createGroup)
         {
             auto &prop = properties->push_back();
-            prop.setGroup(gui::tr("VisualData"));
+            prop.setGroup("VisualData");
         }
 
         td::Variant valColor(td::colorID);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::FillColor, gui::tr("FillColor"), valColor);
+            prop.set((td::UINT4)PropID::FillColor, "FillColor", valColor);
         }
 
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::LineColor, gui::tr("LineColor"), valColor);
+            prop.set((td::UINT4)PropID::LineColor, "LineColor", valColor);
         }
 
         // group
         {
             auto &prop = properties->push_back();
-            prop.setGroup(gui::tr("SizeAndPosition"));
+            prop.setGroup("SizeAndPosition");
         }
 
         td::Variant val(_startPoint.x);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::X1, gui::tr("StartPointX"), val);
+            prop.set((td::UINT4)PropID::X1, "StartPointX", val);
         }
 
         val = td::Variant(_startPoint.y);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Y1, gui::tr("StartPointY"), val);
+            prop.set((td::UINT4)PropID::Y1, "StartPointY", val);
         }
 
         val = td::Variant(_endPoint.x);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::X2, gui::tr("EndPointX"), val);
+            prop.set((td::UINT4)PropID::X2, "EndPointX", val);
         }
 
         val = td::Variant(_endPoint.y);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Y2, gui::tr("EndPointY"), val);
+            prop.set((td::UINT4)PropID::Y2, "EndPointY", val);
         }
     }
 
