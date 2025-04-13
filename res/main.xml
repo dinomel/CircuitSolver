@@ -9,5 +9,9 @@
 		<Res id="rect" path="Work/Common/Symbols/Shapes/rectangle.xml"/>
 		<Res id="roundRct" path="Work/Common/Symbols/Shapes/roundedRectangle.xml"/>
 		<Res id="circ" path="Work/Common/Symbols/Shapes/circle.xml"/>
+		<Res id="capacitor" path=":components/capacitor.xml"/>
+		<Res id="resistor" path=":components/resistor.xml"/>
+		<Res id="inductor" path=":components/inductor.xml"/>
+		<Res id="wire" path=":components/wire.xml"/>
 	</Symbols>
 </DevRes>

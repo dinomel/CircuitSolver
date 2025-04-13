@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbol name="Inductor" type="OneConnectionOneGroup">
+	<Group name="G0" x="0" y="0">
+		<Polyline lineWidth="1" lineStyle="Solid" lineColor="SysText">
+			<Point x="-20" y="0"/>
+			<Point x="-16" y="0"/>
+			<Point x="-14.4368" y="-3.7714"/>
+			<Point x="-10.6667" y="-5.3333"/>
+			<Point x="-6.8955" y="-3.7714"/>
+			<Point x="-5.3333" y="0"/>
+			<Point x="-3.7711" y="-3.7714"/>
+			<Point x="0" y="-5.3333"/>
+			<Point x="3.7711" y="-3.7714"/>
+			<Point x="5.3333" y="0"/>
+			<Point x="6.8955" y="-3.7714"/>
+			<Point x="10.6667" y="-5.3333"/>
+			<Point x="14.4368" y="-3.7714"/>
+			<Point x="16" y="0"/>
+			<Point x="20" y="0"/>
+		</Polyline>
+	</Group>
+</Symbol>

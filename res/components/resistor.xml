@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbol name="Resistor" type="OneConnectionOneGroup">
+	<Group name="G0" x="0" y="0">
+		<Lines lineWidth="1" lineStyle="Solid" lineColor="SysText">
+			<Line x1="-20" y1="0" x2="-16" y2="0"/>
+			<Line x1="-16" y1="-6" x2="-16" y2="6"/>
+
+			<Line x1="-16" y1="6" x2="16" y2="6"/>
+			<Line x1="-16" y1="-6" x2="16" y2="-6"/>
+
+			<Line x1="16" y1="-6" x2="16" y2="6"/>
+			<Line x1="16" y1="0" x2="20" y2="0"/>
+		</Lines>
+	</Group>
+</Symbol>
