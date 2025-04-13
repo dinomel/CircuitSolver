@@ -372,6 +372,7 @@ protected:
                 {
                     pC->translate(delta);
                 }
+                _model.updateFloatingNodes();
                 updatePropertyValues();
                 reDraw();
             }
@@ -384,6 +385,7 @@ protected:
                 {
                     pC->translate(delta);
                 }
+                _model.updateFloatingNodes();
                 updatePropertyValues();
                 reDraw();
             }
@@ -396,6 +398,7 @@ protected:
                 {
                     pC->translate(delta);
                 }
+                _model.updateFloatingNodes();
                 updatePropertyValues();
                 reDraw();
             }
@@ -408,6 +411,7 @@ protected:
                 {
                     pC->translate(delta);
                 }
+                _model.updateFloatingNodes();
                 updatePropertyValues();
                 reDraw();
             }

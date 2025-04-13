@@ -40,7 +40,7 @@ public:
         clean();
     }
 
-    void updateFloatingNodes()
+    void updateFloatingNodes() const
     {
         std::map<CoordinatePoint, int> nodePointsRepetition;
         for (GridComponent *pC : _gridComponents)
