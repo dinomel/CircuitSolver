@@ -15,7 +15,7 @@ const int gridSize = 16;
 
 int main(int argc, const char *argv[])
 {
-        WireGridComponent w(nullptr, nullptr);
+    //    WireGridComponent w(nullptr, nullptr);
     //    ResistorGridComponent r1(10, nullptr, nullptr);
     //    ResistorGridComponent r2(10, nullptr, nullptr);
     //    CapacitorGridComponent c(0.01, nullptr, nullptr);
