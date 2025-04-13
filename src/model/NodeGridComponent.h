@@ -19,82 +19,78 @@ public:
     {
     }
 
-    virtual ~NodeGridComponent()
-    {
-    }
-
-    virtual void draw() const
+    void draw() const override
     {
         _shape.drawWire(td::ColorID::Yellow);
     }
 
-    virtual void getBoundingRect(gui::Rect &boundRect)
+    void getBoundingRect(gui::Rect &boundRect) override
     {
         boundRect = gui::Rect(gui::Circle(centerPoint, 1));
     }
 
-    virtual void load(arch::ArchiveIn &ar)
+    void load(arch::ArchiveIn &ar) override
     {
     }
 
-    virtual void save(arch::ArchiveOut &ar) const
+    void save(arch::ArchiveOut &ar) const override
     {
     }
 
-    virtual Type getType() const
+    Type getType() const override
     {
         return Type::Node;
     }
 
-    virtual bool canBeSelected(const gui::Point &pt) const
+    bool canBeSelected(const gui::Point &pt) const override
     {
         return distanceToPointSquared(pt) < 144;
     }
 
-    virtual void init()
+    void init() override
     {
         gui::Circle circle(centerPoint, 1);
         _shape.createCircle(circle);
     }
 
-    virtual void translate(const gui::Point &delta)
+    void translate(const gui::Point &delta) override
     {
         centerPoint.x += delta.x;
         centerPoint.y += delta.y;
         updateShape();
     }
 
-    virtual void updateShape()
+    void updateShape() override
     {
         gui::Circle circle(centerPoint, 1);
         _shape.updateCircleNodes(circle);
     }
 
-    virtual double distanceToPointSquared(const gui::Point &pt) const
+    double distanceToPointSquared(const gui::Point &pt) const override
     {
         return (centerPoint.x - pt.x) * (centerPoint.x - pt.x) + (centerPoint.y - pt.y) * (centerPoint.y - pt.y);
     }
 
-    virtual void snapToGrid()
+    void snapToGrid() override
     {
         centerPoint = getClosestGridPoint(centerPoint);
         updateShape();
     }
 
-    virtual void release()
+    void release() override
     {
         delete this;
     }
 
-    virtual void getValues(gui::PropertyValues &propValues) const
+    void getValues(gui::PropertyValues &propValues) const override
     {
     }
 
-    virtual void setValues(gui::PropertyValues &propValues)
+    void setValues(gui::PropertyValues &propValues) override
     {
     }
 
-    virtual void setValue(td::UINT4 key, gui::PropertyValues &propValues)
+    void setValue(td::UINT4 key, gui::PropertyValues &propValues) override
     {
     }
 };

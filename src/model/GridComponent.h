@@ -29,10 +29,6 @@ public:
     {
     }
 
-    virtual ~GridComponent()
-    {
-    }
-
     enum class PropID : td::UINT4
     {
         X1 = 200,
@@ -45,27 +41,27 @@ public:
         Capacitance,
     };
 
-    virtual void getBoundingRect(gui::Rect &boundRect)
+    void getBoundingRect(gui::Rect &boundRect) override
     {
         boundRect = gui::Rect(startNode->centerPoint, endNode->centerPoint);
     }
 
-    virtual bool hasLength() const
+    bool hasLength() const
     {
         return !(startNode->centerPoint == endNode->centerPoint);
     }
 
-    virtual gui::Point getStartPoint() const
+    gui::Point getStartPoint() const
     {
         return startNode->centerPoint;
     }
 
-    virtual gui::Point getEndPoint() const
+    gui::Point getEndPoint() const
     {
         return endNode->centerPoint;
     }
 
-    virtual td::Point<int> getStartCoordinate() const
+    td::Point<int> getStartCoordinate() const
     {
         return {
             int(startNode->centerPoint.x / gridSize),
@@ -73,7 +69,7 @@ public:
         };
     }
 
-    virtual td::Point<int> getEndCoordinate() const
+    td::Point<int> getEndCoordinate() const
     {
         return {
             int(endNode->centerPoint.x / gridSize),
@@ -83,21 +79,21 @@ public:
 
     virtual Component *getComponent() = 0;
 
-    virtual void draw() const
+    void draw() const override
     {
         _shape.drawWire(td::ColorID::Yellow);
         startNode->draw();
         endNode->draw();
     }
 
-    virtual void translate(const gui::Point &delta)
+    void translate(const gui::Point &delta) override
     {
         startNode->translate(delta);
         endNode->translate(delta);
         updateShape();
     }
 
-    virtual void snapToGrid()
+    void snapToGrid() override
     {
         startNode->snapToGrid();
         endNode->snapToGrid();
@@ -118,7 +114,7 @@ public:
         updateShape();
     }
 
-    virtual double distanceToPointSquared(const gui::Point &pt) const
+    double distanceToPointSquared(const gui::Point &pt) const override
     {
         double x0 = pt.x;
         double y0 = pt.y;
@@ -148,12 +144,12 @@ public:
         }
     }
 
-    virtual bool canBeSelected(const gui::Point &pt) const
+    bool canBeSelected(const gui::Point &pt) const override
     {
         return distanceToPointSquared(pt) < 144;
     }
 
-    virtual void load(arch::ArchiveIn &ar)
+    virtual void load(arch::ArchiveIn &ar) override
     {
         ////        td::BYTE attr = 0 ; //(td::BYTE) _attribs;
         ////        td::BYTE lnPattern = 0; //(td::BYTE) _linePattern;
@@ -164,7 +160,7 @@ public:
         ////        _linePattern = (td::LinePattern) lnPattern;
     }
 
-    virtual void save(arch::ArchiveOut &ar) const
+    virtual void save(arch::ArchiveOut &ar) const override
     {
         ////        td::BYTE attr = (td::BYTE) _attribs;
         ////        td::BYTE lnPattern = (td::BYTE) _linePattern;
@@ -173,20 +169,20 @@ public:
         //        ar << _lineWidth << attr << _fillColor << _lineColor << lnPattern;
     }
 
-    virtual void release()
+    void release() override
     {
         startNode->release();
         endNode->release();
         delete this;
     }
 
-    virtual void setValue(td::UINT4 key, gui::PropertyValues &propValues)
+    void setValue(td::UINT4 key, gui::PropertyValues &propValues) override
     {
     }
 
     virtual void initProperties(gui::Properties *properties) const = 0;
 
-    virtual void initNodesProperties(gui::Properties *properties) const
+    void initNodesProperties(gui::Properties *properties) const
     {
         // group
         {
@@ -229,7 +225,7 @@ public:
         }
     }
 
-    virtual void getNodesValues(gui::PropertyValues &propValues) const
+    void getNodesValues(gui::PropertyValues &propValues) const
     {
         td::Point<int> startCoordinate = getStartCoordinate();
         td::Point<int> endCoordinate = getEndCoordinate();
@@ -247,9 +243,8 @@ public:
         propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
     }
 
-    virtual void setNodesValues(gui::PropertyValues &propValues)
+    void setNodesValues(gui::PropertyValues &propValues)
     {
-
         td::Variant x1 = propValues.getValueByKey((td::UINT4)PropID::X1);
         int startNodeX = 0;
         x1.getValue(startNodeX);

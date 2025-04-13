@@ -36,6 +36,10 @@ public:
         AddInductor
     };
 
+    virtual ~IGridComponent()
+    {
+    }
+
     // IGridComponent interface
     virtual void draw() const = 0;
     virtual void getBoundingRect(gui::Rect &boundRect) = 0;
