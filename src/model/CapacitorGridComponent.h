@@ -31,7 +31,7 @@ public:
         return Type::Capacitor;
     }
 
-    void init()
+    virtual void init()
     {
         gui::Point points[] = {
             getStartPoint(),

@@ -2,6 +2,7 @@
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
 #include "model/NodeGridComponent.h"
+#include "model/WireGridComponent.h"
 #include <gui/Properties.h>
 
 int Component::nextID = 0;
@@ -12,8 +13,9 @@ gui::CoordType IGridComponent::selectionDisance2 = 5 * 5;
 gui::CoordType IGridComponent::refreshOffset = 2;
 
 gui::Properties IGridComponent::_resistorProperties;
-gui::Properties IGridComponent::_capacitorPropertes;
-gui::Properties IGridComponent::_inductorPropertes;
+gui::Properties IGridComponent::_capacitorProperties;
+gui::Properties IGridComponent::_inductorProperties;
+gui::Properties IGridComponent::_wireProperties;
 
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
@@ -47,6 +49,16 @@ IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint)
     return pComp;
 }
 
+IGridComponent *IGridComponent::createWire(const gui::Point &initPoint)
+{
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    WireGridComponent *pComp = new WireGridComponent(startNode, endNode);
+    pComp->init();
+    return pComp;
+}
+
 IGridComponent *IGridComponent::createNode(const gui::Point &initPoint)
 {
     NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint));
@@ -62,9 +74,11 @@ gui::Properties *IGridComponent::getProperties(IGridComponent::Type shapeType)
     case Type::Resistor:
         return &_resistorProperties;
     case Type::Capacitor:
-        return &_capacitorPropertes;
+        return &_capacitorProperties;
     case Type::Inductor:
-        return &_inductorPropertes;
+        return &_inductorProperties;
+    case Type::Wire:
+        return &_wireProperties;
     default:
         assert(false);
     }
@@ -87,14 +101,20 @@ void IGridComponent::initProperties()
 
     {
         CapacitorGridComponent sh(0, pnC, pnC);
-        _capacitorPropertes.reserve(8);
-        sh.initProperties(&_capacitorPropertes);
+        _capacitorProperties.reserve(8);
+        sh.initProperties(&_capacitorProperties);
     }
 
     {
         InductorGridComponent sh(0, pnC, pnC);
-        _inductorPropertes.reserve(8);
-        sh.initProperties(&_inductorPropertes);
+        _inductorProperties.reserve(8);
+        sh.initProperties(&_inductorProperties);
+    }
+
+    {
+        WireGridComponent sh(pnC, pnC);
+        _wireProperties.reserve(8);
+        sh.initProperties(&_wireProperties);
     }
 }
 

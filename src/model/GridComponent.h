@@ -40,7 +40,7 @@ public:
         X2,
         Y2,
         Resistance,
-        Impedance,
+        Reactance,
         Inductance,
         Capacitance,
     };

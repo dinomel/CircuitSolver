@@ -11,8 +11,9 @@ class IGridComponent : public gui::IProperty
 {
 private:
     static gui::Properties _resistorProperties;
-    static gui::Properties _capacitorPropertes;
-    static gui::Properties _inductorPropertes;
+    static gui::Properties _capacitorProperties;
+    static gui::Properties _inductorProperties;
+    static gui::Properties _wireProperties;
 
 protected:
     gui::Shape _shape;
@@ -55,6 +56,8 @@ public:
     static IGridComponent *createCapacitor(const gui::Point &initPoint);
 
     static IGridComponent *createInductor(const gui::Point &initPoint);
+
+    static IGridComponent *createWire(const gui::Point &initPoint);
 
     static IGridComponent *createNode(const gui::Point &initPoint);
 

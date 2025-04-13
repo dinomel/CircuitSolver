@@ -34,7 +34,7 @@ public:
         return Type::Inductor;
     }
 
-    void init()
+    virtual void init()
     {
         gui::Point points[] = {
             getStartPoint(),

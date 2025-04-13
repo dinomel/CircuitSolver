@@ -155,6 +155,11 @@ protected:
             {
                 _model.clearSelected();
                 _model.selectComponent(pSelected);
+
+                int pos = (int)pSelected->getType();
+                if (_pPropSwitcher)
+                    _pPropSwitcher->setCurrentEditor(pos + 1, pSelected, true);
+
                 reDraw();
             }
             else
@@ -173,7 +178,7 @@ protected:
                     {
                         int pos = (int)pSelected->getType();
                         if (_pPropSwitcher)
-                            _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
+                            _pPropSwitcher->setCurrentEditor(pos + 1, pSelected, true);
                     }
                     else if (_pPropSwitcher)
                         _pPropSwitcher->showView(0);
@@ -189,7 +194,7 @@ protected:
                         pSelected = _model.selectedGridComponents[0];
                         int pos = (int)pSelected->getType();
                         if (_pPropSwitcher)
-                            _pPropSwitcher->setCurrentEditor(pos, pSelected, true);
+                            _pPropSwitcher->setCurrentEditor(pos + 1, pSelected, true);
                     }
                     reDraw();
                 }
@@ -200,7 +205,7 @@ protected:
         break;
         case IGridComponent::Tool::AddWire:
         {
-            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint);
+            IGridComponent *iGridComp = IGridComponent::createWire(modelPoint);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 

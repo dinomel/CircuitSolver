@@ -31,7 +31,7 @@ public:
         return Type::Resistor;
     }
 
-    void init()
+    virtual void init()
     {
         gui::Point points[] = {
             getStartPoint(),
@@ -115,10 +115,10 @@ public:
             prop.set((td::UINT4)PropID::Resistance, "Resistance", valR);
         }
 
-        valR = td::Variant(_resistor.impedance);
+        valR = td::Variant(_resistor.reactance);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Impedance, "Impedance", valR);
+            prop.set((td::UINT4)PropID::Reactance, "Reactance", valR);
         }
 
         initNodesProperties(properties);
@@ -130,8 +130,8 @@ public:
         td::Variant valR(_resistor.resistance);
         propValues.setValueByKey((td::UINT4)PropID::Resistance, valR);
 
-        td::Variant valX(_resistor.impedance);
-        propValues.setValueByKey((td::UINT4)PropID::Impedance, valX);
+        td::Variant valX(_resistor.reactance);
+        propValues.setValueByKey((td::UINT4)PropID::Reactance, valX);
 
         getNodesValues(propValues);
     }
@@ -141,8 +141,8 @@ public:
         td::Variant resistance = propValues.getValueByKey((td::UINT4)PropID::Resistance);
         resistance.getValue(_resistor.resistance);
 
-        td::Variant impedance = propValues.getValueByKey((td::UINT4)PropID::Impedance);
-        impedance.getValue(_resistor.impedance);
+        td::Variant reactance = propValues.getValueByKey((td::UINT4)PropID::Reactance);
+        reactance.getValue(_resistor.reactance);
 
         setNodesValues(propValues);
 
