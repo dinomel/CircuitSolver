@@ -1,7 +1,7 @@
 #include "model/ResistorGridComponent.h"
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
-#include "model/NodeGridComponent.h"
+#include "model/NodeGridComponentOld.h"
 #include <gui/Properties.h>
 
 int Component::nextID = 0;
@@ -17,30 +17,30 @@ gui::Properties IGridComponent::_inductorPropertes;
 
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
-IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint)
 {
-    ResistorGridComponent *pComp = new ResistorGridComponent(10, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
+    ResistorGridComponent *pComp = new ResistorGridComponent(10, IGridComponent::getClosestGridPoint(initPoint));
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint)
 {
-    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
+    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, IGridComponent::getClosestGridPoint(initPoint));
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint)
 {
-    InductorGridComponent *pComp = new InductorGridComponent(1, IGridComponent::getClosestGridPoint(initPoint), fillColor, lineColor);
+    InductorGridComponent *pComp = new InductorGridComponent(1, IGridComponent::getClosestGridPoint(initPoint));
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode, td::ColorID fillColor, td::ColorID lineColor)
+IGridComponent *IGridComponent::createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode)
 {
-    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint), parentComponentID, isStartNode, fillColor, lineColor);
+    NodeGridComponentOld *pComp = new NodeGridComponentOld(IGridComponent::getClosestGridPoint(initPoint), parentComponentID, isStartNode);
     pComp->init();
     return pComp;
 }
@@ -68,19 +68,19 @@ void IGridComponent::initProperties()
         return;
 
     {
-        ResistorGridComponent sh(0, {0, 0}, td::ColorID::SysText, td::ColorID::SysText);
+        ResistorGridComponent sh(0, {0, 0});
         _resistorProperties.reserve(11);
         sh.initProperties(&_resistorProperties);
     }
 
     {
-        CapacitorGridComponent sh(0, {0, 0}, td::ColorID::SysText, td::ColorID::SysText);
+        CapacitorGridComponent sh(0, {0, 0});
         _capacitorPropertes.reserve(12);
         sh.initProperties(&_capacitorPropertes);
     }
 
     {
-        CapacitorGridComponent sh(0, {0, 0}, td::ColorID::SysText, td::ColorID::SysText);
+        CapacitorGridComponent sh(0, {0, 0});
         _inductorPropertes.reserve(12);
         sh.initProperties(&_inductorPropertes);
     }

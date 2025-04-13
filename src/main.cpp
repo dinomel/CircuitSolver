@@ -4,6 +4,7 @@
 #include "model/ResistorGridComponent.h"
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
+#include "model/NodeGridComponentOld.h"
 #include "model/NodeGridComponent.h"
 #include <iostream>
 
@@ -14,11 +15,12 @@ const int gridSize = 16;
 
 int main(int argc, const char *argv[])
 {
-    ResistorGridComponent r1(10, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-    ResistorGridComponent r2(10, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-    CapacitorGridComponent c(0.01, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-    InductorGridComponent l(1, {0, 0}, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-    NodeGridComponent n({0, 0}, 0, true, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+    ResistorGridComponent r1(10, {0, 0});
+    ResistorGridComponent r2(10, {0, 0});
+    CapacitorGridComponent c(0.01, {0, 0});
+    InductorGridComponent l(1, {0, 0});
+    NodeGridComponentOld n({0, 0}, 0, true);
+    NodeGridComponent nn({0, 0});
     std::vector<GridComponent *> components({
         &r1,
         &r2,

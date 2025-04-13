@@ -19,8 +19,8 @@ protected:
     Inductor _inductor;
 
 public:
-    InductorGridComponent(double inductance, const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(initPoint, 48, 16, fillColor, lineColor), _inductor(inductance)
+    InductorGridComponent(double inductance, const gui::Point &initPoint)
+        : GridComponent(initPoint, 48, 16), _inductor(inductance)
     {
     }
 
@@ -67,11 +67,6 @@ public:
             _endPoint,
         };
         _shape.createLines(&points[0], 28);
-    }
-
-    virtual void getBoundingRect(gui::Rect &boundRect)
-    {
-        boundRect = gui::Rect(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
     }
 
     virtual void load(arch::ArchiveIn &ar)
@@ -142,7 +137,7 @@ public:
         //        }
     }
 
-    virtual void updateLineNodes()
+    virtual void updateShape()
     {
         double x_A = _startPoint.x;
         double y_A = _startPoint.y;

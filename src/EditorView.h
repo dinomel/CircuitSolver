@@ -141,7 +141,7 @@ protected:
         {
         case IGridComponent::Tool::Selector:
         {
-            NodeGridComponent *pSelectedNode = _model.getSelectedNode(modelPoint);
+            NodeGridComponentOld *pSelectedNode = _model.getSelectedNode(modelPoint);
             GridComponent *pSelected = _model.getSelectedElement(modelPoint);
             if (!pSelected)
             {
@@ -199,37 +199,37 @@ protected:
         break;
         case IGridComponent::Tool::AddWire:
         {
-            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, true, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, false, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, true);
+            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, false);
 
             _model.appendGridComponent(_pCreatingComponent);
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(startNodeComp));
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(endNodeComp));
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(startNodeComp));
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(endNodeComp));
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddResistor:
         {
-            IGridComponent *iGridComp = IGridComponent::createResistor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createResistor(modelPoint);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, true, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
-            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, false, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, true);
+            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, false);
 
             _model.appendGridComponent(_pCreatingComponent);
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(startNodeComp));
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponent *>(endNodeComp));
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(startNodeComp));
+            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(endNodeComp));
             reDraw();
         }
         break;
         case IGridComponent::Tool::AddCapacitor:
         {
-            IGridComponent *iGridComp = IGridComponent::createCapacitor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createCapacitor(modelPoint);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
@@ -239,7 +239,7 @@ protected:
         break;
         case IGridComponent::Tool::AddInductor:
         {
-            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint, g_defaultSettings.getFillColor(), g_defaultSettings.getLineColor());
+            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 

@@ -7,7 +7,7 @@
 
 #pragma once
 #include "GridComponent.h"
-#include "NodeGridComponent.h"
+#include "NodeGridComponentOld.h"
 #include <cnt/PushBackVector.h>
 #include <arch/FileSerializer.h>
 #include <arch/ArchiveIn.h>
@@ -34,8 +34,8 @@ protected:
 
 public:
     cnt::PushBackVector<GridComponent *> selectedGridComponents;
-    cnt::PushBackVector<NodeGridComponent *> nodes; // Ako cemo crtati nodes ovo mora ovako
-    NodeGridComponent *selectedNode;
+    cnt::PushBackVector<NodeGridComponentOld *> nodes; // Ako cemo crtati nodes ovo mora ovako
+    NodeGridComponentOld *selectedNode;
 
 public:
     GridModel()
@@ -58,7 +58,7 @@ public:
         selectedGridComponents.push_back(component);
     }
 
-    void selectNode(NodeGridComponent *nodeComponent)
+    void selectNode(NodeGridComponentOld *nodeComponent)
     {
         selectedNode = nodeComponent;
     }
@@ -107,19 +107,19 @@ public:
         _gridComponents.push_back(pShape);
     }
 
-    void appendNodeComponent(NodeGridComponent *pNode)
+    void appendNodeComponent(NodeGridComponentOld *pNode)
     {
         nodes.push_back(pNode);
     }
 
-    void appendNode(NodeGridComponent *pNode)
+    void appendNode(NodeGridComponentOld *pNode)
     {
         nodes.push_back(pNode);
     }
 
     void updateNode(int parentCompID, bool isStartNode, const gui::Point &newNodePoint)
     {
-        for (NodeGridComponent *pC : nodes)
+        for (NodeGridComponentOld *pC : nodes)
         {
             if (pC->parentComponentID == parentCompID && pC->isStartNode == isStartNode)
             {
@@ -237,7 +237,7 @@ public:
         return _modelSize;
     }
 
-    NodeGridComponent *getSelectedNode(const gui::Point &pt)
+    NodeGridComponentOld *getSelectedNode(const gui::Point &pt)
     {
         size_t nNodeElems = nodes.size();
         if (nNodeElems == 0)
@@ -246,7 +246,7 @@ public:
         {
             for (size_t i = nNodeElems; i > 0; --i)
             {
-                NodeGridComponent *pC = nodes[i - 1];
+                NodeGridComponentOld *pC = nodes[i - 1];
                 if (pC->canBeSelected(pt))
                 {
                     return pC;

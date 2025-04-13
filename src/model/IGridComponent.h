@@ -14,13 +14,17 @@ private:
     static gui::Properties _capacitorPropertes;
     static gui::Properties _inductorPropertes;
 
+protected:
+    gui::Shape _shape;
+
 public:
     enum class Type : unsigned char
     {
         Wire = 0,
         Resistor,
         Capacitor,
-        Inductor
+        Inductor,
+        Node,
     };
     enum class Tool
     {
@@ -40,26 +44,19 @@ public:
     virtual bool canBeSelected(const gui::Point &pt) const = 0;
     virtual void init() = 0;
     virtual void translate(const gui::Point &delta) = 0;
-    virtual void updateEndPoint(const gui::Point &newEndPoint) = 0;
-    virtual void updateStartPoint(const gui::Point &newEndPoint) = 0;
-    virtual void updateLineNodes() = 0;
+    virtual void updateShape() = 0;
     virtual double distanceToPointSquared(const gui::Point &pt) const = 0;
     virtual void snapToGrid() = 0;
     virtual void release() = 0;
-    virtual gui::Point getStartPoint() const = 0;
-    virtual td::Point<int> getStartCoordinate() const = 0;
-    virtual gui::Point getEndPoint() const = 0;
-    virtual td::Point<int> getEndCoordinate() const = 0;
-    virtual bool hasLength() const = 0;
 
     // GridComponentFactory
-    static IGridComponent *createResistor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createResistor(const gui::Point &initPoint);
 
-    static IGridComponent *createCapacitor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createCapacitor(const gui::Point &initPoint);
 
-    static IGridComponent *createInductor(const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createInductor(const gui::Point &initPoint);
 
-    static IGridComponent *createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode, td::ColorID fillColor, td::ColorID lineColor);
+    static IGridComponent *createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode);
 
     // Factory tool
     static IGridComponent::Tool currentTool;

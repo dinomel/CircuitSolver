@@ -17,15 +17,12 @@ class GridComponent : public IGridComponent
 protected:
     gui::Point _startPoint;
     gui::Point _endPoint;
-    gui::Shape _shape;
     double _width;
     double _height;
-    td::ColorID _fillColor;
-    td::ColorID _lineColor;
 
 public:
-    GridComponent(const gui::Point &initPoint, double width, double height, td::ColorID fillColor, td::ColorID lineColor)
-        : _width(width), _height(height), _fillColor(fillColor), _lineColor(lineColor), _startPoint(initPoint), _endPoint(initPoint)
+    GridComponent(const gui::Point &initPoint, double width, double height)
+        : _width(width), _height(height), _startPoint(initPoint), _endPoint(initPoint)
     {
     }
 
@@ -39,11 +36,14 @@ public:
         Y1,
         X2,
         Y2,
-        FillColor,
-        LineColor,
         Resistance,
         Impedance,
     };
+
+    virtual void getBoundingRect(gui::Rect &boundRect)
+    {
+        boundRect = gui::Rect(_startPoint, _endPoint);
+    }
 
     virtual bool hasLength() const
     {
@@ -70,7 +70,6 @@ public:
 
     virtual td::Point<int> getEndCoordinate() const
     {
-
         return {
             int(_endPoint.x / gridSize),
             int(_endPoint.y / gridSize),
@@ -81,7 +80,7 @@ public:
 
     virtual void draw() const
     {
-        _shape.drawWire(_lineColor);
+        _shape.drawWire(td::ColorID::Yellow);
     }
 
     virtual void translate(const gui::Point &delta)
@@ -90,26 +89,26 @@ public:
         _startPoint.y += delta.y;
         _endPoint.x += delta.x;
         _endPoint.y += delta.y;
-        updateLineNodes();
+        updateShape();
     }
 
     virtual void snapToGrid()
     {
         _startPoint = getClosestGridPoint(_startPoint);
         _endPoint = getClosestGridPoint(_endPoint);
-        updateLineNodes();
+        updateShape();
     }
 
     virtual void updateEndPoint(const gui::Point &newEndPoint)
     {
         _endPoint = newEndPoint;
-        updateLineNodes();
+        updateShape();
     }
 
-    virtual void updateStartPoint(const gui::Point &newEndPoint)
+    virtual void updateStartPoint(const gui::Point &newStartPoint)
     {
-        _startPoint = newEndPoint;
-        updateLineNodes();
+        _startPoint = newStartPoint;
+        updateShape();
     }
 
     virtual double distanceToPointSquared(const gui::Point &pt) const
@@ -176,21 +175,21 @@ public:
     {
 
         // if (createGroup)
-        {
-            auto &prop = properties->push_back();
-            prop.setGroup("VisualData");
-        }
-
-        td::Variant valColor(td::colorID);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::FillColor, "FillColor", valColor);
-        }
-
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::LineColor, "LineColor", valColor);
-        }
+        //        {
+        //            auto &prop = properties->push_back();
+        //            prop.setGroup("VisualData");
+        //        }
+        //
+        //        td::Variant valColor(td::colorID);
+        //        {
+        //            auto &prop = properties->push_back();
+        //            prop.set((td::UINT4)PropID::FillColor, "FillColor", valColor);
+        //        }
+        //
+        //        {
+        //            auto &prop = properties->push_back();
+        //            prop.set((td::UINT4)PropID::LineColor, "LineColor", valColor);
+        //        }
 
         // group
         {

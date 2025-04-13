@@ -16,8 +16,8 @@ protected:
     Capacitor _capacitor;
 
 public:
-    CapacitorGridComponent(double capacitance, const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(initPoint, 20, 40, fillColor, lineColor), _capacitor(capacitance)
+    CapacitorGridComponent(double capacitance, const gui::Point &initPoint)
+        : GridComponent(initPoint, 20, 40), _capacitor(capacitance)
     {
     }
 
@@ -44,11 +44,6 @@ public:
             _endPoint,
         };
         _shape.createLines(&points[0], 8);
-    }
-
-    virtual void getBoundingRect(gui::Rect &boundRect)
-    {
-        boundRect = gui::Rect(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
     }
 
     virtual void load(arch::ArchiveIn &ar)
@@ -119,7 +114,7 @@ public:
         //        }
     }
 
-    virtual void updateLineNodes()
+    virtual void updateShape()
     {
         double x_A = _startPoint.x;
         double y_A = _startPoint.y;

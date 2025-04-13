@@ -16,8 +16,8 @@ protected:
     Resistor _resistor;
 
 public:
-    ResistorGridComponent(double resistance, const gui::Point &initPoint, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(initPoint, 40, 16, fillColor, lineColor), _resistor(resistance)
+    ResistorGridComponent(double resistance, const gui::Point &initPoint)
+        : GridComponent(initPoint, 40, 16), _resistor(resistance)
     {
     }
 
@@ -105,11 +105,6 @@ public:
         _shape.createLines(&points[0], 12);
     }
 
-    virtual void getBoundingRect(gui::Rect &boundRect)
-    {
-        boundRect = gui::Rect(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
-    }
-
     virtual void load(arch::ArchiveIn &ar)
     {
         GridComponent::load(ar);
@@ -195,7 +190,7 @@ public:
         //                gui::Rect rectAfter(_rect);
 
         GridComponent::setValues(propValues);
-        updateLineNodes();
+        updateShape();
         //                gui::Rect rAfter(_rect);
 
         //                if (isWithLine())
@@ -209,7 +204,7 @@ public:
         //                }
     }
 
-    virtual void updateLineNodes()
+    virtual void updateShape()
     {
         double x_A = _startPoint.x;
         double y_A = _startPoint.y;

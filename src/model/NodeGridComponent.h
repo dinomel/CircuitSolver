@@ -2,56 +2,88 @@
 //  NodeGridComponent.h
 //  CircuitSolver
 //
-//  Created by Dino Melunovic on 11. 4. 2025..
+//  Created by Dino Melunovic on 12. 4. 2025..
 //
 
 #pragma once
-#include "GridComponent.h"
+#include "IGridComponent.h"
 
-class NodeGridComponent : public GridComponent
+class NodeGridComponent : public IGridComponent
 {
-public:
-    int parentComponentID;
-    bool isStartNode;
+protected:
+    gui::Point _centerPoint;
 
 public:
-    NodeGridComponent(const gui::Point &point, int parentComponentID, bool isStartNode, td::ColorID fillColor, td::ColorID lineColor)
-        : GridComponent(point, 0, 0, fillColor, lineColor), parentComponentID(parentComponentID), isStartNode(isStartNode)
+    NodeGridComponent(const gui::Point &pt)
+        : _centerPoint(pt)
     {
     }
 
-    void updateNodePoint(const gui::Point &point)
+    virtual ~NodeGridComponent()
     {
-        _startPoint = point;
-        _endPoint = point;
-        updateLineNodes();
     }
 
-    virtual Component *getComponent()
+    virtual void draw() const
     {
-        return nullptr;
-    }
-
-    virtual Type getType() const
-    {
-        return Type::Resistor;
+        _shape.drawWire(td::ColorID::Yellow);
     }
 
     virtual void getBoundingRect(gui::Rect &boundRect)
     {
-        boundRect = gui::Rect(_startPoint.x, _startPoint.y, _endPoint.x, _endPoint.y);
+        boundRect = gui::Rect(gui::Circle(_centerPoint, 1));
     }
 
     virtual void load(arch::ArchiveIn &ar)
     {
-        GridComponent::load(ar);
-        ar >> _startPoint;
     }
 
     virtual void save(arch::ArchiveOut &ar) const
     {
-        GridComponent::save(ar);
-        ar << _startPoint;
+    }
+
+    virtual Type getType() const
+    {
+        return Type::Node;
+    }
+
+    virtual bool canBeSelected(const gui::Point &pt) const
+    {
+        return distanceToPointSquared(pt) < 144;
+    }
+
+    virtual void init()
+    {
+        gui::Circle circle(_centerPoint, 1);
+        _shape.createCircle(circle);
+    }
+
+    virtual void translate(const gui::Point &delta)
+    {
+        _centerPoint.x += delta.x;
+        _centerPoint.y += delta.y;
+        updateShape();
+    }
+
+    virtual void updateShape()
+    {
+        gui::Circle circle(_centerPoint, 1);
+        _shape.updateCircleNodes(circle);
+    }
+
+    virtual double distanceToPointSquared(const gui::Point &pt) const
+    {
+        return (_centerPoint.x - pt.x) * (_centerPoint.x - pt.x) + (_centerPoint.y - pt.y) * (_centerPoint.y - pt.y);
+    }
+
+    virtual void snapToGrid()
+    {
+        _centerPoint = getClosestGridPoint(_centerPoint);
+        updateShape();
+    }
+
+    virtual void release()
+    {
+        delete this;
     }
 
     virtual void getValues(gui::PropertyValues &propValues) const
@@ -62,21 +94,7 @@ public:
     {
     }
 
-    void init()
+    virtual void setValue(td::UINT4 key, gui::PropertyValues &propValues)
     {
-        gui::Circle circle(_startPoint, 1);
-        _shape.createCircle(circle);
-    }
-
-    virtual void updateLineNodes()
-    {
-
-        gui::Circle circle(_startPoint, 1);
-        _shape.updateCircleNodes(circle);
-    }
-
-    virtual double distanceToPointSquared(const gui::Point &pt) const
-    {
-        return (_startPoint.x - pt.x) * (_startPoint.x - pt.x) + (_startPoint.y - pt.y) * (_startPoint.y - pt.y);
     }
 };
