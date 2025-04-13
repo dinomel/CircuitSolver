@@ -258,6 +258,7 @@ protected:
             {
                 pC->snapToGrid();
             }
+            _model.updateFloatingNodes();
             reDraw();
         }
         if (_lastEvent == LastEvent::Drag && _pCreatingComponent)
@@ -265,6 +266,7 @@ protected:
             _pCreatingComponent->snapToGrid();
             if (!_pCreatingComponent->hasLength())
                 _model.remove(_pCreatingComponent);
+            _model.updateFloatingNodes();
             reDraw();
         }
         _pCreatingComponent = nullptr;

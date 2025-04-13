@@ -8,6 +8,7 @@
 #pragma once
 #include "IGridComponent.h"
 #include "NodeGridComponent.h"
+#include "CoordinatePoint.h"
 #include "../core/Component.h"
 
 extern const int gridSize;
@@ -61,7 +62,7 @@ public:
         return endNode->centerPoint;
     }
 
-    td::Point<int> getStartCoordinate() const
+    CoordinatePoint getStartCoordinate() const
     {
         return {
             int(startNode->centerPoint.x / gridSize),
@@ -69,7 +70,7 @@ public:
         };
     }
 
-    td::Point<int> getEndCoordinate() const
+    CoordinatePoint getEndCoordinate() const
     {
         return {
             int(endNode->centerPoint.x / gridSize),
@@ -190,15 +191,15 @@ public:
             prop.setGroup("Start Node Position");
         }
 
-        td::Point<int> startCoordinate = getStartCoordinate();
+        CoordinatePoint startCoordinate = getStartCoordinate();
 
-        td::Variant val(startCoordinate.x);
+        td::Variant val(startCoordinate.getX());
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::X1, "X", val);
         }
 
-        val = td::Variant(startCoordinate.y);
+        val = td::Variant(startCoordinate.getY());
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::Y1, "Y", val);
@@ -210,15 +211,15 @@ public:
             prop.setGroup("End Node Position");
         }
 
-        td::Point<int> endCoordinate = getEndCoordinate();
+        CoordinatePoint endCoordinate = getEndCoordinate();
 
-        val = td::Variant(endCoordinate.x);
+        val = td::Variant(endCoordinate.getX());
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::X2, "X", val);
         }
 
-        val = td::Variant(endCoordinate.y);
+        val = td::Variant(endCoordinate.getY());
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::Y2, "Y", val);
@@ -227,19 +228,19 @@ public:
 
     void getNodesValues(gui::PropertyValues &propValues) const
     {
-        td::Point<int> startCoordinate = getStartCoordinate();
-        td::Point<int> endCoordinate = getEndCoordinate();
+        CoordinatePoint startCoordinate = getStartCoordinate();
+        CoordinatePoint endCoordinate = getEndCoordinate();
 
-        td::Variant x1(startCoordinate.x);
+        td::Variant x1(startCoordinate.getX());
         propValues.setValueByKey((td::UINT4)PropID::X1, x1);
 
-        td::Variant y1(startCoordinate.y);
+        td::Variant y1(startCoordinate.getY());
         propValues.setValueByKey((td::UINT4)PropID::Y1, y1);
 
-        td::Variant x2(endCoordinate.x);
+        td::Variant x2(endCoordinate.getX());
         propValues.setValueByKey((td::UINT4)PropID::X2, x2);
 
-        td::Variant y2(endCoordinate.y);
+        td::Variant y2(endCoordinate.getY());
         propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
     }
 

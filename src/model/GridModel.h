@@ -40,6 +40,21 @@ public:
         clean();
     }
 
+    void updateFloatingNodes()
+    {
+        std::map<CoordinatePoint, int> nodePointsRepetition;
+        for (GridComponent *pC : _gridComponents)
+        {
+            ++nodePointsRepetition[pC->getStartCoordinate()];
+            ++nodePointsRepetition[pC->getEndCoordinate()];
+        }
+        for (GridComponent *pC : _gridComponents)
+        {
+            pC->startNode->updateIsFloating(nodePointsRepetition[pC->getStartCoordinate()] < 2);
+            pC->endNode->updateIsFloating(nodePointsRepetition[pC->getEndCoordinate()] < 2);
+        }
+    }
+
     void clearSelected()
     {
         selectedGridComponents = {};

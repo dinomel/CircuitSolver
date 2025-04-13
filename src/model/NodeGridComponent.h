@@ -10,8 +10,11 @@
 
 class NodeGridComponent : public IGridComponent
 {
+    const double _nodeRadius = 1.5;
+
 public:
     gui::Point centerPoint;
+    bool isFloating = false;
 
 public:
     NodeGridComponent(const gui::Point &pt)
@@ -19,14 +22,20 @@ public:
     {
     }
 
+    void updateIsFloating(bool floating)
+    {
+        isFloating = floating;
+    }
+
     void draw() const override
     {
-        _shape.drawWire(td::ColorID::Yellow);
+        td::ColorID nodeColor = isFloating ? td::ColorID::Red : td::ColorID::Yellow;
+        _shape.drawFillAndWire(nodeColor, nodeColor);
     }
 
     void getBoundingRect(gui::Rect &boundRect) override
     {
-        boundRect = gui::Rect(gui::Circle(centerPoint, 1));
+        boundRect = gui::Rect(gui::Circle(centerPoint, _nodeRadius));
     }
 
     void load(arch::ArchiveIn &ar) override
@@ -49,7 +58,7 @@ public:
 
     void init() override
     {
-        gui::Circle circle(centerPoint, 1);
+        gui::Circle circle(centerPoint, _nodeRadius);
         _shape.createCircle(circle);
     }
 
@@ -62,7 +71,7 @@ public:
 
     void updateShape() override
     {
-        gui::Circle circle(centerPoint, 1);
+        gui::Circle circle(centerPoint, _nodeRadius);
         _shape.updateCircleNodes(circle);
     }
 
