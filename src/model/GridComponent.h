@@ -41,6 +41,8 @@ public:
         Y2,
         Resistance,
         Impedance,
+        Inductance,
+        Capacitance,
     };
 
     virtual void getBoundingRect(gui::Rect &boundRect)
@@ -176,103 +178,6 @@ public:
         startNode->release();
         endNode->release();
         delete this;
-    }
-
-    void initProperties(gui::Properties *properties) const
-    {
-
-        // if (createGroup)
-        //        {
-        //            auto &prop = properties->push_back();
-        //            prop.setGroup("VisualData");
-        //        }
-        //
-        //        td::Variant valColor(td::colorID);
-        //        {
-        //            auto &prop = properties->push_back();
-        //            prop.set((td::UINT4)PropID::FillColor, "FillColor", valColor);
-        //        }
-        //
-        //        {
-        //            auto &prop = properties->push_back();
-        //            prop.set((td::UINT4)PropID::LineColor, "LineColor", valColor);
-        //        }
-
-        // group
-        {
-            auto &prop = properties->push_back();
-            prop.setGroup("SizeAndPosition");
-        }
-
-        td::Variant val(startNode->centerPoint.x);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::X1, "StartPointX", val);
-        }
-
-        val = td::Variant(startNode->centerPoint.y);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Y1, "StartPointY", val);
-        }
-
-        val = td::Variant(endNode->centerPoint.x);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::X2, "EndPointX", val);
-        }
-
-        val = td::Variant(endNode->centerPoint.y);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Y2, "EndPointY", val);
-        }
-    }
-
-    virtual void getValues(gui::PropertyValues &propValues) const
-    {
-        //        td::INT4 iAttr= (td::INT4) _attribs;
-        //        td::Variant attribs(iAttr);
-        //        propValues.setValueByKey((td::UINT4)PropID::Attribs, attribs);
-
-        //        td::Variant fillColor(_fillColor);
-        //        propValues.setValueByKey((td::UINT4)PropID::FillColor, fillColor);
-        //
-        //        td::Variant lineColor(_lineColor);
-        //        propValues.setValueByKey((td::UINT4)PropID::LineColor, lineColor);
-
-        //        td::Variant lineWidth(_lineWidth);
-        //        propValues.setValueByKey((td::UINT4)PropID::LineWidth, lineWidth);
-
-        //        td::Variant linePattern(_linePattern);
-        //        propValues.setValueByKey((td::UINT4)PropID::LinePattern, linePattern);
-    }
-    virtual void setValues(gui::PropertyValues &propValues)
-    {
-        propValues.setUpdateCanvas(true);
-        //        td::Variant attribs = propValues.getValueByKey((td::UINT4)PropID::Attribs);
-        //        td::INT4 iAttr=0;
-        //        attribs.getValue(iAttr);
-        //        _attribs = (gui::Shape::Attribs) iAttr;
-
-        //        td::Variant fillColor = propValues.getValueByKey((td::UINT4)PropID::FillColor);
-        //        fillColor.getValue(_fillColor);
-        //
-        //        td::Variant lineColor = propValues.getValueByKey((td::UINT4)PropID::LineColor);
-        //        lineColor.getValue(_lineColor);
-
-        //        float lineWidth0 = _lineWidth;
-        //        td::Variant lineWidth = propValues.getValueByKey((td::UINT4)PropID::LineWidth);
-        //        lineWidth.getValue(_lineWidth);
-        //        if (lineWidth0 != _lineWidth)
-        //            _shape.setLineWidth(_lineWidth);
-
-        //        td::LinePattern linePattern0 = _linePattern;
-        //        td::Variant linePattern = propValues.getValueByKey((td::UINT4)PropID::LinePattern);
-        //        linePattern.getValue(_linePattern);
-        //
-        //        if (linePattern0 != _linePattern)
-        //            _shape.setLinePattern(_linePattern);
     }
 
     virtual void setValue(td::UINT4 key, gui::PropertyValues &propValues)

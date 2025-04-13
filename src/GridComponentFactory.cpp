@@ -92,7 +92,7 @@ void IGridComponent::initProperties()
     }
 
     {
-        CapacitorGridComponent sh(0, pnC, pnC);
+        InductorGridComponent sh(0, pnC, pnC);
         _inductorPropertes.reserve(12);
         sh.initProperties(&_inductorPropertes);
     }

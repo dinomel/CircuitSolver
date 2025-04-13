@@ -69,74 +69,6 @@ public:
         _shape.createLines(&points[0], 28);
     }
 
-    virtual void load(arch::ArchiveIn &ar)
-    {
-        //        GridComponent::load(ar);
-        //        ar >> _startPoint;
-    }
-
-    virtual void save(arch::ArchiveOut &ar) const
-    {
-        //        GridComponent::save(ar);
-        //        ar << _startPoint;
-    }
-
-    virtual void getValues(gui::PropertyValues &propValues) const
-    {
-        //        td::Variant x(_rect.left);
-        //        propValues.setValueByKey((td::UINT4)PropID::Xr, x);
-        //
-        //        td::Variant y(_rect.top);
-        //        propValues.setValueByKey((td::UINT4)PropID::Yr, y);
-        //
-        //        td::Variant w(_rect.width());
-        //        propValues.setValueByKey((td::UINT4)PropID::Width, w);
-        //
-        //        td::Variant h(_rect.height());
-        //        propValues.setValueByKey((td::UINT4)PropID::Height, h);
-        //
-        //        GridComponent::getValues(propValues);
-    }
-
-    virtual void setValues(gui::PropertyValues &propValues)
-    {
-        //        gui::Rect rBefore(_rect);
-        //        if (isWithLine())
-        //            rBefore.inflate(_lineWidth+IGridComponent::refreshOffset);
-        //
-        //        propValues.setRectBeforeUpdate(rBefore);
-        //
-        //        td::Variant x = propValues.getValueByKey((td::UINT4)PropID::Xr);
-        //        x.getValue(_rect.left);
-        //
-        //        td::Variant y = propValues.getValueByKey((td::UINT4)PropID::Yr);
-        //        y.getValue(_rect.top);
-        //
-        //        td::Variant varW = propValues.getValueByKey((td::UINT4)PropID::Width);
-        //        gui::CoordType w;
-        //        varW.getValue(w);
-        //        _rect.setWidth(w);
-        //
-        //        td::Variant varH = propValues.getValueByKey((td::UINT4)PropID::Height);
-        //        gui::CoordType h;
-        //        varH.getValue(h);
-        //        _rect.setHeight(h);
-        //        gui::Rect rectAfter(_rect);
-        //
-        //        GridComponent::setValues(propValues);
-        //        gui::Rect rAfter(_rect);
-        //
-        //        if (isWithLine())
-        //            rAfter.inflate(_lineWidth+IGridComponent::refreshOffset);
-        //        propValues.setRectAfterUpdate(rAfter);
-        //
-        //        if (getType() == IGridComponent::Type::Rect)
-        //        {
-        //            if (rBefore != rAfter)
-        //                _shape.updateRectNodes(_rect);
-        //        }
-    }
-
     virtual void updateShape()
     {
         double x_A = getStartPoint().x;
@@ -251,5 +183,106 @@ public:
             getEndPoint(),
         };
         _shape.createLines(&points[0], 28);
+    }
+
+    virtual void initProperties(gui::Properties *properties) const
+    {
+        // if (createGroup)
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup("Parameters");
+        }
+
+        td::Variant valL(_inductor.inductance);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Inductance, "Inductance", valL);
+        }
+
+        // group
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup("NodesPosition");
+        }
+
+        td::Point<int> startCoordinate = getStartCoordinate();
+        td::Point<int> endCoordinate = getEndCoordinate();
+
+        td::Variant val(startCoordinate.x);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::X1, "StartNodeX", val);
+        }
+
+        val = td::Variant(startCoordinate.y);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Y1, "StartNodeY", val);
+        }
+
+        val = td::Variant(endCoordinate.x);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::X2, "EndNodeX", val);
+        }
+
+        val = td::Variant(endCoordinate.y);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Y2, "EndNodeY", val);
+        }
+    }
+
+    virtual void getValues(gui::PropertyValues &propValues) const
+    {
+
+        td::Variant valL(_inductor.inductance);
+        propValues.setValueByKey((td::UINT4)PropID::Inductance, valL);
+
+        td::Point<int> startCoordinate = getStartCoordinate();
+        td::Point<int> endCoordinate = getEndCoordinate();
+
+        td::Variant x1(startCoordinate.x);
+        propValues.setValueByKey((td::UINT4)PropID::X1, x1);
+
+        td::Variant y1(startCoordinate.y);
+        propValues.setValueByKey((td::UINT4)PropID::Y1, y1);
+
+        td::Variant x2(endCoordinate.x);
+        propValues.setValueByKey((td::UINT4)PropID::X2, x2);
+
+        td::Variant y2(endCoordinate.y);
+        propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
+    }
+
+    virtual void setValues(gui::PropertyValues &propValues)
+    {
+        td::Variant inductance = propValues.getValueByKey((td::UINT4)PropID::Inductance);
+        inductance.getValue(_inductor.inductance);
+
+        td::Variant x1 = propValues.getValueByKey((td::UINT4)PropID::X1);
+        int startNodeX = 0;
+        x1.getValue(startNodeX);
+        startNode->centerPoint.x = startNodeX * gridSize;
+
+        td::Variant y1 = propValues.getValueByKey((td::UINT4)PropID::Y1);
+        int startNodeY = 0;
+        y1.getValue(startNodeY);
+        startNode->centerPoint.y = startNodeY * gridSize;
+
+        td::Variant x2 = propValues.getValueByKey((td::UINT4)PropID::X2);
+        int endNodeX = 0;
+        x2.getValue(endNodeX);
+        endNode->centerPoint.x = endNodeX * gridSize;
+
+        td::Variant y2 = propValues.getValueByKey((td::UINT4)PropID::Y2);
+        int endNodeY = 0;
+        y2.getValue(endNodeY);
+        endNode->centerPoint.y = endNodeY * gridSize;
+
+        propValues.setUpdateCanvas(true);
+        startNode->updateShape();
+        endNode->updateShape();
+        updateShape();
     }
 };
