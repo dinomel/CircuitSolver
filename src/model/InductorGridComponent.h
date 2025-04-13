@@ -24,17 +24,17 @@ public:
     {
     }
 
-    virtual Component *getComponent()
+    Component *getComponent() override
     {
         return &_inductor;
     }
 
-    virtual Type getType() const
+    Type getType() const override
     {
         return Type::Inductor;
     }
 
-    virtual void init()
+    void init() override
     {
         gui::Point points[] = {
             getStartPoint(),
@@ -69,7 +69,7 @@ public:
         _shape.createLines(&points[0], 28);
     }
 
-    virtual void updateShape()
+    void updateShape() override
     {
         double x_A = getStartPoint().x;
         double y_A = getStartPoint().y;
@@ -185,7 +185,7 @@ public:
         _shape.createLines(&points[0], 28);
     }
 
-    virtual void initProperties(gui::Properties *properties) const
+    void initProperties(gui::Properties *properties) const override
     {
         // if (createGroup)
         {
@@ -202,7 +202,7 @@ public:
         initNodesProperties(properties);
     }
 
-    virtual void getValues(gui::PropertyValues &propValues) const
+    void getValues(gui::PropertyValues &propValues) const override
     {
 
         td::Variant valL(_inductor.inductance);
@@ -211,7 +211,7 @@ public:
         getNodesValues(propValues);
     }
 
-    virtual void setValues(gui::PropertyValues &propValues)
+    void setValues(gui::PropertyValues &propValues) override
     {
         td::Variant inductance = propValues.getValueByKey((td::UINT4)PropID::Inductance);
         inductance.getValue(_inductor.inductance);

@@ -100,14 +100,14 @@ public:
         updateShape();
     }
 
-    virtual void updateEndPoint(const gui::Point &newEndPoint)
+    void updateEndPoint(const gui::Point &newEndPoint)
     {
         endNode->centerPoint = newEndPoint;
         endNode->updateShape();
         updateShape();
     }
 
-    virtual void updateStartPoint(const gui::Point &newStartPoint)
+    void updateStartPoint(const gui::Point &newStartPoint)
     {
         startNode->centerPoint = newStartPoint;
         startNode->updateShape();

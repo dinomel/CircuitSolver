@@ -21,17 +21,17 @@ public:
     {
     }
 
-    virtual Component *getComponent()
+    Component *getComponent() override
     {
         return &_capacitor;
     }
 
-    virtual Type getType() const
+    Type getType() const override
     {
         return Type::Capacitor;
     }
 
-    virtual void init()
+    void init() override
     {
         gui::Point points[] = {
             getStartPoint(),
@@ -46,7 +46,7 @@ public:
         _shape.createLines(&points[0], 8);
     }
 
-    virtual void updateShape()
+    void updateShape() override
     {
         double x_A = getStartPoint().x;
         double y_A = getStartPoint().y;
@@ -92,7 +92,7 @@ public:
         _shape.createLines(&points[0], 8);
     }
 
-    virtual void initProperties(gui::Properties *properties) const
+    void initProperties(gui::Properties *properties) const override
     {
         // if (createGroup)
         {
@@ -109,7 +109,7 @@ public:
         initNodesProperties(properties);
     }
 
-    virtual void getValues(gui::PropertyValues &propValues) const
+    void getValues(gui::PropertyValues &propValues) const override
     {
 
         td::Variant valC(_capacitor.capacitance);
@@ -118,7 +118,7 @@ public:
         getNodesValues(propValues);
     }
 
-    virtual void setValues(gui::PropertyValues &propValues)
+    void setValues(gui::PropertyValues &propValues) override
     {
         td::Variant capacitance = propValues.getValueByKey((td::UINT4)PropID::Capacitance);
         capacitance.getValue(_capacitor.capacitance);

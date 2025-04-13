@@ -21,17 +21,17 @@ public:
     {
     }
 
-    virtual Component *getComponent()
+    Component *getComponent() override
     {
         return &_wire;
     }
 
-    virtual Type getType() const
+    Type getType() const override
     {
         return Type::Wire;
     }
 
-    virtual void init()
+    void init() override
     {
         gui::Point points[] = {
             getStartPoint(),
@@ -40,7 +40,7 @@ public:
         _shape.createLines(&points[0], 2);
     }
 
-    virtual void updateShape()
+    void updateShape() override
     {
         gui::Point points[] = {
             getStartPoint(),
@@ -49,17 +49,17 @@ public:
         _shape.createLines(&points[0], 2);
     }
 
-    virtual void initProperties(gui::Properties *properties) const
+    void initProperties(gui::Properties *properties) const override
     {
         initNodesProperties(properties);
     }
 
-    virtual void getValues(gui::PropertyValues &propValues) const
+    void getValues(gui::PropertyValues &propValues) const override
     {
         getNodesValues(propValues);
     }
 
-    virtual void setValues(gui::PropertyValues &propValues)
+    void setValues(gui::PropertyValues &propValues) override
     {
         setNodesValues(propValues);
 
