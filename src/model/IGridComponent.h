@@ -56,7 +56,9 @@ public:
 
     static IGridComponent *createInductor(const gui::Point &initPoint);
 
-    static IGridComponent *createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode);
+    static IGridComponent *createNodeOld(const gui::Point &initPoint, int parentComponentID, bool isStartNode);
+
+    static IGridComponent *createNode(const gui::Point &initPoint);
 
     // Factory tool
     static IGridComponent::Tool currentTool;

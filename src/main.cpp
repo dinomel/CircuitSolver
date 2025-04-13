@@ -15,26 +15,26 @@ const int gridSize = 16;
 
 int main(int argc, const char *argv[])
 {
-    ResistorGridComponent r1(10, {0, 0});
-    ResistorGridComponent r2(10, {0, 0});
-    CapacitorGridComponent c(0.01, {0, 0});
-    InductorGridComponent l(1, {0, 0});
-    NodeGridComponentOld n({0, 0}, 0, true);
-    NodeGridComponent nn({0, 0});
-    std::vector<GridComponent *> components({
-        &r1,
-        &r2,
-        &c,
-        &l,
-        &l,
-        &n,
-    });
-    Component *component = components[0]->getComponent();
-    Resistor *r = dynamic_cast<Resistor *>(component);
-    Capacitor *cap = dynamic_cast<Capacitor *>(components[2]->getComponent());
-
-    //    Resistor r = &(components[0]->getComponent());
-    std::cout << cap->capacitance;
+    //    ResistorGridComponent r1(10, nullptr, nullptr);
+    //    ResistorGridComponent r2(10, nullptr, nullptr);
+    //    CapacitorGridComponent c(0.01, nullptr, nullptr);
+    //    InductorGridComponent l(1, nullptr, nullptr);
+    //    NodeGridComponentOld n(nullptr, nullptr, 0, true);
+    //    NodeGridComponent nn({0, 0});
+    //    std::vector<GridComponent *> components({
+    //        &r1,
+    //        &r2,
+    //        &c,
+    //        &l,
+    //        &l,
+    //        &n,
+    //    });
+    //    Component *component = components[0]->getComponent();
+    //    Resistor *r = dynamic_cast<Resistor *>(component);
+    //    Capacitor *cap = dynamic_cast<Capacitor *>(components[2]->getComponent());
+    //
+    //    //    Resistor r = &(components[0]->getComponent());
+    //    std::cout << cap->capacitance;
 
     Application app(argc, argv);
     auto appProperties = app.getProperties();

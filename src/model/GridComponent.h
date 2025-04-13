@@ -7,6 +7,7 @@
 
 #pragma once
 #include "IGridComponent.h"
+#include "NodeGridComponent.h"
 #include "../core/Component.h"
 
 extern const int gridSize;
@@ -15,14 +16,16 @@ class GridComponent : public IGridComponent
 {
 
 protected:
-    gui::Point _startPoint;
-    gui::Point _endPoint;
     double _width;
     double _height;
 
 public:
-    GridComponent(const gui::Point &initPoint, double width, double height)
-        : _width(width), _height(height), _startPoint(initPoint), _endPoint(initPoint)
+    NodeGridComponent *startNode;
+    NodeGridComponent *endNode;
+
+public:
+    GridComponent(NodeGridComponent *startNode, NodeGridComponent *endNode, double width, double height)
+        : _width(width), _height(height), startNode(startNode), endNode(endNode)
     {
     }
 
@@ -42,37 +45,37 @@ public:
 
     virtual void getBoundingRect(gui::Rect &boundRect)
     {
-        boundRect = gui::Rect(_startPoint, _endPoint);
+        boundRect = gui::Rect(startNode->centerPoint, endNode->centerPoint);
     }
 
     virtual bool hasLength() const
     {
-        return !(_startPoint == _endPoint);
+        return !(startNode->centerPoint == endNode->centerPoint);
     }
 
     virtual gui::Point getStartPoint() const
     {
-        return _startPoint;
+        return startNode->centerPoint;
     }
 
     virtual gui::Point getEndPoint() const
     {
-        return _endPoint;
+        return endNode->centerPoint;
     }
 
     virtual td::Point<int> getStartCoordinate() const
     {
         return {
-            int(_startPoint.x / gridSize),
-            int(_startPoint.y / gridSize),
+            int(startNode->centerPoint.x / gridSize),
+            int(startNode->centerPoint.y / gridSize),
         };
     }
 
     virtual td::Point<int> getEndCoordinate() const
     {
         return {
-            int(_endPoint.x / gridSize),
-            int(_endPoint.y / gridSize),
+            int(endNode->centerPoint.x / gridSize),
+            int(endNode->centerPoint.y / gridSize),
         };
     }
 
@@ -85,29 +88,27 @@ public:
 
     virtual void translate(const gui::Point &delta)
     {
-        _startPoint.x += delta.x;
-        _startPoint.y += delta.y;
-        _endPoint.x += delta.x;
-        _endPoint.y += delta.y;
+        startNode->translate(delta);
+        endNode->translate(delta);
         updateShape();
     }
 
     virtual void snapToGrid()
     {
-        _startPoint = getClosestGridPoint(_startPoint);
-        _endPoint = getClosestGridPoint(_endPoint);
+        startNode->snapToGrid();
+        endNode->snapToGrid();
         updateShape();
     }
 
     virtual void updateEndPoint(const gui::Point &newEndPoint)
     {
-        _endPoint = newEndPoint;
+        endNode->centerPoint = newEndPoint;
         updateShape();
     }
 
     virtual void updateStartPoint(const gui::Point &newStartPoint)
     {
-        _startPoint = newStartPoint;
+        startNode->centerPoint = newStartPoint;
         updateShape();
     }
 
@@ -115,10 +116,10 @@ public:
     {
         double x0 = pt.x;
         double y0 = pt.y;
-        double x1 = _startPoint.x;
-        double y1 = _startPoint.y;
-        double x2 = _endPoint.x;
-        double y2 = _endPoint.y;
+        double x1 = startNode->centerPoint.x;
+        double y1 = startNode->centerPoint.y;
+        double x2 = endNode->centerPoint.x;
+        double y2 = endNode->centerPoint.y;
 
         double dx = x2 - x1;
         double dy = y2 - y1;
@@ -197,25 +198,25 @@ public:
             prop.setGroup("SizeAndPosition");
         }
 
-        td::Variant val(_startPoint.x);
+        td::Variant val(startNode->centerPoint.x);
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::X1, "StartPointX", val);
         }
 
-        val = td::Variant(_startPoint.y);
+        val = td::Variant(startNode->centerPoint.y);
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::Y1, "StartPointY", val);
         }
 
-        val = td::Variant(_endPoint.x);
+        val = td::Variant(endNode->centerPoint.x);
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::X2, "EndPointX", val);
         }
 
-        val = td::Variant(_endPoint.y);
+        val = td::Variant(endNode->centerPoint.y);
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::Y2, "EndPointY", val);

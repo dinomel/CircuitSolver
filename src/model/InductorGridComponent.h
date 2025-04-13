@@ -19,8 +19,8 @@ protected:
     Inductor _inductor;
 
 public:
-    InductorGridComponent(double inductance, const gui::Point &initPoint)
-        : GridComponent(initPoint, 48, 16), _inductor(inductance)
+    InductorGridComponent(double inductance, NodeGridComponent *startNode, NodeGridComponent *endNode)
+        : GridComponent(startNode, endNode, 48, 16), _inductor(inductance)
     {
     }
 
@@ -37,48 +37,48 @@ public:
     void init()
     {
         gui::Point points[] = {
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
         };
         _shape.createLines(&points[0], 28);
     }
 
     virtual void load(arch::ArchiveIn &ar)
     {
-        GridComponent::load(ar);
-        ar >> _startPoint;
+        //        GridComponent::load(ar);
+        //        ar >> _startPoint;
     }
 
     virtual void save(arch::ArchiveOut &ar) const
     {
-        GridComponent::save(ar);
-        ar << _startPoint;
+        //        GridComponent::save(ar);
+        //        ar << _startPoint;
     }
 
     virtual void getValues(gui::PropertyValues &propValues) const
@@ -139,10 +139,10 @@ public:
 
     virtual void updateShape()
     {
-        double x_A = _startPoint.x;
-        double y_A = _startPoint.y;
-        double x_B = _endPoint.x;
-        double y_B = _endPoint.y;
+        double x_A = getStartPoint().x;
+        double y_A = getStartPoint().y;
+        double x_B = getEndPoint().x;
+        double y_B = getEndPoint().y;
         double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
         double d_AD = (d_AB - _width) / 2;
         double theta = std::atan2(y_B - y_A, x_B - x_A);
@@ -208,7 +208,7 @@ public:
         gui::Point point_E(x_E, y_E);
 
         gui::Point points[] = {
-            _startPoint,
+            getStartPoint(),
             point_D,
 
             point_D,
@@ -248,7 +248,7 @@ public:
             point_E,
 
             point_E,
-            _endPoint,
+            getEndPoint(),
         };
         _shape.createLines(&points[0], 28);
     }

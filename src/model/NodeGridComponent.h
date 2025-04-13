@@ -10,12 +10,12 @@
 
 class NodeGridComponent : public IGridComponent
 {
-protected:
-    gui::Point _centerPoint;
+public:
+    gui::Point centerPoint;
 
 public:
     NodeGridComponent(const gui::Point &pt)
-        : _centerPoint(pt)
+        : centerPoint(pt)
     {
     }
 
@@ -30,7 +30,7 @@ public:
 
     virtual void getBoundingRect(gui::Rect &boundRect)
     {
-        boundRect = gui::Rect(gui::Circle(_centerPoint, 1));
+        boundRect = gui::Rect(gui::Circle(centerPoint, 1));
     }
 
     virtual void load(arch::ArchiveIn &ar)
@@ -53,31 +53,31 @@ public:
 
     virtual void init()
     {
-        gui::Circle circle(_centerPoint, 1);
+        gui::Circle circle(centerPoint, 1);
         _shape.createCircle(circle);
     }
 
     virtual void translate(const gui::Point &delta)
     {
-        _centerPoint.x += delta.x;
-        _centerPoint.y += delta.y;
+        centerPoint.x += delta.x;
+        centerPoint.y += delta.y;
         updateShape();
     }
 
     virtual void updateShape()
     {
-        gui::Circle circle(_centerPoint, 1);
+        gui::Circle circle(centerPoint, 1);
         _shape.updateCircleNodes(circle);
     }
 
     virtual double distanceToPointSquared(const gui::Point &pt) const
     {
-        return (_centerPoint.x - pt.x) * (_centerPoint.x - pt.x) + (_centerPoint.y - pt.y) * (_centerPoint.y - pt.y);
+        return (centerPoint.x - pt.x) * (centerPoint.x - pt.x) + (centerPoint.y - pt.y) * (centerPoint.y - pt.y);
     }
 
     virtual void snapToGrid()
     {
-        _centerPoint = getClosestGridPoint(_centerPoint);
+        centerPoint = getClosestGridPoint(centerPoint);
         updateShape();
     }
 

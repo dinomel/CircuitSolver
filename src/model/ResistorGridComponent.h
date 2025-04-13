@@ -16,8 +16,8 @@ protected:
     Resistor _resistor;
 
 public:
-    ResistorGridComponent(double resistance, const gui::Point &initPoint)
-        : GridComponent(initPoint, 40, 16), _resistor(resistance)
+    ResistorGridComponent(double resistance, NodeGridComponent *startNode, NodeGridComponent *endNode)
+        : GridComponent(startNode, endNode, 40, 16), _resistor(resistance)
     {
     }
 
@@ -89,32 +89,32 @@ public:
     void init()
     {
         gui::Point points[] = {
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
         };
         _shape.createLines(&points[0], 12);
     }
 
     virtual void load(arch::ArchiveIn &ar)
     {
-        GridComponent::load(ar);
-        ar >> _startPoint;
+        //        GridComponent::load(ar);
+        //        ar >> _startPoint;
     }
 
     virtual void save(arch::ArchiveOut &ar) const
     {
-        GridComponent::save(ar);
-        ar << _startPoint;
+        //        GridComponent::save(ar);
+        //        ar << _startPoint;
     }
 
     virtual void getValues(gui::PropertyValues &propValues) const
@@ -161,22 +161,22 @@ public:
         td::Variant x1 = propValues.getValueByKey((td::UINT4)PropID::X1);
         int startNodeX = 0;
         x1.getValue(startNodeX);
-        _startPoint.x = startNodeX * gridSize;
+        startNode->centerPoint.x = startNodeX * gridSize;
 
         td::Variant y1 = propValues.getValueByKey((td::UINT4)PropID::Y1);
         int startNodeY = 0;
         y1.getValue(startNodeY);
-        _startPoint.y = startNodeY * gridSize;
+        startNode->centerPoint.y = startNodeY * gridSize;
 
         td::Variant x2 = propValues.getValueByKey((td::UINT4)PropID::X2);
         int endNodeX = 0;
         x2.getValue(endNodeX);
-        _endPoint.x = endNodeX * gridSize;
+        endNode->centerPoint.x = endNodeX * gridSize;
 
         td::Variant y2 = propValues.getValueByKey((td::UINT4)PropID::Y2);
         int endNodeY = 0;
         y2.getValue(endNodeY);
-        _endPoint.y = endNodeY * gridSize;
+        endNode->centerPoint.y = endNodeY * gridSize;
 
         //                td::Variant varW = propValues.getValueByKey((td::UINT4)PropID::Width);
         //                gui::CoordType w;
@@ -206,10 +206,10 @@ public:
 
     virtual void updateShape()
     {
-        double x_A = _startPoint.x;
-        double y_A = _startPoint.y;
-        double x_B = _endPoint.x;
-        double y_B = _endPoint.y;
+        double x_A = getStartPoint().x;
+        double y_A = getStartPoint().y;
+        double x_B = getEndPoint().x;
+        double y_B = getEndPoint().y;
 
         double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
         double d_AD = (d_AB - _width) / 2;
@@ -239,7 +239,7 @@ public:
         gui::Point point_I(x_I, y_I);
 
         gui::Point points[] = {
-            _startPoint,
+            getStartPoint(),
             point_D,
             point_F,
             point_G,
@@ -250,7 +250,7 @@ public:
             point_H,
             point_F,
             point_E,
-            _endPoint,
+            getEndPoint(),
         };
         _shape.createLines(&points[0], 12);
     }

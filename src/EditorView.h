@@ -203,8 +203,8 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, true);
-            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, false);
+            IGridComponent *startNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, true);
+            IGridComponent *endNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, false);
 
             _model.appendGridComponent(_pCreatingComponent);
             _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(startNodeComp));
@@ -218,8 +218,8 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            IGridComponent *startNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, true);
-            IGridComponent *endNodeComp = IGridComponent::createNode(modelPoint, _pCreatingComponent->getComponent()->id, false);
+            IGridComponent *startNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, true);
+            IGridComponent *endNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, false);
 
             _model.appendGridComponent(_pCreatingComponent);
             _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(startNodeComp));

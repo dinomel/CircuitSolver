@@ -2,6 +2,7 @@
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
 #include "model/NodeGridComponentOld.h"
+#include "model/NodeGridComponent.h"
 #include <gui/Properties.h>
 
 int Component::nextID = 0;
@@ -19,28 +20,47 @@ static cnt::SafeFullVector<td::String> s_attribStrings;
 
 IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint)
 {
-    ResistorGridComponent *pComp = new ResistorGridComponent(10, IGridComponent::getClosestGridPoint(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    ResistorGridComponent *pComp = new ResistorGridComponent(10, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
 IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint)
 {
-    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, IGridComponent::getClosestGridPoint(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
 IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint)
 {
-    InductorGridComponent *pComp = new InductorGridComponent(1, IGridComponent::getClosestGridPoint(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    InductorGridComponent *pComp = new InductorGridComponent(1, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createNode(const gui::Point &initPoint, int parentComponentID, bool isStartNode)
+IGridComponent *IGridComponent::createNodeOld(const gui::Point &initPoint, int parentComponentID, bool isStartNode)
 {
-    NodeGridComponentOld *pComp = new NodeGridComponentOld(IGridComponent::getClosestGridPoint(initPoint), parentComponentID, isStartNode);
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    NodeGridComponentOld *pComp = new NodeGridComponentOld(startNode, endNode, parentComponentID, isStartNode);
+    pComp->init();
+    return pComp;
+}
+
+IGridComponent *IGridComponent::createNode(const gui::Point &initPoint)
+{
+    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint));
     pComp->init();
     return pComp;
 }
@@ -67,20 +87,23 @@ void IGridComponent::initProperties()
     if (_resistorProperties.size() > 0)
         return;
 
+    NodeGridComponent nC({0, 0});
+    NodeGridComponent *pnC = &nC;
+
     {
-        ResistorGridComponent sh(0, {0, 0});
+        ResistorGridComponent sh(0, pnC, pnC);
         _resistorProperties.reserve(11);
         sh.initProperties(&_resistorProperties);
     }
 
     {
-        CapacitorGridComponent sh(0, {0, 0});
+        CapacitorGridComponent sh(0, pnC, pnC);
         _capacitorPropertes.reserve(12);
         sh.initProperties(&_capacitorPropertes);
     }
 
     {
-        CapacitorGridComponent sh(0, {0, 0});
+        CapacitorGridComponent sh(0, pnC, pnC);
         _inductorPropertes.reserve(12);
         sh.initProperties(&_inductorPropertes);
     }

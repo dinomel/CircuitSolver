@@ -16,8 +16,8 @@ protected:
     Capacitor _capacitor;
 
 public:
-    CapacitorGridComponent(double capacitance, const gui::Point &initPoint)
-        : GridComponent(initPoint, 20, 40), _capacitor(capacitance)
+    CapacitorGridComponent(double capacitance, NodeGridComponent *startNode, NodeGridComponent *endNode)
+        : GridComponent(startNode, endNode, 20, 40), _capacitor(capacitance)
     {
     }
 
@@ -34,28 +34,28 @@ public:
     void init()
     {
         gui::Point points[] = {
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
-            _startPoint,
-            _endPoint,
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
         };
         _shape.createLines(&points[0], 8);
     }
 
     virtual void load(arch::ArchiveIn &ar)
     {
-        GridComponent::load(ar);
-        ar >> _startPoint;
+        //        GridComponent::load(ar);
+        //        ar >> _startPoint;
     }
 
     virtual void save(arch::ArchiveOut &ar) const
     {
-        GridComponent::save(ar);
-        ar << _startPoint;
+        //        GridComponent::save(ar);
+        //        ar << _startPoint;
     }
 
     virtual void getValues(gui::PropertyValues &propValues) const
@@ -116,10 +116,10 @@ public:
 
     virtual void updateShape()
     {
-        double x_A = _startPoint.x;
-        double y_A = _startPoint.y;
-        double x_B = _endPoint.x;
-        double y_B = _endPoint.y;
+        double x_A = getStartPoint().x;
+        double y_A = getStartPoint().y;
+        double x_B = getEndPoint().x;
+        double y_B = getEndPoint().y;
         double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
         double d_AD = (d_AB - _width) / 2;
         double theta = std::atan2(y_B - y_A, x_B - x_A);
@@ -148,14 +148,14 @@ public:
         gui::Point point_I(x_I, y_I);
 
         gui::Point points[] = {
-            _startPoint,
+            getStartPoint(),
             point_D,
             point_F,
             point_G,
             point_I,
             point_H,
             point_E,
-            _endPoint,
+            getEndPoint(),
         };
         _shape.createLines(&points[0], 8);
     }
