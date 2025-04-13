@@ -81,19 +81,19 @@ void IGridComponent::initProperties()
 
     {
         ResistorGridComponent sh(0, pnC, pnC);
-        _resistorProperties.reserve(11);
+        _resistorProperties.reserve(9);
         sh.initProperties(&_resistorProperties);
     }
 
     {
         CapacitorGridComponent sh(0, pnC, pnC);
-        _capacitorPropertes.reserve(12);
+        _capacitorPropertes.reserve(8);
         sh.initProperties(&_capacitorPropertes);
     }
 
     {
         InductorGridComponent sh(0, pnC, pnC);
-        _inductorPropertes.reserve(12);
+        _inductorPropertes.reserve(8);
         sh.initProperties(&_inductorPropertes);
     }
 }

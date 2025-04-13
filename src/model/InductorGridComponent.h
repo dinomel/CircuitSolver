@@ -199,38 +199,7 @@ public:
             prop.set((td::UINT4)PropID::Inductance, "Inductance", valL);
         }
 
-        // group
-        {
-            auto &prop = properties->push_back();
-            prop.setGroup("NodesPosition");
-        }
-
-        td::Point<int> startCoordinate = getStartCoordinate();
-        td::Point<int> endCoordinate = getEndCoordinate();
-
-        td::Variant val(startCoordinate.x);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::X1, "StartNodeX", val);
-        }
-
-        val = td::Variant(startCoordinate.y);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Y1, "StartNodeY", val);
-        }
-
-        val = td::Variant(endCoordinate.x);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::X2, "EndNodeX", val);
-        }
-
-        val = td::Variant(endCoordinate.y);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Y2, "EndNodeY", val);
-        }
+        initNodesProperties(properties);
     }
 
     virtual void getValues(gui::PropertyValues &propValues) const
@@ -239,20 +208,7 @@ public:
         td::Variant valL(_inductor.inductance);
         propValues.setValueByKey((td::UINT4)PropID::Inductance, valL);
 
-        td::Point<int> startCoordinate = getStartCoordinate();
-        td::Point<int> endCoordinate = getEndCoordinate();
-
-        td::Variant x1(startCoordinate.x);
-        propValues.setValueByKey((td::UINT4)PropID::X1, x1);
-
-        td::Variant y1(startCoordinate.y);
-        propValues.setValueByKey((td::UINT4)PropID::Y1, y1);
-
-        td::Variant x2(endCoordinate.x);
-        propValues.setValueByKey((td::UINT4)PropID::X2, x2);
-
-        td::Variant y2(endCoordinate.y);
-        propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
+        getNodesValues(propValues);
     }
 
     virtual void setValues(gui::PropertyValues &propValues)
@@ -260,25 +216,7 @@ public:
         td::Variant inductance = propValues.getValueByKey((td::UINT4)PropID::Inductance);
         inductance.getValue(_inductor.inductance);
 
-        td::Variant x1 = propValues.getValueByKey((td::UINT4)PropID::X1);
-        int startNodeX = 0;
-        x1.getValue(startNodeX);
-        startNode->centerPoint.x = startNodeX * gridSize;
-
-        td::Variant y1 = propValues.getValueByKey((td::UINT4)PropID::Y1);
-        int startNodeY = 0;
-        y1.getValue(startNodeY);
-        startNode->centerPoint.y = startNodeY * gridSize;
-
-        td::Variant x2 = propValues.getValueByKey((td::UINT4)PropID::X2);
-        int endNodeX = 0;
-        x2.getValue(endNodeX);
-        endNode->centerPoint.x = endNodeX * gridSize;
-
-        td::Variant y2 = propValues.getValueByKey((td::UINT4)PropID::Y2);
-        int endNodeY = 0;
-        y2.getValue(endNodeY);
-        endNode->centerPoint.y = endNodeY * gridSize;
+        setNodesValues(propValues);
 
         propValues.setUpdateCanvas(true);
         startNode->updateShape();
