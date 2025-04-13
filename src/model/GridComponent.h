@@ -84,6 +84,8 @@ public:
     virtual void draw() const
     {
         _shape.drawWire(td::ColorID::Yellow);
+        startNode->draw();
+        endNode->draw();
     }
 
     virtual void translate(const gui::Point &delta)
@@ -103,12 +105,14 @@ public:
     virtual void updateEndPoint(const gui::Point &newEndPoint)
     {
         endNode->centerPoint = newEndPoint;
+        endNode->updateShape();
         updateShape();
     }
 
     virtual void updateStartPoint(const gui::Point &newStartPoint)
     {
         startNode->centerPoint = newStartPoint;
+        startNode->updateShape();
         updateShape();
     }
 
@@ -169,6 +173,8 @@ public:
 
     virtual void release()
     {
+        startNode->release();
+        endNode->release();
         delete this;
     }
 

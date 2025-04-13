@@ -146,12 +146,6 @@ public:
 
     virtual void setValues(gui::PropertyValues &propValues)
     {
-        //                gui::Rect rBefore(_rect);
-        //                if (isWithLine())
-        //                    rBefore.inflate(_lineWidth+IGridComponent::refreshOffset);
-        //
-        //                propValues.setRectBeforeUpdate(rBefore);
-
         td::Variant resistance = propValues.getValueByKey((td::UINT4)PropID::Resistance);
         resistance.getValue(_resistor.resistance);
 
@@ -178,30 +172,10 @@ public:
         y2.getValue(endNodeY);
         endNode->centerPoint.y = endNodeY * gridSize;
 
-        //                td::Variant varW = propValues.getValueByKey((td::UINT4)PropID::Width);
-        //                gui::CoordType w;
-        //                varW.getValue(w);
-        //                _rect.setWidth(w);
-        //
-        //                td::Variant varH = propValues.getValueByKey((td::UINT4)PropID::Height);
-        //                gui::CoordType h;
-        //                varH.getValue(h);
-        //                _rect.setHeight(h);
-        //                gui::Rect rectAfter(_rect);
-
         GridComponent::setValues(propValues);
+        startNode->updateShape();
+        endNode->updateShape();
         updateShape();
-        //                gui::Rect rAfter(_rect);
-
-        //                if (isWithLine())
-        //                    rAfter.inflate(_lineWidth+IGridComponent::refreshOffset);
-        //                propValues.setRectAfterUpdate(rAfter);
-        //
-        //                if (getType() == IGridComponent::Type::Rect)
-        //                {
-        //                    if (rBefore != rAfter)
-        //                        _shape.updateRectNodes(_rect);
-        //                }
     }
 
     virtual void updateShape()

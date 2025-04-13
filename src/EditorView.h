@@ -36,6 +36,8 @@ class EditorView : public gui::Canvas
 protected:
     GridModel _model;
     GridComponent *_pCreatingComponent = nullptr;
+    // 0: not selected, 1: startNode selected, 2: endNode selected
+    int selectedNode = 0;
     gui::PropertyEditorSwitcher *_pPropSwitcher = nullptr;
     gui::Point _lastMouseClickPoint;
     LastEvent _lastEvent = LastEvent::None;
@@ -141,17 +143,16 @@ protected:
         {
         case IGridComponent::Tool::Selector:
         {
-            NodeGridComponentOld *pSelectedNode = _model.getSelectedNode(modelPoint);
             GridComponent *pSelected = _model.getSelectedElement(modelPoint);
+            selectedNode = _model.getSelectedNode(modelPoint, pSelected);
             if (!pSelected)
             {
                 _model.clearSelected();
                 _pPropSwitcher->showView(0);
                 reDraw();
             }
-            else if (pSelectedNode)
+            else if (selectedNode != 0)
             {
-                _model.selectNode(pSelectedNode);
                 _model.clearSelected();
                 _model.selectComponent(pSelected);
                 reDraw();
@@ -203,12 +204,7 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            IGridComponent *startNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, true);
-            IGridComponent *endNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, false);
-
             _model.appendGridComponent(_pCreatingComponent);
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(startNodeComp));
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(endNodeComp));
             reDraw();
         }
         break;
@@ -218,12 +214,7 @@ protected:
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
-            IGridComponent *startNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, true);
-            IGridComponent *endNodeComp = IGridComponent::createNodeOld(modelPoint, _pCreatingComponent->getComponent()->id, false);
-
             _model.appendGridComponent(_pCreatingComponent);
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(startNodeComp));
-            _model.appendNodeComponent(dynamic_cast<NodeGridComponentOld *>(endNodeComp));
             reDraw();
         }
         break;
@@ -254,15 +245,13 @@ protected:
 
     void onPrimaryButtonReleased(const gui::InputDevice &inputDevice) override
     {
-        _model.unselectNode();
+        selectedNode = 0;
         cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (_lastEvent == LastEvent::Drag && !selectedComponents.isEmpty())
         {
             for (GridComponent *pC : selectedComponents)
             {
                 pC->snapToGrid();
-                _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-                _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
             }
             reDraw();
         }
@@ -271,8 +260,6 @@ protected:
             _pCreatingComponent->snapToGrid();
             if (!_pCreatingComponent->hasLength())
                 _model.remove(_pCreatingComponent);
-            else
-                _model.updateNode(_pCreatingComponent->getComponent()->id, false, _pCreatingComponent->getEndPoint());
             reDraw();
         }
         _pCreatingComponent = nullptr;
@@ -313,7 +300,6 @@ protected:
         if (_pCreatingComponent != nullptr)
         {
             _pCreatingComponent->updateEndPoint(modelPoint);
-            _model.updateNode(_pCreatingComponent->getComponent()->id, false, _pCreatingComponent->getEndPoint());
             updatePropertyValues();
             _lastMouseClickPoint = modelPoint;
             reDraw();
@@ -325,30 +311,22 @@ protected:
             return;
         gui::Point delta(modelPoint.x - _lastMouseClickPoint.x, modelPoint.y - _lastMouseClickPoint.y);
 
-        if (_model.selectedNode != nullptr)
+        if (selectedNode == 0)
         {
-            GridComponent *pC = selectedComponents[0];
-            if (_model.selectedNode->isStartNode)
-            {
-                pC->updateStartPoint(pC->getStartPoint() + delta);
-                _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-            }
-            else
-            {
-
-                pC->updateEndPoint(pC->getEndPoint() + delta);
-                _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
-            }
-        }
-        else
-        {
-
             for (GridComponent *pC : selectedComponents)
             {
                 pC->translate(delta);
-                _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-                _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
             }
+        }
+        else if (selectedNode == 1)
+        {
+            GridComponent *pC = selectedComponents[0];
+            pC->updateStartPoint(pC->getStartPoint() + delta);
+        }
+        else
+        {
+            GridComponent *pC = selectedComponents[0];
+            pC->updateEndPoint(pC->getEndPoint() + delta);
         }
 
         updatePropertyValues();
@@ -386,8 +364,6 @@ protected:
                 for (GridComponent *pC : selectedComponents)
                 {
                     pC->translate(delta);
-                    _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-                    _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
                 }
                 updatePropertyValues();
                 reDraw();
@@ -400,8 +376,6 @@ protected:
                 for (GridComponent *pC : selectedComponents)
                 {
                     pC->translate(delta);
-                    _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-                    _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
                 }
                 updatePropertyValues();
                 reDraw();
@@ -414,8 +388,6 @@ protected:
                 for (GridComponent *pC : selectedComponents)
                 {
                     pC->translate(delta);
-                    _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-                    _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
                 }
                 updatePropertyValues();
                 reDraw();
@@ -428,8 +400,6 @@ protected:
                 for (GridComponent *pC : selectedComponents)
                 {
                     pC->translate(delta);
-                    _model.updateNode(pC->getComponent()->id, true, pC->getStartPoint());
-                    _model.updateNode(pC->getComponent()->id, false, pC->getEndPoint());
                 }
                 updatePropertyValues();
                 reDraw();

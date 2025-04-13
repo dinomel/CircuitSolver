@@ -4,7 +4,6 @@
 #include "model/ResistorGridComponent.h"
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
-#include "model/NodeGridComponentOld.h"
 #include "model/NodeGridComponent.h"
 #include <iostream>
 
@@ -19,7 +18,6 @@ int main(int argc, const char *argv[])
     //    ResistorGridComponent r2(10, nullptr, nullptr);
     //    CapacitorGridComponent c(0.01, nullptr, nullptr);
     //    InductorGridComponent l(1, nullptr, nullptr);
-    //    NodeGridComponentOld n(nullptr, nullptr, 0, true);
     //    NodeGridComponent nn({0, 0});
     //    std::vector<GridComponent *> components({
     //        &r1,
@@ -27,7 +25,6 @@ int main(int argc, const char *argv[])
     //        &c,
     //        &l,
     //        &l,
-    //        &n,
     //    });
     //    Component *component = components[0]->getComponent();
     //    Resistor *r = dynamic_cast<Resistor *>(component);

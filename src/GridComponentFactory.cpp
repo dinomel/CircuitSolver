@@ -1,7 +1,6 @@
 #include "model/ResistorGridComponent.h"
 #include "model/CapacitorGridComponent.h"
 #include "model/InductorGridComponent.h"
-#include "model/NodeGridComponentOld.h"
 #include "model/NodeGridComponent.h"
 #include <gui/Properties.h>
 
@@ -44,16 +43,6 @@ IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint)
     NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
 
     InductorGridComponent *pComp = new InductorGridComponent(1, startNode, endNode);
-    pComp->init();
-    return pComp;
-}
-
-IGridComponent *IGridComponent::createNodeOld(const gui::Point &initPoint, int parentComponentID, bool isStartNode)
-{
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-
-    NodeGridComponentOld *pComp = new NodeGridComponentOld(startNode, endNode, parentComponentID, isStartNode);
     pComp->init();
     return pComp;
 }

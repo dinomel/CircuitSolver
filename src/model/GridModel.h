@@ -7,7 +7,6 @@
 
 #pragma once
 #include "GridComponent.h"
-#include "NodeGridComponentOld.h"
 #include <cnt/PushBackVector.h>
 #include <arch/FileSerializer.h>
 #include <arch/ArchiveIn.h>
@@ -25,17 +24,10 @@ protected:
         {
             pShape->release();
         }
-
-        for (auto pShape : nodes)
-        {
-            pShape->release();
-        }
     }
 
 public:
     cnt::PushBackVector<GridComponent *> selectedGridComponents;
-    cnt::PushBackVector<NodeGridComponentOld *> nodes; // Ako cemo crtati nodes ovo mora ovako
-    NodeGridComponentOld *selectedNode;
 
 public:
     GridModel()
@@ -58,39 +50,17 @@ public:
         selectedGridComponents.push_back(component);
     }
 
-    void selectNode(NodeGridComponentOld *nodeComponent)
-    {
-        selectedNode = nodeComponent;
-    }
-
-    void unselectNode()
-    {
-        selectedNode = nullptr;
-    }
-
     void draw(const gui::Rect &rDraw) const
     {
         gui::Rect boundingRect;
-        size_t nDrawn = 0;
         for (auto pShape : _gridComponents)
         {
             pShape->getBoundingRect(boundingRect);
             if (boundingRect.intersects(rDraw))
             {
                 pShape->draw();
-                ++nDrawn;
             }
         }
-        for (auto pShape : nodes)
-        {
-            pShape->getBoundingRect(boundingRect);
-            if (boundingRect.intersects(rDraw))
-            {
-                pShape->draw();
-                ++nDrawn;
-            }
-        }
-        // mu::dbgLog("#Drawn=%d", nDrawn);
     }
 
     void appendGridComponent(GridComponent *pShape)
@@ -105,28 +75,6 @@ public:
         //        mu::dbgLog("Model w=%.1f, h=%.1f", _modelSize.width, _modelSize.height);
 
         _gridComponents.push_back(pShape);
-    }
-
-    void appendNodeComponent(NodeGridComponentOld *pNode)
-    {
-        nodes.push_back(pNode);
-    }
-
-    void appendNode(NodeGridComponentOld *pNode)
-    {
-        nodes.push_back(pNode);
-    }
-
-    void updateNode(int parentCompID, bool isStartNode, const gui::Point &newNodePoint)
-    {
-        for (NodeGridComponentOld *pC : nodes)
-        {
-            if (pC->parentComponentID == parentCompID && pC->isStartNode == isStartNode)
-            {
-                pC->updateNodePoint(newNodePoint);
-                return;
-            }
-        }
     }
 
     bool load(const td::String &fileName)
@@ -237,28 +185,20 @@ public:
         return _modelSize;
     }
 
-    NodeGridComponentOld *getSelectedNode(const gui::Point &pt)
+    // 0: not selected, 1: startNode selected, 2: endNode selected
+    int getSelectedNode(const gui::Point &pt, GridComponent *parent)
     {
-        size_t nNodeElems = nodes.size();
-        if (nNodeElems == 0)
-            return nullptr;
-        if (nNodeElems != 0)
-        {
-            for (size_t i = nNodeElems; i > 0; --i)
-            {
-                NodeGridComponentOld *pC = nodes[i - 1];
-                if (pC->canBeSelected(pt))
-                {
-                    return pC;
-                }
-            }
-        }
-        return nullptr;
+        if (parent == nullptr)
+            return 0;
+        if (parent->startNode->canBeSelected(pt))
+            return 1;
+        else if (parent->endNode->canBeSelected(pt))
+            return 2;
+        return 0;
     }
 
     GridComponent *getSelectedElement(const gui::Point &pt)
     {
-
         size_t nElems = _gridComponents.size();
         if (nElems == 0)
             return nullptr;
