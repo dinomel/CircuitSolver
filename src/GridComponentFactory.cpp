@@ -66,10 +66,10 @@ IGridComponent *IGridComponent::createNode(const gui::Point &initPoint)
     return pComp;
 }
 
-gui::Properties *IGridComponent::getProperties(IGridComponent::Type shapeType)
+gui::Properties *IGridComponent::getProperties(IGridComponent::Type gridComponentType)
 {
     initProperties();
-    switch (shapeType)
+    switch (gridComponentType)
     {
     case Type::Resistor:
         return &_resistorProperties;

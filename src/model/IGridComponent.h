@@ -82,9 +82,9 @@ public:
     static gui::CoordType refreshOffset;
 
     // PropertyManager
-    static void createProperties(IGridComponent::Type shapeType, gui::Properties &properties);
+    static void createProperties(IGridComponent::Type gridComponentType, gui::Properties &properties);
 
-    static gui::Properties *getProperties(IGridComponent::Type shapeType);
+    static gui::Properties *getProperties(IGridComponent::Type gridComponentType);
 
     static td::String *getAttribsDesc();
 

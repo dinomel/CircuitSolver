@@ -20,9 +20,9 @@ class GridModel
 protected:
     void clean()
     {
-        for (auto pShape : _gridComponents)
+        for (auto pGridComponent : _gridComponents)
         {
-            pShape->release();
+            pGridComponent->release();
         }
     }
 
@@ -68,20 +68,20 @@ public:
     void draw(const gui::Rect &rDraw) const
     {
         gui::Rect boundingRect;
-        for (auto pShape : _gridComponents)
+        for (auto pGridComponent : _gridComponents)
         {
-            pShape->getBoundingRect(boundingRect);
+            pGridComponent->getBoundingRect(boundingRect);
             if (boundingRect.intersects(rDraw))
             {
-                pShape->draw();
+                pGridComponent->draw();
             }
         }
     }
 
-    void appendGridComponent(GridComponent *pShape)
+    void appendGridComponent(GridComponent *pGridComponent)
     {
         gui::Rect boundRect;
-        pShape->getBoundingRect(boundRect);
+        pGridComponent->getBoundingRect(boundRect);
         boundRect.inflate(10, 0, 0);
         gui::Rect currentModelRect(gui::Point(0, 0), _modelSize);
         currentModelRect.unija(boundRect);
@@ -89,7 +89,7 @@ public:
         _modelSize.height = currentModelRect.height();
         //        mu::dbgLog("Model w=%.1f, h=%.1f", _modelSize.width, _modelSize.height);
 
-        _gridComponents.push_back(pShape);
+        _gridComponents.push_back(pGridComponent);
     }
 
     bool load(const td::String &fileName)
@@ -219,10 +219,10 @@ public:
             return nullptr;
         for (size_t i = nElems; i > 0; --i)
         {
-            GridComponent *pShape = _gridComponents[i - 1];
-            if (pShape->canBeSelected(pt))
+            GridComponent *pGridComponent = _gridComponents[i - 1];
+            if (pGridComponent->canBeSelected(pt))
             {
-                return pShape;
+                return pGridComponent;
             }
         }
         return nullptr;
@@ -239,16 +239,16 @@ public:
         }
     }
 
-    bool setFront(GridComponent *pShape)
+    bool setFront(GridComponent *pGridComponent)
     {
-        auto nShapes = _gridComponents.size();
-        if (nShapes <= 1)
+        auto nComponents = _gridComponents.size();
+        if (nComponents <= 1)
             return false;
 
-        if (pShape)
+        if (pGridComponent)
         {
             // TODO: Za vjezbu
-            auto pos = _gridComponents.find(pShape);
+            auto pos = _gridComponents.find(pGridComponent);
             if (pos > 0)
                 return _gridComponents.move(pos, 0);
             return false;
@@ -256,19 +256,19 @@ public:
         return false;
     }
 
-    bool setBack(GridComponent *pShape)
+    bool setBack(GridComponent *pGridComponent)
     {
-        auto nShapes = _gridComponents.size();
-        if (nShapes <= 1)
+        auto nComponents = _gridComponents.size();
+        if (nComponents <= 1)
             return false;
 
-        if (pShape)
+        if (pGridComponent)
         {
             // TODO: Za vjezbu
 
-            auto pos = _gridComponents.find(pShape);
-            if (pos < nShapes - 1)
-                return _gridComponents.move(pos, nShapes - 1);
+            auto pos = _gridComponents.find(pGridComponent);
+            if (pos < nComponents - 1)
+                return _gridComponents.move(pos, nComponents - 1);
             return false;
         }
         return false;

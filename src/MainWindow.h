@@ -27,7 +27,7 @@ public:
     //    , _callBackHandleOpenDlg(std::bind(&MainWindow::openFile, this, std::placeholders::_1))
     //    , _callBackHandleSaveDlg(std::bind(&MainWindow::saveFile, this, std::placeholders::_1))
     {
-        setTitle(tr("ShapeEditor"));
+        setTitle(tr("Circuit Solver"));
         _mainMenuBar.setAsMain(this);
         //_mainMenuBar.forwardMessagesTo(this);
         _toolBar.forwardMessagesTo(this);
