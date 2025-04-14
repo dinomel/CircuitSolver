@@ -36,6 +36,7 @@ class EditorView : public gui::Canvas
 protected:
     GridModel _model;
     GridComponent *_pCreatingComponent = nullptr;
+    GridComponent *_pSecBtnSelComponent = nullptr;
     // 0: not selected, 1: startNode selected, 2: endNode selected
     int selectedNode = 0;
     gui::PropertyEditorSwitcher *_pPropSwitcher = nullptr;
@@ -50,7 +51,7 @@ protected:
         setFocus(); // to this
     }
 
-    void deleteSelectedShape()
+    void deleteSelectedComponents()
     {
         cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (selectedComponents.isEmpty())
@@ -68,7 +69,7 @@ protected:
     {
         if (answer == gui::Alert::Answer::Yes)
         {
-            deleteSelectedShape();
+            deleteSelectedComponents();
         }
         setFocus(); // to this
     }
@@ -97,38 +98,36 @@ protected:
 
     bool onActionItem(gui::ActionItemDescriptor &aiDesc) override
     {
-        //        auto [menuID, firstSubMenuID, lastSubMenuID, actionID] = aiDesc.getIDs();
-        //        auto pAI = aiDesc.getActionItem();
-        //
-        //        if (menuID == 100)
-        //        {
-        //            assert(_pSelectedShape);
-        //            if (!_pSelectedShape)
-        //                return true;
-        //            // context menu;
-        //            switch (actionID)
-        //            {
-        //            case 10:
-        //                // move front
-        //                // TODO: vjezba
-        //                if (_model.setBack(_pSelectedShape))
-        //                    reDraw();
-        //                break;
-        //            case 20:
-        //                // move back
-        //                // TODO: vjezba
-        //                if (_model.setFront(_pSelectedShape))
-        //                    reDraw();
-        //                break;
-        //            case 30:
-        //            {
-        //                // Delete without checking
-        //                deleteSelectedShape();
-        //                break;
-        //            }
-        //            }
-        //            return true;
-        //        }
+        auto [menuID, firstSubMenuID, lastSubMenuID, actionID] = aiDesc.getIDs();
+        auto pAI = aiDesc.getActionItem();
+
+        if (menuID == 100)
+        {
+            assert(_pSecBtnSelComponent);
+            if (!_pSecBtnSelComponent)
+                return true;
+            // context menu;
+            switch (actionID)
+            {
+            case 10:
+                if (_model.setBack(_pSecBtnSelComponent))
+                    reDraw();
+                break;
+            case 20:
+                if (_model.setFront(_pSecBtnSelComponent))
+                    reDraw();
+                break;
+            case 30:
+            {
+                _model.remove(_pSecBtnSelComponent);
+                _pPropSwitcher->showView(0);
+                setFocus(); // to this
+                reDraw();
+                break;
+            }
+            }
+            return true;
+        }
         return false;
     }
 
@@ -275,22 +274,19 @@ protected:
 
     void onSecondaryButtonPressed(const gui::InputDevice &inputDevice) override
     {
-        //        if (IGridComponent::currentTool != IGridComponent::Tool::Selector)
-        //            return;
-        //
-        //        if (!_pSelectedShape)
-        //            return;
-        //        gui::Rect boundRect;
-        //        _pSelectedShape->getBoundingRect(boundRect);
-        //        boundRect.inflate(5.0);
-        //
-        //        const gui::Point &modelPoint = inputDevice.getModelPoint();
-        //        if (!boundRect.contains(modelPoint))
-        //            return;
-        //
-        //        td::BYTE ctxMenuID = 100;
-        //        Frame::openContextMenu(ctxMenuID, inputDevice);
-        //        return;
+        if (IGridComponent::currentTool != IGridComponent::Tool::Selector)
+            return;
+
+        const gui::Point &modelPoint = inputDevice.getModelPoint();
+
+        _pSecBtnSelComponent = _model.getSelectedElement(modelPoint);
+
+        if (_pSecBtnSelComponent)
+        {
+            td::BYTE ctxMenuID = 100;
+            Frame::openContextMenu(ctxMenuID, inputDevice);
+        }
+        return;
     }
 
     void onCursorDragged(const gui::InputDevice &inputDevice) override // onMouseDragged(const gui::Point& modelPoint, td::UINT4 keyModifiers)

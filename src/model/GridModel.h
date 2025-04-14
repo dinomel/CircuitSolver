@@ -228,14 +228,14 @@ public:
         return nullptr;
     }
 
-    void remove(GridComponent *&pShape)
+    void remove(GridComponent *&component)
     {
-        if (pShape)
+        if (component)
         {
-            _gridComponents.remove(pShape);
-            selectedGridComponents.remove(pShape);
-            pShape->release();
-            pShape = nullptr;
+            _gridComponents.remove(component);
+            selectedGridComponents.remove(component);
+            component->release();
+            component = nullptr;
         }
     }
 
