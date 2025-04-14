@@ -36,7 +36,6 @@ class EditorView : public gui::Canvas
 protected:
     GridModel _model;
     GridComponent *_pCreatingComponent = nullptr;
-    GridComponent *_pSecBtnSelComponent = nullptr;
     // 0: not selected, 1: startNode selected, 2: endNode selected
     int selectedNode = 0;
     gui::PropertyEditorSwitcher *_pPropSwitcher = nullptr;
@@ -103,26 +102,29 @@ protected:
 
         if (menuID == 100)
         {
-            assert(_pSecBtnSelComponent);
-            if (!_pSecBtnSelComponent)
+            cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
+            if (selectedComponents.isEmpty())
                 return true;
             // context menu;
             switch (actionID)
             {
             case 10:
-                if (_model.setBack(_pSecBtnSelComponent))
-                    reDraw();
+                for (GridComponent *pC : selectedComponents)
+                {
+                    _model.setBack(pC);
+                }
+                reDraw();
                 break;
             case 20:
-                if (_model.setFront(_pSecBtnSelComponent))
-                    reDraw();
+                for (GridComponent *pC : selectedComponents)
+                {
+                    _model.setFront(pC);
+                }
+                reDraw();
                 break;
             case 30:
             {
-                _model.remove(_pSecBtnSelComponent);
-                _pPropSwitcher->showView(0);
-                setFocus(); // to this
-                reDraw();
+                deleteSelectedComponents();
                 break;
             }
             }
@@ -279,14 +281,22 @@ protected:
 
         const gui::Point &modelPoint = inputDevice.getModelPoint();
 
-        _pSecBtnSelComponent = _model.getSelectedElement(modelPoint);
+        GridComponent *pSelected = _model.getSelectedElement(modelPoint);
+        
+        if (!pSelected)
+            return;
 
-        if (_pSecBtnSelComponent)
+        bool isSelected = _model.selectedGridComponents.find(pSelected) != -1;
+
+        if(!isSelected)
         {
-            td::BYTE ctxMenuID = 100;
-            Frame::openContextMenu(ctxMenuID, inputDevice);
+            _model.clearSelected();
+            _model.selectComponent(pSelected);
+            reDraw();
         }
-        return;
+
+        td::BYTE ctxMenuID = 100;
+        Frame::openContextMenu(ctxMenuID, inputDevice);
     }
 
     void onCursorDragged(const gui::InputDevice &inputDevice) override // onMouseDragged(const gui::Point& modelPoint, td::UINT4 keyModifiers)
