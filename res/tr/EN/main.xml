@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <DevRes>
 	<Translations>
-		<Res id="ShapeEditor" tr="Shape editor"/>
+		<Res id="CircuitSolver" tr="Circuit Solver"/>
 		<Res id="Properties" tr="Properties"/>
 		<Res id="settings" tr="Settings"/>
 		<Res id="settingsTT" tr="Application adjustments (language and other visual properties.s)"/>

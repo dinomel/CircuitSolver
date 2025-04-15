@@ -1,9 +1,9 @@
 <?xml version='1.0'?>
 <DevRes>
 	<Translations>
-		<Res id="ShapeEditor" tr="Uređivač (editor) grafičkih primitiva"/>
+		<Res id="CircuitSolver" tr="Simulacija električnih krugova"/>
 		<Res id="Properties" tr="Podešenja"/>
-		<Res id="settings" tr="Podešenja"/>
+		<Res id="settings" tr="Podešavanja"/>
 		<Res id="settingsTT" tr="Podešenja aplikacije kao što su jezik i ostali parametri."/>
 		<Res id="rect" tr="Pravougaonik"/>
 		<Res id="rectTT" tr="Crtanje pravougaonika"/>	
