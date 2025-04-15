@@ -80,23 +80,16 @@ public:
 
     void initProperties(gui::Properties *properties) const override
     {
-        // if (createGroup)
-        // {
-        //     auto &prop = properties->push_back();
-        //     prop.setGroup("Parameters");
-        // }
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup("Parameters");
+        }
 
-        // td::Variant valR(_resistor.resistance);
-        // {
-        //     auto &prop = properties->push_back();
-        //     prop.set((td::UINT4)PropID::Resistance, "Resistance", valR);
-        // }
-
-        // valR = td::Variant(_resistor.reactance);
-        // {
-        //     auto &prop = properties->push_back();
-        //     prop.set((td::UINT4)PropID::Reactance, "Reactance", valR);
-        // }
+        td::Variant valV(_dcVoltageSource.voltage);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::Voltage, "Voltage", valV);
+        }
 
         GridComponent::initProperties(properties);
     }
@@ -104,22 +97,16 @@ public:
     void getValues(gui::PropertyValues &propValues) const override
     {
 
-        // td::Variant valR(_resistor.resistance);
-        // propValues.setValueByKey((td::UINT4)PropID::Resistance, valR);
-
-        // td::Variant valX(_resistor.reactance);
-        // propValues.setValueByKey((td::UINT4)PropID::Reactance, valX);
+        td::Variant valV(_dcVoltageSource.voltage);
+        propValues.setValueByKey((td::UINT4)PropID::Voltage, valV);
 
         GridComponent::getValues(propValues);
     }
 
     void setValues(gui::PropertyValues &propValues) override
     {
-        // td::Variant resistance = propValues.getValueByKey((td::UINT4)PropID::Resistance);
-        // resistance.getValue(_resistor.resistance);
-
-        // td::Variant reactance = propValues.getValueByKey((td::UINT4)PropID::Reactance);
-        // reactance.getValue(_resistor.reactance);
+        td::Variant voltage = propValues.getValueByKey((td::UINT4)PropID::Voltage);
+        voltage.getValue(_dcVoltageSource.voltage);
 
         GridComponent::setValues(propValues);
     }

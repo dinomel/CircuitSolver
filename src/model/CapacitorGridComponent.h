@@ -79,7 +79,6 @@ public:
 
     void initProperties(gui::Properties *properties) const override
     {
-        // if (createGroup)
         {
             auto &prop = properties->push_back();
             prop.setGroup("Parameters");

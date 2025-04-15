@@ -20,7 +20,7 @@ protected:
 
 public:
     InductorGridComponent(double inductance, NodeGridComponent *startNode, NodeGridComponent *endNode)
-        : GridComponent(startNode, endNode, 48, 16, 0), _inductor(inductance)
+        : GridComponent(startNode, endNode, 48, 16, 3), _inductor(inductance)
     {
     }
 
@@ -36,158 +36,51 @@ public:
 
     void init() override
     {
-        gui::Point points[] = {
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-        };
-        _wiresShape.createLines(&points[0], 28);
+        GridComponent::init();
+
+        gui::Circle circle0({getStartPoint().x - _width / 3, getStartPoint().y}, _width / 6);
+        _componentShapes[0].createArc(circle0, 180, 0, 1);
+
+        gui::Circle circle1(getStartPoint(), _width / 6);
+        _componentShapes[1].createArc(circle1, 180, 0, 1);
+
+        gui::Circle circle2({getStartPoint().x + _width / 3, getStartPoint().y}, _width / 6);
+        _componentShapes[2].createArc(circle2, 180, 0, 1);
     }
 
     void updateShape() override
     {
-        double x_A = getStartPoint().x;
-        double y_A = getStartPoint().y;
-        double x_B = getEndPoint().x;
-        double y_B = getEndPoint().y;
-        double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
-        double d_AD = (d_AB - _width) / 2;
-        double theta = std::atan2(y_B - y_A, x_B - x_A);
-        double sTheta = sin(theta);
-        double cTheta = cos(theta);
-        double alpha = M_PI * 3 / 8 - theta;
-        double sAlpha = sin(alpha);
-        double cAlpha = cos(alpha);
-        double beta = M_PI / 4 - theta;
-        double sBeta = sin(beta);
-        double cBeta = cos(beta);
-        double gamma = M_PI * 3 / 8 + theta;
-        double sGamma = sin(gamma);
-        double cGamma = cos(gamma);
-        double d_DF = _width / 3 * 0.3827;
-        double d_DG = _width / 3 * 0.7071;
+        auto [point_D, point_E, theta] = updateWiresShape();
+        double x_D = point_D.x;
+        double y_D = point_D.y;
+        double x_E = point_E.x;
+        double y_E = point_E.y;
 
-        double x_D = x_A + d_AD * cTheta;
-        double y_D = y_A + d_AD * sTheta;
-        double x_I = x_D + _width / 3 * cTheta;
-        double y_I = y_D + _width / 3 * sTheta;
-        double x_M = x_I + _width / 3 * cTheta;
-        double y_M = y_I + _width / 3 * sTheta;
-        double x_E = x_B - d_AD * cTheta;
-        double y_E = y_B - d_AD * sTheta;
+        double thetaDeg = theta * 180 / M_PI;
 
-        double x_F = x_D + d_DF * cAlpha;
-        double y_F = y_D - d_DF * sAlpha;
-        double x_G = x_D + d_DG * cBeta;
-        double y_G = y_D - d_DG * sBeta;
-        double x_H = x_I - d_DF * cGamma;
-        double y_H = y_I - d_DF * sGamma;
+        double x_C = (x_D + x_E) / 2;
+        double y_C = (y_D + y_E) / 2;
+        double x_F = (5 * x_D + x_E) / 6;
+        double y_F = (5 * y_D + y_E) / 6;
+        double x_G = (x_D + 5 * x_E) / 6;
+        double y_G = (y_D + 5 * y_E) / 6;
 
-        double x_J = x_I + d_DF * cAlpha;
-        double y_J = y_I - d_DF * sAlpha;
-        double x_K = x_I + d_DG * cBeta;
-        double y_K = y_I - d_DG * sBeta;
-        double x_L = x_M - d_DF * cGamma;
-        double y_L = y_M - d_DF * sGamma;
-
-        double x_N = x_M + d_DF * cAlpha;
-        double y_N = y_M - d_DF * sAlpha;
-        double x_O = x_M + d_DG * cBeta;
-        double y_O = y_M - d_DG * sBeta;
-        double x_P = x_E - d_DF * cGamma;
-        double y_P = y_E - d_DF * sGamma;
-
-        gui::Point point_D(x_D, y_D);
+        gui::Point point_C(x_C, y_C);
         gui::Point point_F(x_F, y_F);
         gui::Point point_G(x_G, y_G);
-        gui::Point point_H(x_H, y_H);
 
-        gui::Point point_I(x_I, y_I);
-        gui::Point point_J(x_J, y_J);
-        gui::Point point_K(x_K, y_K);
-        gui::Point point_L(x_L, y_L);
+        gui::Circle circle0(point_F, _width / 6);
+        _componentShapes[0].createArc(circle0, 180 + thetaDeg, thetaDeg, 1);
 
-        gui::Point point_M(x_M, y_M);
-        gui::Point point_N(x_N, y_N);
-        gui::Point point_O(x_O, y_O);
-        gui::Point point_P(x_P, y_P);
+        gui::Circle circle1(point_C, _width / 6);
+        _componentShapes[1].createArc(circle1, 180 + thetaDeg, thetaDeg, 1);
 
-        gui::Point point_E(x_E, y_E);
-
-        gui::Point points[] = {
-            getStartPoint(),
-            point_D,
-
-            point_D,
-            point_F,
-
-            point_F,
-            point_G,
-
-            point_G,
-            point_H,
-
-            point_H,
-            point_I,
-
-            point_I,
-            point_J,
-
-            point_J,
-            point_K,
-
-            point_K,
-            point_L,
-
-            point_L,
-            point_M,
-
-            point_M,
-            point_N,
-
-            point_N,
-            point_O,
-
-            point_O,
-            point_P,
-
-            point_P,
-            point_E,
-
-            point_E,
-            getEndPoint(),
-        };
-        _wiresShape.createLines(&points[0], 28);
+        gui::Circle circle2(point_G, _width / 6);
+        _componentShapes[2].createArc(circle2, 180 + thetaDeg, thetaDeg, 1);
     }
 
     void initProperties(gui::Properties *properties) const override
     {
-        // if (createGroup)
         {
             auto &prop = properties->push_back();
             prop.setGroup("Parameters");

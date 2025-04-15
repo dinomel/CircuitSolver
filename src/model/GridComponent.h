@@ -50,6 +50,8 @@ public:
         Reactance,
         Inductance,
         Capacitance,
+        MaxVoltage,
+        Voltage,
         ResI,
         ResVd,
         ResP,
