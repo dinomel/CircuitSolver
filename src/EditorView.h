@@ -59,6 +59,7 @@ protected:
         {
             _model.remove(pC);
         }
+        _model.updateFloatingNodes();
         _pPropSwitcher->showView(0);
         setFocus(); // to this
         reDraw();
@@ -205,58 +206,13 @@ protected:
         }
         break;
         case IGridComponent::Tool::AddWire:
-        {
-            IGridComponent *iGridComp = IGridComponent::createWire(modelPoint);
-
-            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
-
-            _model.appendGridComponent(_pCreatingComponent);
-            reDraw();
-        }
-        break;
         case IGridComponent::Tool::AddResistor:
-        {
-            IGridComponent *iGridComp = IGridComponent::createResistor(modelPoint);
-
-            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
-
-            _model.appendGridComponent(_pCreatingComponent);
-            reDraw();
-        }
-        break;
         case IGridComponent::Tool::AddCapacitor:
-        {
-            IGridComponent *iGridComp = IGridComponent::createCapacitor(modelPoint);
-
-            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
-
-            _model.appendGridComponent(_pCreatingComponent);
-            reDraw();
-        }
-        break;
         case IGridComponent::Tool::AddInductor:
-        {
-            IGridComponent *iGridComp = IGridComponent::createInductor(modelPoint);
-
-            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
-
-            _model.appendGridComponent(_pCreatingComponent);
-            reDraw();
-        }
-        break;
         case IGridComponent::Tool::AddDCVoltageSource:
-        {
-            IGridComponent *iGridComp = IGridComponent::createDCVoltage(modelPoint);
-
-            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
-
-            _model.appendGridComponent(_pCreatingComponent);
-            reDraw();
-        }
-        break;
         case IGridComponent::Tool::AddACVoltageSource:
         {
-            IGridComponent *iGridComp = IGridComponent::createACVoltage(modelPoint);
+            IGridComponent *iGridComp = IGridComponent::createGridComponent(modelPoint, IGridComponent::currentTool);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 

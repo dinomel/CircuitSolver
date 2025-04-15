@@ -75,6 +75,27 @@ public:
 
     static IGridComponent *createNode(const gui::Point &initPoint);
 
+    static IGridComponent *createGridComponent(const gui::Point &initPoint, Tool tool)
+    {
+        switch (tool)
+        {
+        case Tool::AddWire:
+            return createWire(initPoint);
+        case Tool::AddResistor:
+            return createResistor(initPoint);
+        case Tool::AddCapacitor:
+            return createCapacitor(initPoint);
+        case Tool::AddInductor:
+            return createInductor(initPoint);
+        case Tool::AddDCVoltageSource:
+            return createDCVoltage(initPoint);
+        case Tool::AddACVoltageSource:
+            return createACVoltage(initPoint);
+        default:
+            return nullptr;
+        }
+    }
+
     // Factory tool
     static IGridComponent::Tool currentTool;
 
