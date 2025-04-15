@@ -244,6 +244,26 @@ protected:
             reDraw();
         }
         break;
+        case IGridComponent::Tool::AddDCVoltageSource:
+        {
+            IGridComponent *iGridComp = IGridComponent::createDCVoltage(modelPoint);
+
+            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
+
+            _model.appendGridComponent(_pCreatingComponent);
+            reDraw();
+        }
+        break;
+        case IGridComponent::Tool::AddACVoltageSource:
+        {
+            IGridComponent *iGridComp = IGridComponent::createACVoltage(modelPoint);
+
+            _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
+
+            _model.appendGridComponent(_pCreatingComponent);
+            reDraw();
+        }
+        break;
         default:
             assert(false);
         }

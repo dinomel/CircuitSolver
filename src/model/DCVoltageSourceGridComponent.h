@@ -1,34 +1,34 @@
 //
-//  CapacitorGridComponent.h
+//  DCVoltageSourceGridComponent.h
 //  CircuitSolver
 //
-//  Created by Dino Melunovic on 8. 4. 2025..
+//  Created by Dino Melunovic on 15. 4. 2025..
 //
 
 #pragma once
 #include "GridComponent.h"
+#include "../core/DCVoltageSource.h"
 #include "../core/Component.h"
-#include "../core/Capacitor.h"
 
-class CapacitorGridComponent : public GridComponent
+class DCVoltageSourceGridComponent : public GridComponent
 {
 protected:
-    Capacitor _capacitor;
+    DCVoltageSource _dcVoltageSource;
 
 public:
-    CapacitorGridComponent(double capacitance, NodeGridComponent *startNode, NodeGridComponent *endNode)
-        : GridComponent(startNode, endNode, 12, 36), _capacitor(capacitance)
+    DCVoltageSourceGridComponent(double voltage, NodeGridComponent *startNode, NodeGridComponent *endNode)
+        : GridComponent(startNode, endNode, 12, 36), _dcVoltageSource(voltage)
     {
     }
 
     Component *getComponent() override
     {
-        return &_capacitor;
+        return &_dcVoltageSource;
     }
 
     Type getType() const override
     {
-        return Type::Capacitor;
+        return Type::DCVoltageSource;
     }
 
     void init() override
@@ -63,10 +63,11 @@ public:
         double x_E = x_B - d_AD * cTheta;
         double y_E = y_B - d_AD * sTheta;
         double halfHeight = _height / 2;
-        double x_G = x_D + halfHeight * sTheta;
-        double y_G = y_D - halfHeight * cTheta;
-        double x_F = x_D - halfHeight * sTheta;
-        double y_F = y_D + halfHeight * cTheta;
+        double quarterHeight = _height / 4;
+        double x_G = x_D + quarterHeight * sTheta;
+        double y_G = y_D - quarterHeight * cTheta;
+        double x_F = x_D - quarterHeight * sTheta;
+        double y_F = y_D + quarterHeight * cTheta;
         double x_I = x_E + halfHeight * sTheta;
         double y_I = y_E - halfHeight * cTheta;
         double x_H = x_E - halfHeight * sTheta;
@@ -95,16 +96,22 @@ public:
     void initProperties(gui::Properties *properties) const override
     {
         // if (createGroup)
-        {
-            auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
-        }
+        // {
+        //     auto &prop = properties->push_back();
+        //     prop.setGroup("Parameters");
+        // }
 
-        td::Variant valC(_capacitor.capacitance);
-        {
-            auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Capacitance, "Capacitance", valC);
-        }
+        // td::Variant valR(_resistor.resistance);
+        // {
+        //     auto &prop = properties->push_back();
+        //     prop.set((td::UINT4)PropID::Resistance, "Resistance", valR);
+        // }
+
+        // valR = td::Variant(_resistor.reactance);
+        // {
+        //     auto &prop = properties->push_back();
+        //     prop.set((td::UINT4)PropID::Reactance, "Reactance", valR);
+        // }
 
         GridComponent::initProperties(properties);
     }
@@ -112,16 +119,22 @@ public:
     void getValues(gui::PropertyValues &propValues) const override
     {
 
-        td::Variant valC(_capacitor.capacitance);
-        propValues.setValueByKey((td::UINT4)PropID::Capacitance, valC);
+        // td::Variant valR(_resistor.resistance);
+        // propValues.setValueByKey((td::UINT4)PropID::Resistance, valR);
+
+        // td::Variant valX(_resistor.reactance);
+        // propValues.setValueByKey((td::UINT4)PropID::Reactance, valX);
 
         GridComponent::getValues(propValues);
     }
 
     void setValues(gui::PropertyValues &propValues) override
     {
-        td::Variant capacitance = propValues.getValueByKey((td::UINT4)PropID::Capacitance);
-        capacitance.getValue(_capacitor.capacitance);
+        // td::Variant resistance = propValues.getValueByKey((td::UINT4)PropID::Resistance);
+        // resistance.getValue(_resistor.resistance);
+
+        // td::Variant reactance = propValues.getValueByKey((td::UINT4)PropID::Reactance);
+        // reactance.getValue(_resistor.reactance);
 
         GridComponent::setValues(propValues);
     }

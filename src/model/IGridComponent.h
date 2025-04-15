@@ -14,6 +14,8 @@ private:
     static gui::Properties _capacitorProperties;
     static gui::Properties _inductorProperties;
     static gui::Properties _wireProperties;
+    static gui::Properties _dcVoltageProperties;
+    static gui::Properties _acVoltageProperties;
 
 protected:
     gui::Shape _shape;
@@ -25,6 +27,8 @@ public:
         Resistor,
         Capacitor,
         Inductor,
+        DCVoltageSource,
+        ACVoltageSource,
         Node,
     };
     enum class Tool
@@ -33,8 +37,14 @@ public:
         AddWire,
         AddResistor,
         AddCapacitor,
-        AddInductor
+        AddInductor,
+        AddDCVoltageSource,
+        AddACVoltageSource,
     };
+
+    IGridComponent()
+    {
+    }
 
     virtual ~IGridComponent()
     {
@@ -62,6 +72,10 @@ public:
     static IGridComponent *createInductor(const gui::Point &initPoint);
 
     static IGridComponent *createWire(const gui::Point &initPoint);
+
+    static IGridComponent *createDCVoltage(const gui::Point &initPoint);
+
+    static IGridComponent *createACVoltage(const gui::Point &initPoint);
 
     static IGridComponent *createNode(const gui::Point &initPoint);
 

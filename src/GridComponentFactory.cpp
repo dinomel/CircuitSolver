@@ -3,6 +3,8 @@
 #include "model/InductorGridComponent.h"
 #include "model/NodeGridComponent.h"
 #include "model/WireGridComponent.h"
+#include "model/DCVoltageSourceGridComponent.h"
+#include "model/ACVoltageSourceGridComponent.h"
 #include <gui/Properties.h>
 
 int Component::nextID = 0;
@@ -16,6 +18,8 @@ gui::Properties IGridComponent::_resistorProperties;
 gui::Properties IGridComponent::_capacitorProperties;
 gui::Properties IGridComponent::_inductorProperties;
 gui::Properties IGridComponent::_wireProperties;
+gui::Properties IGridComponent::_dcVoltageProperties;
+gui::Properties IGridComponent::_acVoltageProperties;
 
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
@@ -59,6 +63,26 @@ IGridComponent *IGridComponent::createWire(const gui::Point &initPoint)
     return pComp;
 }
 
+IGridComponent *IGridComponent::createDCVoltage(const gui::Point &initPoint)
+{
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    DCVoltageSourceGridComponent *pComp = new DCVoltageSourceGridComponent(5, startNode, endNode);
+    pComp->init();
+    return pComp;
+}
+
+IGridComponent *IGridComponent::createACVoltage(const gui::Point &initPoint)
+{
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    ACVoltageSourceGridComponent *pComp = new ACVoltageSourceGridComponent(5, startNode, endNode);
+    pComp->init();
+    return pComp;
+}
+
 IGridComponent *IGridComponent::createNode(const gui::Point &initPoint)
 {
     NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint));
@@ -79,6 +103,10 @@ gui::Properties *IGridComponent::getProperties(IGridComponent::Type gridComponen
         return &_inductorProperties;
     case Type::Wire:
         return &_wireProperties;
+    case Type::DCVoltageSource:
+        return &_dcVoltageProperties;
+    case Type::ACVoltageSource:
+        return &_acVoltageProperties;
     default:
         assert(false);
     }
@@ -115,6 +143,18 @@ void IGridComponent::initProperties()
         WireGridComponent sh(pnC, pnC);
         _wireProperties.reserve(12);
         sh.initProperties(&_wireProperties);
+    }
+
+    {
+        DCVoltageSourceGridComponent sh(0, pnC, pnC);
+        _dcVoltageProperties.reserve(12);
+        sh.initProperties(&_dcVoltageProperties);
+    }
+
+    {
+        ACVoltageSourceGridComponent sh(0, pnC, pnC);
+        _acVoltageProperties.reserve(12);
+        sh.initProperties(&_acVoltageProperties);
     }
 }
 
