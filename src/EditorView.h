@@ -37,7 +37,7 @@ protected:
     GridModel _model;
     GridComponent *_pCreatingComponent = nullptr;
     // 0: not selected, 1: startNode selected, 2: endNode selected
-    int selectedNode = 0;
+    int _selectedNode = 0;
     gui::PropertyEditorSwitcher *_pPropSwitcher = nullptr;
     gui::Point _lastMouseClickPoint;
     LastEvent _lastEvent = LastEvent::None;
@@ -145,14 +145,14 @@ protected:
         case IGridComponent::Tool::Selector:
         {
             GridComponent *pSelected = _model.getSelectedElement(modelPoint);
-            selectedNode = _model.getSelectedNode(modelPoint, pSelected);
+            _selectedNode = _model.getSelectedNode(modelPoint, pSelected);
             if (!pSelected)
             {
                 _model.clearSelected();
                 _pPropSwitcher->showView(0);
                 reDraw();
             }
-            else if (selectedNode != 0)
+            else if (_selectedNode != 0)
             {
                 _model.clearSelected();
                 _model.selectComponent(pSelected);
@@ -271,7 +271,6 @@ protected:
 
     void onPrimaryButtonReleased(const gui::InputDevice &inputDevice) override
     {
-        selectedNode = 0;
         cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
         if (_lastEvent == LastEvent::Drag && !selectedComponents.isEmpty())
         {
@@ -282,7 +281,7 @@ protected:
             _model.updateFloatingNodes();
             reDraw();
         }
-        if (_lastEvent == LastEvent::Drag && _pCreatingComponent)
+        if (_pCreatingComponent)
         {
             _pCreatingComponent->snapToGrid();
             if (!_pCreatingComponent->hasLength())
@@ -290,6 +289,18 @@ protected:
             _model.updateFloatingNodes();
             reDraw();
         }
+        if (_selectedNode != 0)
+        {
+            GridComponent *pC = selectedComponents[0];
+            if (!pC->hasLength())
+            {
+                _model.remove(pC);
+                _model.updateFloatingNodes();
+                _pPropSwitcher->showView(0);
+                reDraw();
+            }
+        }
+        _selectedNode = 0;
         _pCreatingComponent = nullptr;
         _lastEvent = LastEvent::None;
     }
@@ -344,14 +355,14 @@ protected:
             return;
         gui::Point delta(modelPoint.x - _lastMouseClickPoint.x, modelPoint.y - _lastMouseClickPoint.y);
 
-        if (selectedNode == 0)
+        if (_selectedNode == 0)
         {
             for (GridComponent *pC : selectedComponents)
             {
                 pC->translate(delta);
             }
         }
-        else if (selectedNode == 1)
+        else if (_selectedNode == 1)
         {
             GridComponent *pC = selectedComponents[0];
             pC->updateStartPoint(pC->getStartPoint() + delta);
