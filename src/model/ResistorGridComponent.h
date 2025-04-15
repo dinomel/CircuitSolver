@@ -121,7 +121,7 @@ public:
             prop.set((td::UINT4)PropID::Reactance, "Reactance", valR);
         }
 
-        initNodesProperties(properties);
+        GridComponent::initProperties(properties);
     }
 
     void getValues(gui::PropertyValues &propValues) const override
@@ -133,7 +133,7 @@ public:
         td::Variant valX(_resistor.reactance);
         propValues.setValueByKey((td::UINT4)PropID::Reactance, valX);
 
-        getNodesValues(propValues);
+        GridComponent::getValues(propValues);
     }
 
     void setValues(gui::PropertyValues &propValues) override
@@ -144,11 +144,6 @@ public:
         td::Variant reactance = propValues.getValueByKey((td::UINT4)PropID::Reactance);
         reactance.getValue(_resistor.reactance);
 
-        setNodesValues(propValues);
-
-        propValues.setUpdateCanvas(true);
-        startNode->updateShape();
-        endNode->updateShape();
-        updateShape();
+        GridComponent::setValues(propValues);
     }
 };

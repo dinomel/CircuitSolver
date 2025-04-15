@@ -106,7 +106,7 @@ public:
             prop.set((td::UINT4)PropID::Capacitance, "Capacitance", valC);
         }
 
-        initNodesProperties(properties);
+        GridComponent::initProperties(properties);
     }
 
     void getValues(gui::PropertyValues &propValues) const override
@@ -115,7 +115,7 @@ public:
         td::Variant valC(_capacitor.capacitance);
         propValues.setValueByKey((td::UINT4)PropID::Capacitance, valC);
 
-        getNodesValues(propValues);
+        GridComponent::getValues(propValues);
     }
 
     void setValues(gui::PropertyValues &propValues) override
@@ -123,11 +123,6 @@ public:
         td::Variant capacitance = propValues.getValueByKey((td::UINT4)PropID::Capacitance);
         capacitance.getValue(_capacitor.capacitance);
 
-        setNodesValues(propValues);
-
-        propValues.setUpdateCanvas(true);
-        startNode->updateShape();
-        endNode->updateShape();
-        updateShape();
+        GridComponent::setValues(propValues);
     }
 };

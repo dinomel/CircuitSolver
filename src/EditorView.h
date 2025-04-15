@@ -282,13 +282,13 @@ protected:
         const gui::Point &modelPoint = inputDevice.getModelPoint();
 
         GridComponent *pSelected = _model.getSelectedElement(modelPoint);
-        
+
         if (!pSelected)
             return;
 
         bool isSelected = _model.selectedGridComponents.find(pSelected) != -1;
 
-        if(!isSelected)
+        if (!isSelected)
         {
             _model.clearSelected();
             _model.selectComponent(pSelected);
@@ -435,7 +435,7 @@ protected:
 
 public:
     EditorView()
-        : gui::Canvas({gui::InputDevice::Event::CursorShape, gui::InputDevice::Event::PrimaryClicks, gui::InputDevice::Event::SecondaryClicks, gui::InputDevice::Event::CursorMove, gui::InputDevice::Event::CursorDrag, gui::InputDevice::Event::Zoom, gui::InputDevice::Event::Keyboard}), _callBackDeleteSelectedShape(std::bind(&EditorView::checkDeleteSelectedAnswer, this, std::placeholders::_1))
+        : gui::Canvas({gui::InputDevice::Event::CursorShape, gui::InputDevice::Event::PrimaryClicks, gui::InputDevice::Event::SecondaryClicks, gui::InputDevice::Event::CursorDrag, gui::InputDevice::Event::Zoom, gui::InputDevice::Event::Keyboard}), _callBackDeleteSelectedShape(std::bind(&EditorView::checkDeleteSelectedAnswer, this, std::placeholders::_1))
     {
         //        setCursor(gui::Cursor::Type::Default);
     }

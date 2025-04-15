@@ -10,6 +10,7 @@
 #include "NodeGridComponent.h"
 #include "CoordinatePoint.h"
 #include "../core/Component.h"
+#include <iostream>
 
 extern const int gridSize;
 
@@ -19,6 +20,12 @@ class GridComponent : public IGridComponent
 protected:
     double _width;
     double _height;
+//    std::complex<double> _current;
+//    std::complex<double> _voltage;
+//    std::complex<double> _power;
+    double _current;
+    double _voltage;
+    double _power;
 
 public:
     NodeGridComponent *startNode;
@@ -40,6 +47,9 @@ public:
         Reactance,
         Inductance,
         Capacitance,
+        ResI,
+        ResVd,
+        ResP,
     };
 
     void getBoundingRect(gui::Rect &boundRect) override
@@ -181,10 +191,7 @@ public:
     {
     }
 
-    virtual void initProperties(gui::Properties *properties) const = 0;
-
-    void initNodesProperties(gui::Properties *properties) const
-    {
+    virtual void initProperties(gui::Properties *properties) const {
         // group
         {
             auto &prop = properties->push_back();
@@ -224,9 +231,42 @@ public:
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::Y2, "Y", val);
         }
-    }
+        
+        // group
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup("Result values");
+            std::cout<<"Result values: "<<(int)prop.getType()<<std::endl;
+//            prop.setReadOnly();
+        }
 
-    void getNodesValues(gui::PropertyValues &propValues) const
+        val = td::Variant(_current);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::ResI, "I", val);
+            prop.setReadOnly();
+            std::cout<<"ResI value: "<<(int)prop.getType()<<std::endl;
+        }
+        
+        val = td::Variant(_voltage);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::ResVd, "Vd", val);
+            prop.setReadOnly();
+            std::cout<<"ResVd values: "<<(int)prop.getType()<<std::endl;
+        }
+        
+        val = td::Variant(_power);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::ResP, "P", val);
+            prop.setReadOnly();
+            std::cout<<"ResP values: "<<(int)prop.getType()<<std::endl;
+        }
+        
+    }
+    
+    virtual void getValues(gui::PropertyValues& propValues) const override
     {
         CoordinatePoint startCoordinate = getStartCoordinate();
         CoordinatePoint endCoordinate = getEndCoordinate();
@@ -242,9 +282,18 @@ public:
 
         td::Variant y2(endCoordinate.getY());
         propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
-    }
 
-    void setNodesValues(gui::PropertyValues &propValues)
+        td::Variant resI(_current);
+        propValues.setValueByKey((td::UINT4)PropID::ResI, resI);
+
+        td::Variant resVd(_voltage);
+        propValues.setValueByKey((td::UINT4)PropID::ResVd, resVd);
+
+        td::Variant resP(_power);
+        propValues.setValueByKey((td::UINT4)PropID::ResP, resP);
+    }
+    
+    virtual void setValues(gui::PropertyValues& propValues) override
     {
         td::Variant x1 = propValues.getValueByKey((td::UINT4)PropID::X1);
         int startNodeX = 0;
@@ -265,5 +314,10 @@ public:
         int endNodeY = 0;
         y2.getValue(endNodeY);
         endNode->centerPoint.y = endNodeY * gridSize;
+        
+        propValues.setUpdateCanvas(true);
+        startNode->updateShape();
+        endNode->updateShape();
+        updateShape();
     }
 };

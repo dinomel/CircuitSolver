@@ -42,30 +42,6 @@ public:
 
     void updateShape() override
     {
-        gui::Point points[] = {
-            getStartPoint(),
-            getEndPoint(),
-        };
-        _shape.createLines(&points[0], 2);
-    }
-
-    void initProperties(gui::Properties *properties) const override
-    {
-        initNodesProperties(properties);
-    }
-
-    void getValues(gui::PropertyValues &propValues) const override
-    {
-        getNodesValues(propValues);
-    }
-
-    void setValues(gui::PropertyValues &propValues) override
-    {
-        setNodesValues(propValues);
-
-        propValues.setUpdateCanvas(true);
-        startNode->updateShape();
-        endNode->updateShape();
-        updateShape();
+        init();
     }
 };

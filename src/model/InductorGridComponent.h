@@ -199,7 +199,7 @@ public:
             prop.set((td::UINT4)PropID::Inductance, "Inductance", valL);
         }
 
-        initNodesProperties(properties);
+        GridComponent::initProperties(properties);
     }
 
     void getValues(gui::PropertyValues &propValues) const override
@@ -208,7 +208,7 @@ public:
         td::Variant valL(_inductor.inductance);
         propValues.setValueByKey((td::UINT4)PropID::Inductance, valL);
 
-        getNodesValues(propValues);
+        GridComponent::getValues(propValues);
     }
 
     void setValues(gui::PropertyValues &propValues) override
@@ -216,11 +216,6 @@ public:
         td::Variant inductance = propValues.getValueByKey((td::UINT4)PropID::Inductance);
         inductance.getValue(_inductor.inductance);
 
-        setNodesValues(propValues);
-
-        propValues.setUpdateCanvas(true);
-        startNode->updateShape();
-        endNode->updateShape();
-        updateShape();
+        GridComponent::setValues(propValues);
     }
 };
