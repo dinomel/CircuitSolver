@@ -13,13 +13,11 @@
 class ACVoltageSourceGridComponent : public GridComponent
 {
 protected:
-    gui::Shape _shapeTest1;
-    gui::Shape _shapeTest2;
     ACVoltageSource _acVoltageSource;
 
 public:
     ACVoltageSourceGridComponent(double voltage, NodeGridComponent *startNode, NodeGridComponent *endNode)
-        : GridComponent(startNode, endNode, 40, 40), _acVoltageSource(voltage)
+        : GridComponent(startNode, endNode, 40, 40, 2), _acVoltageSource(voltage)
     {
     }
 
@@ -33,79 +31,47 @@ public:
         return Type::ACVoltageSource;
     }
 
-    void draw() const override
-    {
-        _shapeTest1.drawWire(td::ColorID::Yellow);
-        _shapeTest2.drawWire(td::ColorID::Yellow);
-        GridComponent::draw();
-    }
-
     void init() override
     {
-        gui::Point points[] = {
-            getStartPoint(),
-            getEndPoint(),
-            getStartPoint(),
-            getEndPoint(),
-        };
-        _shapeTest1.createLines(&points[0], 4);
+        GridComponent::init();
 
         gui::Circle circle(getStartPoint(), _width / 2);
-        _shape.createCircle(circle);
+        _componentShapes[0].createCircle(circle);
 
         double x = getStartPoint().x;
         double y = getStartPoint().y;
-        gui::Point points2[] = {
+        gui::Point points[] = {
             {x - _width / 4, y},
             {x - _width / 8, y - _width / 4},
             {x + _width / 8, y + _width / 4},
             {x + _width / 4, y},
         };
-        _shapeTest2.createPolyLine(&points2[0], 4);
+        _componentShapes[1].createPolyLine(&points[0], 4);
     }
 
     void updateShape() override
     {
-        double x_A = getStartPoint().x;
-        double y_A = getStartPoint().y;
-        double x_B = getEndPoint().x;
-        double y_B = getEndPoint().y;
+        auto [point_D, point_E, theta] = updateWiresShape();
+        double x_D = point_D.x;
+        double y_D = point_D.y;
+        double x_E = point_E.x;
+        double y_E = point_E.y;
 
-        double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
-        double d_AD = (d_AB - _width) / 2;
-        double theta = std::atan2(y_B - y_A, x_B - x_A);
-        double sTheta = sin(theta);
-        double cTheta = cos(theta);
-
-        double x_C = (x_A + x_B) / 2;
-        double y_C = (y_A + y_B) / 2;
-        double x_D = x_A + d_AD * cTheta;
-        double y_D = y_A + d_AD * sTheta;
-        double x_E = x_B - d_AD * cTheta;
-        double y_E = y_B - d_AD * sTheta;
+        double x_C = (x_D + x_E) / 2;
+        double y_C = (y_D + y_E) / 2;
 
         gui::Point point_C(x_C, y_C);
-        gui::Point point_D(x_D, y_D);
-        gui::Point point_E(x_E, y_E);
-
-        gui::Point points[] = {
-            getStartPoint(),
-            point_D,
-            point_E,
-            getEndPoint(),
-        };
-        _shapeTest1.createLines(&points[0], 4);
 
         gui::Circle circle(point_C, _width / 2);
-        _shape.updateCircleNodes(circle);
+        _componentShapes[0].updateCircleNodes(circle);
 
-        gui::Point points2[] = {
+        gui::Point points[] = {
             {x_C - _width / 4, y_C},
             {x_C - _width / 8, y_C - _width / 4},
             {x_C + _width / 8, y_C + _width / 4},
             {x_C + _width / 4, y_C},
         };
-        _shapeTest2.createPolyLine(&points2[0], 4);
+        _componentShapes[1].createPolyLine(&points[0], 4);
     }
 
     void initProperties(gui::Properties *properties) const override

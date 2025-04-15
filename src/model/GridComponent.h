@@ -6,10 +6,12 @@
 //
 
 #pragma once
+#include <gui/Shape.h>
 #include "IGridComponent.h"
 #include "NodeGridComponent.h"
 #include "CoordinatePoint.h"
 #include "../core/Component.h"
+#include <iostream>
 
 extern const int gridSize;
 
@@ -17,6 +19,8 @@ class GridComponent : public IGridComponent
 {
 
 protected:
+    gui::Shape _wiresShape;
+    std::vector<gui::Shape> _componentShapes;
     double _width;
     double _height;
     //    std::complex<double> _current;
@@ -31,8 +35,8 @@ public:
     NodeGridComponent *endNode;
 
 public:
-    GridComponent(NodeGridComponent *startNode, NodeGridComponent *endNode, double width, double height)
-        : _width(width), _height(height), startNode(startNode), endNode(endNode)
+    GridComponent(NodeGridComponent *startNode, NodeGridComponent *endNode, double width, double height, int nShapes = 1)
+        : _width(width), _height(height), startNode(startNode), endNode(endNode), _componentShapes(nShapes)
     {
     }
 
@@ -89,9 +93,54 @@ public:
 
     virtual Component *getComponent() = 0;
 
+    void init() override
+    {
+        gui::Point points[] = {
+            getStartPoint(),
+            getEndPoint(),
+            getStartPoint(),
+            getEndPoint(),
+        };
+        _wiresShape.createLines(&points[0], 4);
+    }
+
+    std::tuple<gui::Point, gui::Point, double> updateWiresShape()
+    {
+        double x_A = getStartPoint().x;
+        double y_A = getStartPoint().y;
+        double x_B = getEndPoint().x;
+        double y_B = getEndPoint().y;
+
+        double d_AB = std::sqrt((x_B - x_A) * (x_B - x_A) + (y_B - y_A) * (y_B - y_A));
+        double d_AD = (d_AB - _width) / 2;
+        double theta = std::atan2(y_B - y_A, x_B - x_A);
+        double sTheta = sin(theta);
+        double cTheta = cos(theta);
+
+        double x_D = x_A + d_AD * cTheta;
+        double y_D = y_A + d_AD * sTheta;
+        double x_E = x_B - d_AD * cTheta;
+        double y_E = y_B - d_AD * sTheta;
+        gui::Point point_D(x_D, y_D);
+        gui::Point point_E(x_E, y_E);
+
+        gui::Point points[] = {
+            getStartPoint(),
+            point_D,
+            point_E,
+            getEndPoint(),
+        };
+        _wiresShape.createLines(&points[0], 4);
+        return {point_D, point_E, theta};
+    }
+
     void draw() const override
     {
-        _shape.drawWire(td::ColorID::Yellow);
+        for (const gui::Shape &shape : _componentShapes)
+        {
+            shape.drawWire(td::ColorID::Yellow);
+        }
+        _wiresShape.drawWire(td::ColorID::Yellow);
         startNode->draw();
         endNode->draw();
     }

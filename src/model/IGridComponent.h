@@ -1,5 +1,4 @@
 #pragma once
-#include <gui/Shape.h>
 #include <arch/ArchiveIn.h>
 #include <arch/ArchiveOut.h>
 #include <gui/Properties.h>
@@ -16,9 +15,6 @@ private:
     static gui::Properties _wireProperties;
     static gui::Properties _dcVoltageProperties;
     static gui::Properties _acVoltageProperties;
-
-protected:
-    gui::Shape _shape;
 
 public:
     enum class Type : unsigned char

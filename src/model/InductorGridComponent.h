@@ -20,7 +20,7 @@ protected:
 
 public:
     InductorGridComponent(double inductance, NodeGridComponent *startNode, NodeGridComponent *endNode)
-        : GridComponent(startNode, endNode, 48, 16), _inductor(inductance)
+        : GridComponent(startNode, endNode, 48, 16, 0), _inductor(inductance)
     {
     }
 
@@ -66,7 +66,7 @@ public:
             getStartPoint(),
             getEndPoint(),
         };
-        _shape.createLines(&points[0], 28);
+        _wiresShape.createLines(&points[0], 28);
     }
 
     void updateShape() override
@@ -182,7 +182,7 @@ public:
             point_E,
             getEndPoint(),
         };
-        _shape.createLines(&points[0], 28);
+        _wiresShape.createLines(&points[0], 28);
     }
 
     void initProperties(gui::Properties *properties) const override

@@ -17,7 +17,7 @@ protected:
 
 public:
     WireGridComponent(NodeGridComponent *startNode, NodeGridComponent *endNode)
-        : GridComponent(startNode, endNode, 0, 0)
+        : GridComponent(startNode, endNode, 0, 0, 0)
     {
     }
 
@@ -37,7 +37,7 @@ public:
             getStartPoint(),
             getEndPoint(),
         };
-        _shape.createLines(&points[0], 2);
+        _wiresShape.createLines(&points[0], 2);
     }
 
     void updateShape() override

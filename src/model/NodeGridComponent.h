@@ -6,11 +6,13 @@
 //
 
 #pragma once
+#include <gui/Shape.h>
 #include "IGridComponent.h"
 
 class NodeGridComponent : public IGridComponent
 {
     const double _nodeRadius = 1.5;
+    gui::Shape _nodeShape;
 
 public:
     gui::Point centerPoint;
@@ -30,7 +32,7 @@ public:
     void draw() const override
     {
         td::ColorID nodeColor = isFloating ? td::ColorID::Red : td::ColorID::Yellow;
-        _shape.drawFillAndWire(nodeColor, nodeColor);
+        _nodeShape.drawFillAndWire(nodeColor, nodeColor);
     }
 
     void getBoundingRect(gui::Rect &boundRect) override
@@ -59,7 +61,7 @@ public:
     void init() override
     {
         gui::Circle circle(centerPoint, _nodeRadius);
-        _shape.createCircle(circle);
+        _nodeShape.createCircle(circle);
     }
 
     void translate(const gui::Point &delta) override
@@ -72,7 +74,7 @@ public:
     void updateShape() override
     {
         gui::Circle circle(centerPoint, _nodeRadius);
-        _shape.updateCircleNodes(circle);
+        _nodeShape.updateCircleNodes(circle);
     }
 
     double distanceToPointSquared(const gui::Point &pt) const override
