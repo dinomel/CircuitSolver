@@ -10,5 +10,8 @@
 		<Res id="resistor" path=":components/resistor.xml"/>
 		<Res id="inductor" path=":components/inductor.xml"/>
 		<Res id="wire" path=":components/wire.xml"/>
+		<Res id="current_source" path=":components/current_source.xml"/>
+		<Res id="dc_voltage_source" path=":components/dc_voltage_source.xml"/>
+		<Res id="ac_voltage_source" path=":components/ac_voltage_source.xml"/>
 	</Symbols>
 </DevRes>

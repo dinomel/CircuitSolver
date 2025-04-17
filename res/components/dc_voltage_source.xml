@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Symbol name="DCVoltageSource" type="OneConnectionOneGroup">
+	<Group name="G0" x="0" y="0">
+		<Lines lineWidth="1" lineStyle="Solid" lineColor="SysText">
+			<Line x1="-20" y1="0" x2="-4" y2="0"/>
+			<Line x1="-4" y1="-6" x2="-4" y2="6"/>
+			<Line x1="4" y1="-12" x2="4" y2="12"/>
+			<Line x1="4" y1="0" x2="20" y2="0"/>
+		</Lines>
+	</Group>
+</Symbol>

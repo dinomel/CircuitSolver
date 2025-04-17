@@ -19,7 +19,7 @@ class SymbolsPopover : public gui::SymbolPopoverView
 
 public:
     SymbolsPopover()
-        : SymbolPopoverView(gui::PopoverView::Type::SymbolOnly, 4, 4), _pointer(":pointer"), _wire(":wire"), _resistor(":resistor"), _capacitor(":capacitor"), _inductor(":inductor"), _dcVoltage(":inductor"), _acVoltage(":inductor"), _current(":inductor")
+        : SymbolPopoverView(gui::PopoverView::Type::SymbolOnly, 4, 4), _pointer(":pointer"), _wire(":wire"), _resistor(":resistor"), _capacitor(":capacitor"), _inductor(":inductor"), _dcVoltage(":dc_voltage_source"), _acVoltage(":ac_voltage_source"), _current(":current_source")
     {
         gui::Symbol *nullSymbol = nullptr;
         addItem(&_pointer, nullSymbol, tr("pointer"), tr("pointerTT"), false, 0);

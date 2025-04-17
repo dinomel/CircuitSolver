@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Symbol name="ACVoltageSource" type="OneConnectionOneGroup">
+	<Group name="G0" x="0" y="0">
+		<Circle x="0" y="0" r="16" lineWidth="1" lineStyle="Solid" lineColor="SysText"/>
+		<Arc x="-4" y="0" r="4" fromAngle="180" toAngle="0" lineWidth="1" lineStyle="Solid" lineColor="SysText"/>
+		<Arc x="4" y="0" r="4" fromAngle="0" toAngle="180" lineWidth="1" lineStyle="Solid" lineColor="SysText"/>
+		<Circle x="16" y="-16" r="1" lineWidth="1" lineStyle="Solid" lineColor="SysText"/>
+		<Lines lineWidth="1" lineStyle="Solid" lineColor="SysText">
+			<Line x1="-20" y1="0" x2="-16" y2="0"/>
+			<Line x1="16" y1="0" x2="20" y2="0"/>
+		</Lines>
+	</Group>
+</Symbol>
