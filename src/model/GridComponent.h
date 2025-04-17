@@ -52,6 +52,7 @@ public:
         Capacitance,
         MaxVoltage,
         Voltage,
+        Current,
         ResI,
         ResVd,
         ResP,

@@ -15,6 +15,7 @@ private:
     static gui::Properties _wireProperties;
     static gui::Properties _dcVoltageProperties;
     static gui::Properties _acVoltageProperties;
+    static gui::Properties _currentProperties;
 
 public:
     enum class Type : unsigned char
@@ -25,6 +26,7 @@ public:
         Inductor,
         DCVoltageSource,
         ACVoltageSource,
+        CurrentSource,
         Node,
     };
     enum class Tool
@@ -36,6 +38,7 @@ public:
         AddInductor,
         AddDCVoltageSource,
         AddACVoltageSource,
+        AddCurrentSource,
     };
 
     IGridComponent()
@@ -73,6 +76,8 @@ public:
 
     static IGridComponent *createACVoltage(const gui::Point &initPoint);
 
+    static IGridComponent *createCurrent(const gui::Point &initPoint);
+
     static IGridComponent *createNode(const gui::Point &initPoint);
 
     static IGridComponent *createGridComponent(const gui::Point &initPoint, Tool tool)
@@ -91,6 +96,8 @@ public:
             return createDCVoltage(initPoint);
         case Tool::AddACVoltageSource:
             return createACVoltage(initPoint);
+        case Tool::AddCurrentSource:
+            return createCurrent(initPoint);
         default:
             return nullptr;
         }

@@ -211,6 +211,7 @@ protected:
         case IGridComponent::Tool::AddInductor:
         case IGridComponent::Tool::AddDCVoltageSource:
         case IGridComponent::Tool::AddACVoltageSource:
+        case IGridComponent::Tool::AddCurrentSource:
         {
             IGridComponent *iGridComp = IGridComponent::createGridComponent(modelPoint, IGridComponent::currentTool);
 

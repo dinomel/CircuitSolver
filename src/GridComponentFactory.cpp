@@ -5,6 +5,7 @@
 #include "model/WireGridComponent.h"
 #include "model/DCVoltageSourceGridComponent.h"
 #include "model/ACVoltageSourceGridComponent.h"
+#include "model/CurrentSourceGridComponent.h"
 #include <gui/Properties.h>
 
 int Component::nextID = 0;
@@ -20,6 +21,7 @@ gui::Properties IGridComponent::_inductorProperties;
 gui::Properties IGridComponent::_wireProperties;
 gui::Properties IGridComponent::_dcVoltageProperties;
 gui::Properties IGridComponent::_acVoltageProperties;
+gui::Properties IGridComponent::_currentProperties;
 
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
@@ -83,6 +85,16 @@ IGridComponent *IGridComponent::createACVoltage(const gui::Point &initPoint)
     return pComp;
 }
 
+IGridComponent *IGridComponent::createCurrent(const gui::Point &initPoint)
+{
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+
+    CurrentSourceGridComponent *pComp = new CurrentSourceGridComponent(5, startNode, endNode);
+    pComp->init();
+    return pComp;
+}
+
 IGridComponent *IGridComponent::createNode(const gui::Point &initPoint)
 {
     NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint));
@@ -107,6 +119,8 @@ gui::Properties *IGridComponent::getProperties(IGridComponent::Type gridComponen
         return &_dcVoltageProperties;
     case Type::ACVoltageSource:
         return &_acVoltageProperties;
+    case Type::CurrentSource:
+        return &_currentProperties;
     default:
         assert(false);
     }
@@ -155,6 +169,12 @@ void IGridComponent::initProperties()
         ACVoltageSourceGridComponent sh(0, pnC, pnC);
         _acVoltageProperties.reserve(12);
         sh.initProperties(&_acVoltageProperties);
+    }
+
+    {
+        CurrentSourceGridComponent sh(0, pnC, pnC);
+        _currentProperties.reserve(12);
+        sh.initProperties(&_currentProperties);
     }
 }
 
