@@ -23,7 +23,7 @@ protected:
 
 public:
     PropertyEditors()
-        : gui::PropertyEditorSwitcher(4), _wirePropEditor("Wire", IGridComponent::getProperties(IGridComponent::Type::Wire)), _resistorPropEditor("Resistor", IGridComponent::getProperties(IGridComponent::Type::Resistor)), _capacitorPropEditor("Capacitor", IGridComponent::getProperties(IGridComponent::Type::Capacitor)), _inductorPropEditor("Inductor", IGridComponent::getProperties(IGridComponent::Type::Inductor)), _dcVoltagePropEditor("DC Voltage", IGridComponent::getProperties(IGridComponent::Type::DCVoltageSource)), _acVoltagePropEditor("AC Voltage", IGridComponent::getProperties(IGridComponent::Type::ACVoltageSource)), _currentPropEditor("Current", IGridComponent::getProperties(IGridComponent::Type::CurrentSource)), _groundPropEditor("Ground", IGridComponent::getProperties(IGridComponent::Type::Ground))
+        : gui::PropertyEditorSwitcher(9), _wirePropEditor("Wire", IGridComponent::getProperties(IGridComponent::Type::Wire)), _resistorPropEditor("Resistor", IGridComponent::getProperties(IGridComponent::Type::Resistor)), _capacitorPropEditor("Capacitor", IGridComponent::getProperties(IGridComponent::Type::Capacitor)), _inductorPropEditor("Inductor", IGridComponent::getProperties(IGridComponent::Type::Inductor)), _dcVoltagePropEditor("DC Voltage", IGridComponent::getProperties(IGridComponent::Type::DCVoltageSource)), _acVoltagePropEditor("AC Voltage", IGridComponent::getProperties(IGridComponent::Type::ACVoltageSource)), _currentPropEditor("Current", IGridComponent::getProperties(IGridComponent::Type::CurrentSource)), _groundPropEditor("Ground", IGridComponent::getProperties(IGridComponent::Type::Ground))
     {
         //        setMargins(0, 0, 15, 5);
         addView(&_defaultPropEditor);
