@@ -133,8 +133,8 @@ gui::Properties *IGridComponent::getProperties(IGridComponent::Type gridComponen
         return &_acVoltageProperties;
     case Type::CurrentSource:
         return &_currentProperties;
-        case Type::Ground:
-            return &_groundProperties;
+    case Type::Ground:
+        return &_groundProperties;
     default:
         assert(false);
     }

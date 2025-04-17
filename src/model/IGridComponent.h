@@ -82,7 +82,7 @@ public:
     static IGridComponent *createCurrent(const gui::Point &initPoint);
 
     static IGridComponent *createNode(const gui::Point &initPoint);
-    
+
     static IGridComponent *createGround(const gui::Point &initPoint);
 
     static IGridComponent *createGridComponent(const gui::Point &initPoint, Tool tool)

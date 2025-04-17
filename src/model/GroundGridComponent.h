@@ -27,7 +27,7 @@ public:
     {
         return Type::Ground;
     }
-    
+
     void draw() const override
     {
         for (const gui::Shape &shape : _componentShapes)
@@ -67,7 +67,7 @@ public:
         double y_D = y_B - _width * sTheta;
         double x_C = (x_D + x_B) / 2;
         double y_C = (y_D + y_B) / 2;
-        
+
         gui::Point point_D(x_D, y_D);
 
         gui::Point wirePoints[] = {
@@ -79,17 +79,17 @@ public:
         double halfHeight = _height / 2;
         double eightHeight = _height / 8;
         double middleLength = 5 * _height / 16;
-        
+
         double x_G = x_D + halfHeight * sTheta;
         double y_G = y_D - halfHeight * cTheta;
         double x_F = x_D - halfHeight * sTheta;
         double y_F = y_D + halfHeight * cTheta;
-        
+
         double x_I = x_B + eightHeight * sTheta;
         double y_I = y_B - eightHeight * cTheta;
         double x_H = x_B - eightHeight * sTheta;
         double y_H = y_B + eightHeight * cTheta;
-        
+
         double x_J = x_C + middleLength * sTheta;
         double y_J = y_C - middleLength * cTheta;
         double x_K = x_C - middleLength * sTheta;

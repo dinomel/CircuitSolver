@@ -46,14 +46,13 @@ public:
         for (GridComponent *pC : _gridComponents)
         {
             ++nodePointsRepetition[pC->getStartCoordinate()];
-            if(pC->getType() != IGridComponent::Type::Ground)
+            if (pC->getType() != IGridComponent::Type::Ground)
                 ++nodePointsRepetition[pC->getEndCoordinate()];
-            
         }
         for (GridComponent *pC : _gridComponents)
         {
             pC->startNode->updateIsFloating(nodePointsRepetition[pC->getStartCoordinate()] < 2);
-            if(pC->getType() != IGridComponent::Type::Ground)
+            if (pC->getType() != IGridComponent::Type::Ground)
                 pC->endNode->updateIsFloating(nodePointsRepetition[pC->getEndCoordinate()] < 2);
         }
     }
