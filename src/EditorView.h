@@ -18,6 +18,7 @@
 #include <gui/PropertyEditorSwitcher.h>
 #include <iostream>
 #include "model/GridComponent.h"
+#include "SolverTesting.h"
 
 // global parameters
 extern DefaultSettings g_defaultSettings;
@@ -354,56 +355,81 @@ protected:
         switch (key.getChar())
         {
         case ' ':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::Selector;
             _symbolsPopover->setCurrentSelection(0);
             updateCursor();
-            break;
+        }
+        break;
         case 'w':
         case 'W':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddWire;
             _symbolsPopover->setCurrentSelection(1);
             updateCursor();
-            break;
+        }
+        break;
         case 'r':
         case 'R':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddResistor;
             _symbolsPopover->setCurrentSelection(2);
             updateCursor();
-            break;
+        }
+        break;
         case 'c':
         case 'C':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddCapacitor;
             _symbolsPopover->setCurrentSelection(3);
             updateCursor();
-            break;
+        }
+        break;
         case 'l':
         case 'L':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddInductor;
             _symbolsPopover->setCurrentSelection(4);
             updateCursor();
-            break;
+        }
+        break;
         case 'v':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddDCVoltageSource;
             _symbolsPopover->setCurrentSelection(5);
             updateCursor();
-            break;
+        }
+        break;
         case 'V':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddACVoltageSource;
             _symbolsPopover->setCurrentSelection(6);
             updateCursor();
-            break;
+        }
+        break;
         case 'i':
         case 'I':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddCurrentSource;
             _symbolsPopover->setCurrentSelection(7);
             updateCursor();
-            break;
+        }
+        break;
         case 'g':
         case 'G':
+        {
             IGridComponent::currentTool = IGridComponent::Tool::AddGround;
             _symbolsPopover->setCurrentSelection(8);
             updateCursor();
-            break;
+        }
+        break;
+
+        case 's':
+        {
+            SolverTesting st = SolverTesting(_model.getGridComponents());
+            st.printMST();
+        }
+        break;
         }
 
         if (!selectedComponents.isEmpty())

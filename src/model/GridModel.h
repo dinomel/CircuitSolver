@@ -39,6 +39,16 @@ public:
     {
         clean();
     }
+    
+    const cnt::PushBackVector<GridComponent *, 1024> &getGridComponents() const
+    {
+        return _gridComponents;
+    }
+    
+    const gui::Size &getModelSize() const
+    {
+        return _modelSize;
+    }
 
     void updateFloatingNodes() const
     {
@@ -195,11 +205,6 @@ public:
         //            return false;
         //        }
         return true;
-    }
-
-    const gui::Size &getModelSize() const
-    {
-        return _modelSize;
     }
 
     // 0: not selected, 1: startNode selected, 2: endNode selected
