@@ -18,7 +18,7 @@
 #include <gui/PropertyEditorSwitcher.h>
 #include <iostream>
 #include "model/GridComponent.h"
-#include "SolverTesting.h"
+#include "CircuitSolver.h"
 
 // global parameters
 extern DefaultSettings g_defaultSettings;
@@ -426,7 +426,7 @@ protected:
 
         case 's':
         {
-            SolverTesting st = SolverTesting(_model.getGridComponents());
+            CircuitSolver st = CircuitSolver(_model.getGridComponents());
             st.printMST();
         }
         break;
