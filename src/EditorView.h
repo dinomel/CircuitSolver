@@ -42,6 +42,7 @@ protected:
     gui::Point _lastMouseClickPoint;
     LastEvent _lastEvent = LastEvent::None;
     gui::Alert::CallBack _callBackDeleteSelectedShape;
+    SymbolsPopover *_symbolsPopover;
 
 protected:
     void updatePropertyValues()
@@ -350,6 +351,61 @@ protected:
     {
         cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
 
+        switch (key.getChar())
+        {
+        case ' ':
+            IGridComponent::currentTool = IGridComponent::Tool::Selector;
+            _symbolsPopover->setCurrentSelection(0);
+            updateCursor();
+            break;
+        case 'w':
+        case 'W':
+            IGridComponent::currentTool = IGridComponent::Tool::AddWire;
+            _symbolsPopover->setCurrentSelection(1);
+            updateCursor();
+            break;
+        case 'r':
+        case 'R':
+            IGridComponent::currentTool = IGridComponent::Tool::AddResistor;
+            _symbolsPopover->setCurrentSelection(2);
+            updateCursor();
+            break;
+        case 'c':
+        case 'C':
+            IGridComponent::currentTool = IGridComponent::Tool::AddCapacitor;
+            _symbolsPopover->setCurrentSelection(3);
+            updateCursor();
+            break;
+        case 'l':
+        case 'L':
+            IGridComponent::currentTool = IGridComponent::Tool::AddInductor;
+            _symbolsPopover->setCurrentSelection(4);
+            updateCursor();
+            break;
+        case 'v':
+            IGridComponent::currentTool = IGridComponent::Tool::AddDCVoltageSource;
+            _symbolsPopover->setCurrentSelection(5);
+            updateCursor();
+            break;
+        case 'V':
+            IGridComponent::currentTool = IGridComponent::Tool::AddACVoltageSource;
+            _symbolsPopover->setCurrentSelection(6);
+            updateCursor();
+            break;
+        case 'i':
+        case 'I':
+            IGridComponent::currentTool = IGridComponent::Tool::AddCurrentSource;
+            _symbolsPopover->setCurrentSelection(7);
+            updateCursor();
+            break;
+        case 'g':
+        case 'G':
+            IGridComponent::currentTool = IGridComponent::Tool::AddGround;
+            _symbolsPopover->setCurrentSelection(8);
+            updateCursor();
+            break;
+        }
+
         if (!selectedComponents.isEmpty())
         {
             double mult = 1;
@@ -413,8 +469,10 @@ protected:
             break;
             case gui::Key::Virtual::Delete:
             case gui::Key::Virtual::NumDelete:
+            case gui::Key::Virtual::Esc:
+            {
                 showYesNoQuestionAsync(&_callBackDeleteSelectedShape, tr("DelShape"), tr("SureDelShape"), tr("Yes"), tr("No"));
-                break;
+            }
             default:
                 break;
             }
@@ -427,6 +485,11 @@ public:
         : gui::Canvas({gui::InputDevice::Event::CursorShape, gui::InputDevice::Event::PrimaryClicks, gui::InputDevice::Event::SecondaryClicks, gui::InputDevice::Event::CursorDrag, gui::InputDevice::Event::Zoom, gui::InputDevice::Event::Keyboard}), _callBackDeleteSelectedShape(std::bind(&EditorView::checkDeleteSelectedAnswer, this, std::placeholders::_1))
     {
         //        setCursor(gui::Cursor::Type::Default);
+    }
+
+    void setSymbolsPopover(SymbolsPopover *popover)
+    {
+        _symbolsPopover = popover;
     }
 
     const GridModel *getModel() const
@@ -466,13 +529,13 @@ public:
     {
         if (IGridComponent::currentTool == IGridComponent::Tool::Selector)
         {
-            setCursor(gui::Cursor::Type::Default);
+            setCursor(gui::Cursor::Type::Default, true);
             //            gui::Cursor cursor = gui::Cursor(gui::Cursor::Type::Default);
             //            cursor.push();
         }
         else
         {
-            setCursor(gui::Cursor::Type::Adder);
+            setCursor(gui::Cursor::Type::Adder, true);
             //            gui::Cursor cursor = gui::Cursor(gui::Cursor::Type::Adder);
             //            cursor.push();
         }

@@ -33,6 +33,9 @@ public:
         _toolBar.forwardMessagesTo(this);
         _toolBar.setIconSize(gui::ToolBar::IconSize::SystemDefault);
 
+        EditorView *pEditor = _view.getEditor();
+        pEditor->setSymbolsPopover(_toolBar.getSymbolsPopover());
+
         setToolBar(_toolBar);
         setCentralView(&_view);
         setContextMenus(&_contextMenus);

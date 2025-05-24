@@ -31,4 +31,9 @@ public:
 
         addItem(&_symbolsPopover, 1024);
     }
+
+    SymbolsPopover *getSymbolsPopover()
+    {
+        return &_symbolsPopover;
+    }
 };
