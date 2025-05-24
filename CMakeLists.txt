@@ -13,6 +13,8 @@ set(WORK_ROOT ${HOME_ROOT}/Work)
 include(${WORK_ROOT}/DevEnv/Common.cmake) 
 #END dio koji ide u sve solutions
 
+include_directories(external/eigen-3.4.0)
+
 include(${WORK_ROOT}/DevEnv/natGUI.cmake)
 
 include(circuitSolver.cmake)

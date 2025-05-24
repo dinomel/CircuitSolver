@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include "Graph.h"
+#include <Eigen/Dense>
 
 class SolverTesting
 {
