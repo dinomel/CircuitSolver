@@ -49,35 +49,16 @@ public:
             if (edgeIsInMST)
                 continue;
 
-            // std::vector<int> konturaTest = graph.findCycle();
-            // std::cout << "konturaTest: ";
-            // for (int j = 0; j < konturaTest.size(); j++)
-            // {
-            //     std::cout << konturaTest[j] << " ";
-            // }
-            // std::cout << std::endl;
-
-            // Dovde u kodu dodje samo ako je graph.edges[i] viseca grana, odnosno nije u MST
-
-            // Vraca vektor edge indexa koji mogu biti negativni i ukoliko jeste, to znaci da je B[.][i] = -1
-            std::vector<int> kontura = graph.findCycle(edges);
+            std::vector<std::pair<int, int>> kontura = graph.findCycle(edges);
 
             B.push_back(std::vector<int>(graph.edgesCount));
 
             std::cout << "Kontura: ";
             for (int j = 0; j < kontura.size(); j++)
             {
-                std::cout << kontura[j] << " ";
-
-                if (kontura[j] < 0)
-                {
-                    B[B.size() - 1][-kontura[j]] = -1;
-                }
-                else
-                {
-                    B[B.size() - 1][kontura[j]] = 1;
-                }
-
+                auto c = kontura[j].second == -1 ? "-" : "";
+                std::cout << c << kontura[j].first << " ";
+                B[B.size() - 1][kontura[j].first] = kontura[j].second;
             }
             
             std::cout << std::endl;

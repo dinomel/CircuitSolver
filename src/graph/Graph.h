@@ -99,51 +99,6 @@ public:
         return mst;
     }
 
-    // bool dfs(int u, int par, std::vector<bool> &visited, std::vector<int> &parent, std::vector<int> &cycle)
-    // {
-    //     visited[u] = true;
-    //     for (int v : adj[u])
-    //     {
-    //         if (!visited[v])
-    //         {
-    //             parent[v] = u;
-    //             if (dfs(v, u, visited, parent, cycle))
-    //                 return true;
-    //         }
-    //         else if (v != par)
-    //         {
-    //             // Found a back edge (cycle)
-    //             cycle.push_back(v);
-    //             int cur = u;
-    //             while (cur != v)
-    //             {
-    //                 cycle.push_back(cur);
-    //                 cur = parent[cur];
-    //             }
-    //             cycle.push_back(v); // close the cycle
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
-
-    // std::vector<int> findCycle()
-    // {
-    //     std::vector<bool> visited(nodesCount, false);
-    //     std::vector<int> parent(nodesCount, -1);
-    //     std::vector<int> cycle;
-    //     for (int i = 0; i < nodesCount; ++i)
-    //     {
-    //         if (!visited[i])
-    //         {
-    //             if (dfs(i, -1, visited, parent, cycle))
-    //                 break;
-    //         }
-    //     }
-
-    //     return cycle;
-    // }
-
     std::vector<std::pair<Edge, int>> findEdgesWithNodeIndex(std::vector<Edge> edges, int edgeIndex, int nodeIndex)
     {
         std::vector<std::pair<Edge, int>> edgesWithNodeIndex = {};
@@ -165,15 +120,15 @@ public:
         return edgesWithNodeIndex;
     }
 
-    std::vector<int> dfsEdges(std::vector<Edge> edges, std::vector<int> prevPath, int nodeIndex)
+    std::vector<std::pair<int, int>> dfsEdges(std::vector<Edge> edges, std::vector<std::pair<int, int>> prevPath, int nodeIndex)
     {
-        std::vector<int> returnPath = std::vector<int>(0);
-        std::vector<std::pair<Edge, int>> edgesAfter = findEdgesWithNodeIndex(edges, abs(prevPath[prevPath.size() - 1]), nodeIndex);
+        std::vector<std::pair<int, int>> returnPath = std::vector<std::pair<int, int>>(0);
+        std::vector<std::pair<Edge, int>> edgesAfter = findEdgesWithNodeIndex(edges, prevPath[prevPath.size() - 1].first, nodeIndex);
 
         for (int i = 0; i < edgesAfter.size(); i++)
         {
-            std::vector<int> path = prevPath;
-            path.push_back(edgesAfter[i].first.index * edgesAfter[i].second);
+            std::vector<std::pair<int, int>> path = prevPath;
+            path.push_back(std::pair<int, int>(edgesAfter[i].first.index, edgesAfter[i].second));
 
             if ((edgesAfter[i].second == 1 && edgesAfter[i].first.endNode == edges[0].startNode) || edgesAfter[i].first.startNode == edges[0].startNode)
                 return path;
@@ -186,61 +141,9 @@ public:
         return returnPath;
     }
 
-    // Vraca vektor edge indexa koji mogu biti negativni i ukoliko jeste, to znaci da je B[.][i] = -1
-    std::vector<int> findCycle(std::vector<Edge> edges)
+    // Vraca vektor parova edge indexa i smjera grane (1 -> isti smjer, -1 -> suprotan)
+    std::vector<std::pair<int, int>> findCycle(std::vector<Edge> edges)
     {
-        std::vector<int> cycle = dfsEdges(edges, {edges[0].index}, edges[0].endNode);
-
-        return cycle;
+        return dfsEdges(edges, {std::pair<int, int>(edges[0].index, 1)}, edges[0].endNode);
     }
-
-    // OVO DOLJE ZAKOMENTARISANO NISTA NE VALJA!! BOLJE GA NI NE GLEDATI NEGO ISPOCETKA! AL ZNACI STVAAARNO NE VALJA..
-
-    // std::vector<Edge> findEdgesWithNodeIndex(std::vector<Edge> edges, int edgeIndex, int nodeIndex)
-    // {
-    //     std::vector<Edge> edgesWithNodeIndex = {};
-
-    //     for (int i = 0; i < edges.size(); i++)
-    //     {
-    //         if (edges[i].index == edgeIndex)
-    //             continue;
-    //         if (edges[i].startNode == nodeIndex || edges[i].endNode == nodeIndex)
-    //         {
-    //             edgesWithNodeIndex.push_back(edges[i]);
-    //         }
-    //     }
-
-    //     return edgesWithNodeIndex;
-    // }
-
-    // std::vector<int> rekurzivna(std::vector<Edge> edges, Edge edge, std::vector<int> prevPath)
-    // {
-    //     std::vector<Edge> adjacentEdges = findEdgesWithNodeIndex(edges, edge.index, edge.endNode);
-    //     for(int i = 0; i < adjacentEdges.size(); i++)
-    //     {
-    //         std::vector<int> path = prevPath;
-    //         path.push_back(adjacentEdges[i].index);
-    //         if(adjacentEdges[i].startNode == edges[0].startNode || adjacentEdges[i].endNode == edges[0].startNode)
-    //         {
-    //             return path;
-    //         }
-    //         return rekurzivna(edges, adjacentEdges[i], path);
-    //     }
-    // }
-
-    // std::vector<int> findCycle(std::vector<Edge> edges)
-    // {
-
-    //     std::vector<int> cycle = rekurzivna(edges, edges[0], {0});
-
-    //     // for(int i = 0; i < edgesWithNodeIndex.size(); i++)
-    //     // {
-    //     //     Edge edge = edgesWithNodeIndex[0];
-
-    //     //     std::vector<Edge> edgesWithNodeIndex = findEdgesWithNodeIndex(edges, edge.index, edge.endNode);
-
-    //     // }
-
-    //     return cycle;
-    // }
 };
