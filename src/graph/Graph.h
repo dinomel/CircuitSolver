@@ -98,4 +98,64 @@ public:
 
         return mst;
     }
+
+    std::vector<int> findCycle(std::vector<Edge> edges)
+    {
+        return {};
+    }
+
+    // OVO DOLJE ZAKOMENTARISANO NISTA NE VALJA!! BOLJE GA NI NE GLEDATI NEGO ISPOCETKA! AL ZNACI STVAAARNO NE VALJA..
+
+    // std::vector<Edge> findEdgesWithNodeIndex(std::vector<Edge> edges, int edgeIndex, int nodeIndex)
+    // {
+    //     std::vector<Edge> edgesWithNodeIndex = {};
+
+    //     for (int i = 0; i < edges.size(); i++)
+    //     {
+    //         if (edges[i].index == edgeIndex)
+    //             continue;
+    //         if (edges[i].startNode == nodeIndex || edges[i].endNode == nodeIndex)
+    //         {
+    //             edgesWithNodeIndex.push_back(edges[i]);
+    //         }
+    //     }
+
+    //     return edgesWithNodeIndex;
+    // }
+
+
+    // std::vector<int> rekurzivna(std::vector<Edge> edges, Edge edge, std::vector<int> prevPath)
+    // {
+    //     std::vector<Edge> adjacentEdges = findEdgesWithNodeIndex(edges, edge.index, edge.endNode);
+    //     for(int i = 0; i < adjacentEdges.size(); i++)
+    //     {
+    //         std::vector<int> path = prevPath;
+    //         path.push_back(adjacentEdges[i].index);
+    //         if(adjacentEdges[i].startNode == edges[0].startNode || adjacentEdges[i].endNode == edges[0].startNode)
+    //         {
+    //             return path;
+    //         }
+    //         return rekurzivna(edges, adjacentEdges[i], path);
+    //     }
+    // }
+
+    // std::vector<int> findCycle(std::vector<Edge> edges)
+    // {
+        
+    //     std::vector<int> cycle = rekurzivna(edges, edges[0], {0});
+
+
+
+
+
+    //     // for(int i = 0; i < edgesWithNodeIndex.size(); i++)
+    //     // {
+    //     //     Edge edge = edgesWithNodeIndex[0];
+
+    //     //     std::vector<Edge> edgesWithNodeIndex = findEdgesWithNodeIndex(edges, edge.index, edge.endNode);
+
+    //     // }
+
+    //     return cycle;
+    // }
 };

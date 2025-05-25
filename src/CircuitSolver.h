@@ -15,8 +15,8 @@ class CircuitSolver
 {
     Graph graph;
 
-    std::vector<Edge> mst; // Minimum spanning tree
-    std::vector<std::vector<int>> B;      // Matrica incidencije fundamentalnih kontura i grana
+    std::vector<Edge> mst;           // Minimum spanning tree
+    std::vector<std::vector<int>> B; // Matrica incidencije fundamentalnih kontura i grana
 
 public:
     CircuitSolver(cnt::PushBackVector<GridComponent *, 1024> gridComponents) : graph(static_cast<int>(gridComponents.size()))
@@ -32,17 +32,54 @@ public:
 
     void generateB()
     {
+        std::map<int, int> mstIndexToB;
         B.resize(mst.size());
         for (int i = 0; i < mst.size(); i++)
         {
             B[i].resize(graph.edgesCount);
-            std::pair<int, int> mst[i];
-            for (int j = 0; j < graph.edgesCount; j++)
+            mstIndexToB[mst[i].index] = i;
+        }
+
+        for (int i = 0; i < graph.edgesCount; i++)
+        {
+            bool edgeIsInMST = false;
+            std::vector<Edge> edges = {graph.edges[i]};
+            for (int j = 0; j < mst.size(); j++)
             {
-                graph.adj[j];
-                graph.adjC[i][j] == nullptr;
+                if (graph.edges[i].index == mst[j].index)
+                {
+                    edgeIsInMST = true;
+                    break;
+                }
+                edges.push_back(mst[j]);
+            }
+            if (edgeIsInMST)
+                continue;
+
+            // Vraca vektor edge indexa koji mogu biti negativni i ukoliko jeste, to znaci da je B[mstIndexToB][i] = -1
+            std::vector<int> kontura = graph.findCycle(edges);
+            for (int j = 0; j < kontura.size(); j++)
+            {
+                if (kontura[j] < 0)
+                {
+                    B[mstIndexToB[-kontura[j]]][i] = -1;
+                }
+                else
+                {
+                    B[mstIndexToB[kontura[j]]][i] = 1;
+                }
             }
         }
+
+        for (int i = 0; i < B.size(); i++)
+        {
+            for (int j = 0; j < B[i].size(); j++)
+            {
+                std::cout << B[i][j] << " ";
+            }
+            std::cout << std::endl;
+        }
+
     }
 
     void printMST()
