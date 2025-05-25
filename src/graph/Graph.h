@@ -68,7 +68,7 @@ public:
         adj[startNodeIndex].push_back(endNodeIndex);
         adj[endNodeIndex].push_back(startNodeIndex);
         adjC[startNodeIndex][endNodeIndex] = component->getComponent();
-        edges.push_back(Edge(nodesCount - 1, startNodeIndex, endNodeIndex, component));
+        edges.push_back(Edge(static_cast<int>(edges.size()), startNodeIndex, endNodeIndex, component));
     }
 
     std::vector<Edge> bfsMST(int start)
@@ -101,7 +101,7 @@ public:
 
     std::vector<int> findCycle(std::vector<Edge> edges)
     {
-        return {};
+        return {edges[0].index};
     }
 
     // OVO DOLJE ZAKOMENTARISANO NISTA NE VALJA!! BOLJE GA NI NE GLEDATI NEGO ISPOCETKA! AL ZNACI STVAAARNO NE VALJA..

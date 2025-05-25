@@ -27,19 +27,12 @@ public:
         }
 
         mst = graph.bfsMST(0);
+
         generateB();
     }
 
     void generateB()
     {
-        std::map<int, int> mstIndexToB;
-        B.resize(mst.size());
-        for (int i = 0; i < mst.size(); i++)
-        {
-            B[i].resize(graph.edgesCount);
-            mstIndexToB[mst[i].index] = i;
-        }
-
         for (int i = 0; i < graph.edgesCount; i++)
         {
             bool edgeIsInMST = false;
@@ -56,17 +49,20 @@ public:
             if (edgeIsInMST)
                 continue;
 
-            // Vraca vektor edge indexa koji mogu biti negativni i ukoliko jeste, to znaci da je B[mstIndexToB][i] = -1
+            // Dovde u kodu dodje samo ako je graph.edges[i] viseca grana, odnosno nije u MST
+
+            // Vraca vektor edge indexa koji mogu biti negativni i ukoliko jeste, to znaci da je B[.][i] = -1
             std::vector<int> kontura = graph.findCycle(edges);
             for (int j = 0; j < kontura.size(); j++)
             {
+                B.push_back(std::vector<int>(graph.edgesCount));
                 if (kontura[j] < 0)
                 {
-                    B[mstIndexToB[-kontura[j]]][i] = -1;
+                    B[B.size() - 1][-kontura[j]] = -1;
                 }
                 else
                 {
-                    B[mstIndexToB[kontura[j]]][i] = 1;
+                    B[B.size() - 1][kontura[j]] = 1;
                 }
             }
         }
@@ -79,7 +75,6 @@ public:
             }
             std::cout << std::endl;
         }
-
     }
 
     void printMST()
