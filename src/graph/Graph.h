@@ -6,7 +6,6 @@
 //
 
 #pragma once
-#include "../model/GridComponent.h"
 #include "Edge.h"
 #include <vector>
 #include <queue>
@@ -21,7 +20,6 @@ public:
     int nodesCount = 0;
     std::vector<Edge> edges;
     std::vector<std::vector<int>> adj;
-    std::vector<std::vector<Component *>> adjC; // dimenzije (nodesCount x nodesCount) => NIJE simetricna!
 
 private:
     Edge _getEdgeByNodes(int node1, int node2)
@@ -36,14 +34,7 @@ private:
     }
 
 public:
-    Graph(int edgesCount) : edgesCount(edgesCount)
-    {
-        adjC.resize(edgesCount);
-        for (int i = 0; i < edgesCount; i++)
-        {
-            adjC[i].resize(edgesCount);
-        }
-    }
+    Graph(int edgesCount) : edgesCount(edgesCount) {}
 
     void addEdge(GridComponent *component)
     {
@@ -67,7 +58,6 @@ public:
 
         adj[startNodeIndex].push_back(endNodeIndex);
         adj[endNodeIndex].push_back(startNodeIndex);
-        adjC[startNodeIndex][endNodeIndex] = component->getComponent();
         edges.push_back(Edge(static_cast<int>(edges.size()), startNodeIndex, endNodeIndex, component));
     }
 
