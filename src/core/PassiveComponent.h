@@ -16,4 +16,6 @@ public:
         const td::String &symbol,
         const td::String &image)
         : Component(name, symbol, image) {}
+
+    virtual std::complex<double> getImpedance() = 0;
 };

@@ -15,4 +15,10 @@ public:
 
     Capacitor(double capacitance)
         : PassiveComponent("Capacitor", "C", "capacitor.png"), capacitance(capacitance) {}
+
+    std::complex<double> getImpedance() override
+    {
+        // TODO: Provjeri ovo
+        return std::complex<double>(0, -1 / (3.14 * 50 * capacitance));
+    }
 };

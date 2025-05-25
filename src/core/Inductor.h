@@ -15,4 +15,10 @@ public:
 
     Inductor(double inductance)
         : PassiveComponent("Inductor", "L", "inductor.png"), inductance(inductance) {}
+
+    std::complex<double> getImpedance() override
+    {
+        // TODO: Provjeri ovo
+        return std::complex<double>(0, 3.14 * 50 * inductance);
+    }
 };
