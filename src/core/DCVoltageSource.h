@@ -6,13 +6,18 @@
 //
 
 #pragma once
-#include "SourceComponent.h"
+#include "VoltageSourceComponent.h"
 
-class DCVoltageSource : public SourceComponent
+class DCVoltageSource : public VoltageSourceComponent
 {
 public:
     double voltage;
 
     DCVoltageSource(double voltage)
-        : SourceComponent("DC Voltage Source", "V", "dc_voltage_source.png"), voltage(voltage) {}
+        : VoltageSourceComponent("DC Voltage Source", "V", "dc_voltage_source.png"), voltage(voltage) {}
+
+    std::complex<double> getVoltage() override
+    {
+        return std::complex<double>(voltage, 0);
+    }
 };
