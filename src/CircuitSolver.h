@@ -174,9 +174,13 @@ public:
         {
             graph.addEdge(gridComponents[i]);
         }
+    }
 
+    void solve()
+    {
+        if (gridComponents.isEmpty())
+            return;
         mst = graph.bfsMST(0);
-
         generateB();
         generateZ();
         calculateZk();
@@ -192,6 +196,5 @@ public:
         {
             gridComponents[i]->setCurrent(I(i).real());
         }
-        
     }
 };
