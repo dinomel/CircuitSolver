@@ -16,6 +16,7 @@
 
 class CircuitSolver
 {
+    cnt::PushBackVector<GridComponent *, 1024> gridComponents;
     Graph graph;
 
     std::vector<Edge> mst;                                                  // Minimum spanning tree
@@ -27,25 +28,7 @@ class CircuitSolver
     Eigen::VectorXcd Jk;                                                    // Vektor struja kontura
     Eigen::VectorXcd I;                                                     // Vektor struja grana
 
-public:
-    CircuitSolver(cnt::PushBackVector<GridComponent *, 1024> gridComponents) : graph(static_cast<int>(gridComponents.size()))
-    {
-        for (int i = 0; i < gridComponents.size(); i++)
-        {
-            graph.addEdge(gridComponents[i]);
-        }
-
-        mst = graph.bfsMST(0);
-
-        generateB();
-        generateZ();
-        calculateZk();
-        generateVg();
-        calculateEk();
-        calculateJk();
-        calculateI();
-    }
-
+private:
     void generateB()
     {
         B = Eigen::MatrixXd(graph.edgesCount - mst.size(), graph.edgesCount);
@@ -184,12 +167,31 @@ public:
         std::cout << std::endl;
     }
 
-    void printMST()
+public:
+    CircuitSolver(cnt::PushBackVector<GridComponent *, 1024> gridComponents) : gridComponents(gridComponents), graph(static_cast<int>(gridComponents.size()))
     {
-        std::cout << "Edges in the Minimum Spanning Tree:" << std::endl;
-        for (auto &edge : mst)
+        for (int i = 0; i < gridComponents.size(); i++)
         {
-            std::cout << edge.startNode << " - " << edge.endNode << std::endl;
+            graph.addEdge(gridComponents[i]);
         }
+
+        mst = graph.bfsMST(0);
+
+        generateB();
+        generateZ();
+        calculateZk();
+        generateVg();
+        calculateEk();
+        calculateJk();
+        calculateI();
+    }
+
+    void setValues()
+    {
+        for (int i = 0; i < gridComponents.size(); i++)
+        {
+            gridComponents[i]->setCurrent(I(i).real());
+        }
+        
     }
 };

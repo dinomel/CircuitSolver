@@ -427,7 +427,8 @@ protected:
         case 's':
         {
             CircuitSolver st = CircuitSolver(_model.getGridComponents());
-            st.printMST();
+            st.setValues();
+            updatePropertyValues();
         }
         break;
         }

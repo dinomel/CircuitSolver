@@ -162,6 +162,11 @@ public:
         updateShape();
     }
 
+    void setCurrent(double current)
+    {
+        _current = current;
+    }
+
     void updateEndPoint(const gui::Point &newEndPoint)
     {
         endNode->centerPoint = newEndPoint;

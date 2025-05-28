@@ -23,7 +23,6 @@ public:
 
   std::complex<double> getVoltage() override
   {
-    double Vrms = maxVoltage / sqrt(2);
-    return std::complex<double>(Vrms * cos(phaseAngle), Vrms * sin(phaseAngle));
+    return std::polar(maxVoltage / sqrt(2), phaseAngle);
   }
 };
