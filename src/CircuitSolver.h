@@ -180,7 +180,15 @@ public:
     {
         if (gridComponents.isEmpty())
             return;
-        mst = graph.bfsMST(0);
+        mst = graph.bfsMST();
+
+        std::cout << "mst: " << std::endl;
+        for (int i = 0; i < mst.size(); i++)
+        {
+            std::cout << "(" << mst[i].startNode << ", " << mst[i].endNode << ")  ";
+        }
+        std::cout << std::endl;
+
         generateB();
         generateZ();
         calculateZk();

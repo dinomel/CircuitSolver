@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Edge.h"
+#include "../core/CurrentSource.h"
 #include <vector>
 #include <queue>
 #include <unordered_set>
@@ -22,11 +23,12 @@ public:
     std::vector<std::vector<int>> adj;
 
 private:
-    Edge _getEdgeByNodes(int node1, int node2)
+    Edge &_getEdgeByNodes(int node1, int node2)
     {
         for (int i = 0; i < edgesCount; i++)
         {
-            if ((node1 == edges[i].startNode && node2 == edges[i].endNode) || (node2 == edges[i].startNode && node1 == edges[i].endNode))
+            if ((node1 == edges[i].startNode && node2 == edges[i].endNode) ||
+                (node2 == edges[i].startNode && node1 == edges[i].endNode))
             {
                 return edges[i];
             }
@@ -61,14 +63,14 @@ public:
         edges.push_back(Edge(static_cast<int>(edges.size()), startNodeIndex, endNodeIndex, component));
     }
 
-    std::vector<Edge> bfsMST(int start)
+    std::vector<Edge> bfsMST()
     {
         std::vector<Edge> mst;
         std::vector<bool> visited(nodesCount, false);
         std::queue<int> q;
 
-        visited[start] = true;
-        q.push(start);
+        visited[0] = true;
+        q.push(0);
 
         while (!q.empty())
         {
@@ -79,9 +81,14 @@ public:
             {
                 if (!visited[neighbor])
                 {
-                    visited[neighbor] = true;
-                    mst.emplace_back(_getEdgeByNodes(node, neighbor));
-                    q.push(neighbor);
+                    Edge &edge = _getEdgeByNodes(node, neighbor);
+                    CurrentSource *currentSource = dynamic_cast<CurrentSource *>(edge.gridComponent->getComponent());
+                    if (currentSource == nullptr)
+                    {
+                        visited[neighbor] = true;
+                        mst.emplace_back(edge);
+                        q.push(neighbor);
+                    }
                 }
             }
         }
