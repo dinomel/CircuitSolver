@@ -27,6 +27,7 @@ class CircuitSolver
     Eigen::VectorXcd Ek;                                                    // Vektor napona kontura
     Eigen::VectorXcd Jk;                                                    // Vektor struja kontura
     Eigen::VectorXcd I;                                                     // Vektor struja grana
+    std::vector<std::pair<int, CurrentSource *>> idealneStrujneKontureTemp;
 
 private:
     void generateB()
@@ -50,6 +51,12 @@ private:
             }
             if (edgeIsInMST)
                 continue;
+
+            CurrentSource *currentSource = dynamic_cast<CurrentSource *>(graph.edges[i].gridComponent->getComponent());
+            if (currentSource != nullptr)
+            {
+                idealneStrujneKontureTemp.push_back(std::pair<int, CurrentSource *>(contourIndex, currentSource));
+            }
 
             std::vector<std::pair<int, int>> kontura = graph.findCycle(edges);
 
@@ -147,7 +154,153 @@ private:
 
     void calculateJk()
     {
-        Jk = Zk.inverse() * Ek;
+
+        Eigen::MatrixXcd Zuu(Zk.rows() - idealneStrujneKontureTemp.size(), Zk.rows() - idealneStrujneKontureTemp.size());
+        Eigen::MatrixXcd Zus(Zk.rows() - idealneStrujneKontureTemp.size(), idealneStrujneKontureTemp.size());
+        Eigen::VectorXcd Eu(Zk.rows() - idealneStrujneKontureTemp.size());
+        Eigen::VectorXcd Is(idealneStrujneKontureTemp.size());
+        Zuu.setZero();
+        Zus.setZero();
+        Eu.setZero();
+        Is.setZero();
+
+        std::vector<int> strujniIzvoriIndexi = {};
+
+        for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
+        {
+            strujniIzvoriIndexi.push_back(idealneStrujneKontureTemp[i].first);
+            Is(i) = idealneStrujneKontureTemp[i].second->current;
+        }
+
+        std::cout << "strujniIzvoriIndexi: " << std::endl;
+        for (int i = 0; i < strujniIzvoriIndexi.size(); i++)
+        {
+            std::cout << strujniIzvoriIndexi[i] << " ";
+        }
+        std::cout << std::endl;
+
+        int indexEu = 0;
+        for (int i = 0; i < Ek.rows(); i++)
+        {
+            bool containsI = false;
+            for (int k = 0; k < strujniIzvoriIndexi.size(); k++)
+            {
+                if (strujniIzvoriIndexi[k] == i)
+                {
+                    containsI = true;
+                    break;
+                }
+            }
+            if (!containsI)
+            {
+                Eu(indexEu) = Ek(i);
+                indexEu++;
+            }
+        }
+
+        int indexI = 0;
+        int indexJuu = 0;
+        int indexJus = 0;
+
+        for (int i = 0; i < Zk.rows(); i++)
+        {
+            bool containsI = false;
+            for (int k = 0; k < strujniIzvoriIndexi.size(); k++)
+            {
+                if (strujniIzvoriIndexi[k] == i)
+                {
+                    containsI = true;
+                    break;
+                }
+            }
+            if (containsI)
+                continue;
+
+            for (int j = 0; j < Zk.rows(); j++)
+            {
+                bool containsJ = false;
+
+                for (int k = 0; k < strujniIzvoriIndexi.size(); k++)
+                {
+                    if (strujniIzvoriIndexi[k] == j)
+                    {
+                        containsJ = true;
+                        break;
+                    }
+                }
+                if (!containsJ)
+                {
+                    Zuu(indexI, indexJuu) = Zk(i, j);
+                    indexJuu++;
+                }
+                else
+                {
+                    Zus(indexI, indexJus) = Zk(i, j);
+                    indexJus++;
+                }
+            }
+            indexI++;
+            indexJuu = 0;
+            indexJus = 0;
+        }
+
+        std::cout << "Zuu: " << std::endl;
+        for (int i = 0; i < Zuu.rows(); i++)
+        {
+            for (int j = 0; j < Zuu.cols(); j++)
+            {
+                std::cout << Zuu(i, j) << " ";
+            }
+            std::cout << std::endl;
+        }
+
+        std::cout << "Zus: " << std::endl;
+        for (int i = 0; i < Zus.rows(); i++)
+        {
+            for (int j = 0; j < Zus.cols(); j++)
+            {
+                std::cout << Zus(i, j) << " ";
+            }
+            std::cout << std::endl;
+        }
+
+        Jk = Zuu.inverse() * (Eu - Zus * Is);
+
+        std::vector<std::complex<double>> vJk;
+
+        for (int i = 0; i < Jk.size(); i++)
+        {
+            vJk.push_back(Jk(i));
+        }
+        for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
+        {
+            vJk.insert(vJk.begin() + idealneStrujneKontureTemp[i].first, idealneStrujneKontureTemp[i].second->current);
+        }
+
+        Jk.resize(vJk.size());
+        for (int i = 0; i < vJk.size(); i++)
+        {
+            Jk(i) = vJk[i];
+        }
+
+        // Eigen::VectorXcd JkWithCurrentSources;
+
+        // for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
+        // {
+        //     JkWithCurrentSources = Eigen::VectorXcd(Jk.size() + 1);
+        //     int pos = idealneStrujneKontureTemp[i].first;
+        //     JkWithCurrentSources.head(pos) = Jk.head(pos);
+        //     JkWithCurrentSources(pos) = idealneStrujneKontureTemp[i].second->current;
+        //     JkWithCurrentSources.tail(Jk.size() - pos) = Jk.tail(Jk.size() - pos);
+        // }
+
+        // Jk = JkWithCurrentSources;
+
+        // for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
+        // {
+        //     Jk(idealneStrujneKontureTemp[i].first) = idealneStrujneKontureTemp[i].second->current;
+        // }
+
         std::cout << "Jk: " << std::endl;
         for (int i = 0; i < Jk.rows(); i++)
         {
@@ -181,14 +334,6 @@ public:
         if (gridComponents.isEmpty())
             return;
         mst = graph.bfsMST();
-
-        std::cout << "mst: " << std::endl;
-        for (int i = 0; i < mst.size(); i++)
-        {
-            std::cout << "(" << mst[i].startNode << ", " << mst[i].endNode << ")  ";
-        }
-        std::cout << std::endl;
-
         generateB();
         generateZ();
         calculateZk();
