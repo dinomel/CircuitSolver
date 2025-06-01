@@ -27,7 +27,7 @@ class CircuitSolver
     Eigen::VectorXcd Ek;                                                    // Vektor napona kontura
     Eigen::VectorXcd Jk;                                                    // Vektor struja kontura
     Eigen::VectorXcd I;                                                     // Vektor struja grana
-    std::vector<std::pair<int, CurrentSource *>> idealneStrujneKontureTemp;
+    std::vector<std::pair<int, CurrentSource *>> currentContours;           // Vektor indeksa kontura u kojima se nalazi strujni izvor
 
 private:
     void generateB()
@@ -55,7 +55,7 @@ private:
             CurrentSource *currentSource = dynamic_cast<CurrentSource *>(graph.edges[i].gridComponent->getComponent());
             if (currentSource != nullptr)
             {
-                idealneStrujneKontureTemp.push_back(std::pair<int, CurrentSource *>(contourIndex, currentSource));
+                currentContours.push_back(std::pair<int, CurrentSource *>(contourIndex, currentSource));
             }
 
             std::vector<std::pair<int, int>> kontura = graph.findCycle(edges);
@@ -154,28 +154,37 @@ private:
 
     void calculateJk()
     {
+        if (currentContours.size() == 0)
+        {
+            Jk = Zk.inverse() * Ek;
 
-        Eigen::MatrixXcd Zuu(Zk.rows() - idealneStrujneKontureTemp.size(), Zk.rows() - idealneStrujneKontureTemp.size());
-        Eigen::MatrixXcd Zus(Zk.rows() - idealneStrujneKontureTemp.size(), idealneStrujneKontureTemp.size());
-        Eigen::VectorXcd Eu(Zk.rows() - idealneStrujneKontureTemp.size());
-        Eigen::VectorXcd Is(idealneStrujneKontureTemp.size());
+            std::cout << "Jk: " << std::endl;
+            for (int i = 0; i < Jk.rows(); i++)
+            {
+                std::cout << Jk(i) << " ";
+            }
+            std::cout << std::endl;
+            return;
+        }
+
+        Eigen::MatrixXcd Zuu(Zk.rows() - currentContours.size(), Zk.rows() - currentContours.size());
+        Eigen::MatrixXcd Zus(Zk.rows() - currentContours.size(), currentContours.size());
+        Eigen::VectorXcd Eu(Zk.rows() - currentContours.size());
+        Eigen::VectorXcd Is(currentContours.size());
         Zuu.setZero();
         Zus.setZero();
         Eu.setZero();
         Is.setZero();
 
-        std::vector<int> strujniIzvoriIndexi = {};
-
-        for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
+        for (int i = 0; i < currentContours.size(); i++)
         {
-            strujniIzvoriIndexi.push_back(idealneStrujneKontureTemp[i].first);
-            Is(i) = idealneStrujneKontureTemp[i].second->current;
+            Is(i) = currentContours[i].second->current;
         }
 
         std::cout << "strujniIzvoriIndexi: " << std::endl;
-        for (int i = 0; i < strujniIzvoriIndexi.size(); i++)
+        for (int i = 0; i < currentContours.size(); i++)
         {
-            std::cout << strujniIzvoriIndexi[i] << " ";
+            std::cout << currentContours[i].first << " ";
         }
         std::cout << std::endl;
 
@@ -183,9 +192,9 @@ private:
         for (int i = 0; i < Ek.rows(); i++)
         {
             bool containsI = false;
-            for (int k = 0; k < strujniIzvoriIndexi.size(); k++)
+            for (int k = 0; k < currentContours.size(); k++)
             {
-                if (strujniIzvoriIndexi[k] == i)
+                if (currentContours[k].first == i)
                 {
                     containsI = true;
                     break;
@@ -205,9 +214,9 @@ private:
         for (int i = 0; i < Zk.rows(); i++)
         {
             bool containsI = false;
-            for (int k = 0; k < strujniIzvoriIndexi.size(); k++)
+            for (int k = 0; k < currentContours.size(); k++)
             {
-                if (strujniIzvoriIndexi[k] == i)
+                if (currentContours[k].first == i)
                 {
                     containsI = true;
                     break;
@@ -220,9 +229,9 @@ private:
             {
                 bool containsJ = false;
 
-                for (int k = 0; k < strujniIzvoriIndexi.size(); k++)
+                for (int k = 0; k < currentContours.size(); k++)
                 {
-                    if (strujniIzvoriIndexi[k] == j)
+                    if (currentContours[k].first == j)
                     {
                         containsJ = true;
                         break;
@@ -264,42 +273,24 @@ private:
             std::cout << std::endl;
         }
 
-        Jk = Zuu.inverse() * (Eu - Zus * Is);
+        Eigen::VectorXcd Ju = Zuu.inverse() * (Eu - Zus * Is);
 
         std::vector<std::complex<double>> vJk;
 
-        for (int i = 0; i < Jk.size(); i++)
+        for (int i = 0; i < Ju.size(); i++)
         {
-            vJk.push_back(Jk(i));
+            vJk.push_back(Ju(i));
         }
-        for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
+        for (int i = 0; i < currentContours.size(); i++)
         {
-            vJk.insert(vJk.begin() + idealneStrujneKontureTemp[i].first, idealneStrujneKontureTemp[i].second->current);
+            vJk.insert(vJk.begin() + currentContours[i].first, currentContours[i].second->current);
         }
 
-        Jk.resize(vJk.size());
+        Jk = Eigen::VectorXcd(vJk.size());
         for (int i = 0; i < vJk.size(); i++)
         {
             Jk(i) = vJk[i];
         }
-
-        // Eigen::VectorXcd JkWithCurrentSources;
-
-        // for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
-        // {
-        //     JkWithCurrentSources = Eigen::VectorXcd(Jk.size() + 1);
-        //     int pos = idealneStrujneKontureTemp[i].first;
-        //     JkWithCurrentSources.head(pos) = Jk.head(pos);
-        //     JkWithCurrentSources(pos) = idealneStrujneKontureTemp[i].second->current;
-        //     JkWithCurrentSources.tail(Jk.size() - pos) = Jk.tail(Jk.size() - pos);
-        // }
-
-        // Jk = JkWithCurrentSources;
-
-        // for (int i = 0; i < idealneStrujneKontureTemp.size(); i++)
-        // {
-        //     Jk(idealneStrujneKontureTemp[i].first) = idealneStrujneKontureTemp[i].second->current;
-        // }
 
         std::cout << "Jk: " << std::endl;
         for (int i = 0; i < Jk.rows(); i++)
