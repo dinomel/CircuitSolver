@@ -60,25 +60,11 @@ private:
 
             std::vector<std::pair<int, int>> kontura = graph.findCycle(edges);
 
-            std::cout << "Kontura: ";
             for (int j = 0; j < kontura.size(); j++)
             {
-                auto c = kontura[j].second == -1 ? "-" : "";
-                std::cout << c << kontura[j].first << " ";
                 B(contourIndex, kontura[j].first) = kontura[j].second;
             }
-            std::cout << std::endl;
             contourIndex++;
-        }
-
-        std::cout << "generateB: " << std::endl;
-        for (int i = 0; i < B.rows(); i++)
-        {
-            for (int j = 0; j < B.cols(); j++)
-            {
-                std::cout << B(i, j) << " ";
-            }
-            std::cout << std::endl;
         }
     }
 
@@ -94,31 +80,11 @@ private:
                 continue;
             Z(i, i) = passiveComponent->getImpedance();
         }
-
-        std::cout << "generateZ: " << std::endl;
-        for (int i = 0; i < Z.rows(); i++)
-        {
-            for (int j = 0; j < Z.cols(); j++)
-            {
-                std::cout << Z(i, j) << " ";
-            }
-            std::cout << std::endl;
-        }
     }
 
     void calculateZk()
     {
         Zk = B * Z * B.transpose();
-
-        std::cout << "generateZk: " << std::endl;
-        for (int i = 0; i < Zk.rows(); i++)
-        {
-            for (int j = 0; j < Zk.cols(); j++)
-            {
-                std::cout << Zk(i, j) << " ";
-            }
-            std::cout << std::endl;
-        }
     }
 
     void generateVg()
@@ -130,26 +96,13 @@ private:
             VoltageSourceComponent *voltageSourceComponent = dynamic_cast<VoltageSourceComponent *>(graph.edges[i].gridComponent->getComponent());
             if (voltageSourceComponent == nullptr)
                 continue;
-            // TODO: Provjeri dal treba ovo "-" ispred
             Vg(i) = -voltageSourceComponent->getVoltage();
         }
-        std::cout << "Vg: " << std::endl;
-        for (int i = 0; i < Vg.rows(); i++)
-        {
-            std::cout << Vg(i) << " ";
-        }
-        std::cout << std::endl;
     }
 
     void calculateEk()
     {
         Ek = -B * Vg;
-        std::cout << "Ek: " << std::endl;
-        for (int i = 0; i < Ek.rows(); i++)
-        {
-            std::cout << Ek(i) << " ";
-        }
-        std::cout << std::endl;
     }
 
     void calculateJk()
@@ -157,13 +110,6 @@ private:
         if (currentContours.size() == 0)
         {
             Jk = Zk.inverse() * Ek;
-
-            std::cout << "Jk: " << std::endl;
-            for (int i = 0; i < Jk.rows(); i++)
-            {
-                std::cout << Jk(i) << " ";
-            }
-            std::cout << std::endl;
             return;
         }
 
@@ -180,13 +126,6 @@ private:
         {
             Is(i) = currentContours[i].second->current;
         }
-
-        std::cout << "strujniIzvoriIndexi: " << std::endl;
-        for (int i = 0; i < currentContours.size(); i++)
-        {
-            std::cout << currentContours[i].first << " ";
-        }
-        std::cout << std::endl;
 
         int indexEu = 0;
         for (int i = 0; i < Ek.rows(); i++)
@@ -253,26 +192,6 @@ private:
             indexJus = 0;
         }
 
-        std::cout << "Zuu: " << std::endl;
-        for (int i = 0; i < Zuu.rows(); i++)
-        {
-            for (int j = 0; j < Zuu.cols(); j++)
-            {
-                std::cout << Zuu(i, j) << " ";
-            }
-            std::cout << std::endl;
-        }
-
-        std::cout << "Zus: " << std::endl;
-        for (int i = 0; i < Zus.rows(); i++)
-        {
-            for (int j = 0; j < Zus.cols(); j++)
-            {
-                std::cout << Zus(i, j) << " ";
-            }
-            std::cout << std::endl;
-        }
-
         Eigen::VectorXcd Ju = Zuu.inverse() * (Eu - Zus * Is);
 
         std::vector<std::complex<double>> vJk;
@@ -291,24 +210,11 @@ private:
         {
             Jk(i) = vJk[i];
         }
-
-        std::cout << "Jk: " << std::endl;
-        for (int i = 0; i < Jk.rows(); i++)
-        {
-            std::cout << Jk(i) << " ";
-        }
-        std::cout << std::endl;
     }
 
     void calculateI()
     {
         I = B.transpose() * Jk;
-        std::cout << "I: " << std::endl;
-        for (int i = 0; i < I.rows(); i++)
-        {
-            std::cout << I(i) << " ";
-        }
-        std::cout << std::endl;
     }
 
 public:
