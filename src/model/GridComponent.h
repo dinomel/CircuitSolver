@@ -167,6 +167,11 @@ public:
         _current = current;
     }
 
+    void setVoltage(double voltage)
+    {
+        _voltage = voltage;
+    }
+
     void updateEndPoint(const gui::Point &newEndPoint)
     {
         endNode->centerPoint = newEndPoint;

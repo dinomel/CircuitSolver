@@ -27,7 +27,8 @@ class CircuitSolver
     Eigen::VectorXcd Ek;                                                    // Vektor napona kontura
     Eigen::VectorXcd Jk;                                                    // Vektor struja kontura
     Eigen::VectorXcd I;                                                     // Vektor struja grana
-    std::vector<std::pair<int, CurrentSource *>> currentContours;           // Vektor indeksa kontura u kojima se nalazi strujni izvor
+    Eigen::VectorXcd V;                                                     // Vektor napona grana
+    std::vector<std::tuple<int, int, CurrentSource *>> currentContours;     // Vektor kontura u kojima se nalazi strujni izvor (contourIndex, edgeIndex, CurrentSource)
 
 private:
     void generateB()
@@ -55,7 +56,7 @@ private:
             CurrentSource *currentSource = dynamic_cast<CurrentSource *>(graph.edges[i].gridComponent->getComponent());
             if (currentSource != nullptr)
             {
-                currentContours.push_back(std::pair<int, CurrentSource *>(contourIndex, currentSource));
+                currentContours.push_back(std::tuple<int, int, CurrentSource *>(contourIndex, i, currentSource));
             }
 
             std::vector<std::pair<int, int>> kontura = graph.findCycle(edges);
@@ -124,7 +125,7 @@ private:
 
         for (int i = 0; i < currentContours.size(); i++)
         {
-            Is(i) = currentContours[i].second->current;
+            Is(i) = std::get<2>(currentContours[i])->current;
         }
 
         int indexEu = 0;
@@ -133,7 +134,7 @@ private:
             bool containsI = false;
             for (int k = 0; k < currentContours.size(); k++)
             {
-                if (currentContours[k].first == i)
+                if (std::get<0>(currentContours[k]) == i)
                 {
                     containsI = true;
                     break;
@@ -155,7 +156,7 @@ private:
             bool containsI = false;
             for (int k = 0; k < currentContours.size(); k++)
             {
-                if (currentContours[k].first == i)
+                if (std::get<0>(currentContours[k]) == i)
                 {
                     containsI = true;
                     break;
@@ -170,7 +171,7 @@ private:
 
                 for (int k = 0; k < currentContours.size(); k++)
                 {
-                    if (currentContours[k].first == j)
+                    if (std::get<0>(currentContours[k]) == j)
                     {
                         containsJ = true;
                         break;
@@ -202,7 +203,7 @@ private:
         }
         for (int i = 0; i < currentContours.size(); i++)
         {
-            vJk.insert(vJk.begin() + currentContours[i].first, currentContours[i].second->current);
+            vJk.insert(vJk.begin() + std::get<0>(currentContours[i]), std::get<2>(currentContours[i])->current);
         }
 
         Jk = Eigen::VectorXcd(vJk.size());
@@ -215,6 +216,29 @@ private:
     void calculateI()
     {
         I = B.transpose() * Jk;
+    }
+
+    void calculateV()
+    {
+        V = Z * I + Vg;
+        // V = - (Z * I + Vg);
+
+        for (int i = 0; i < currentContours.size(); i++)
+        {
+            std::complex<double> v = 0;
+            for (int j = 0; j < V.size(); j++)
+            {
+                v -= B(std::get<0>(currentContours[i]), j) * V[j];
+            }
+            V(std::get<1>(currentContours[i])) = v;
+        }
+
+        // std::cout << "V: " << std::endl;
+        // for (int i = 0; i < V.rows(); i++)
+        // {
+        //     std::cout << V(i) << " ";
+        // }
+        // std::cout << std::endl;
     }
 
 public:
@@ -238,6 +262,7 @@ public:
         calculateEk();
         calculateJk();
         calculateI();
+        calculateV();
     }
 
     void setValues()
@@ -245,6 +270,7 @@ public:
         for (int i = 0; i < gridComponents.size(); i++)
         {
             gridComponents[i]->setCurrent(I(i).real());
+            gridComponents[i]->setVoltage(V(i).real());
         }
     }
 };
