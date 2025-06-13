@@ -87,15 +87,15 @@ protected:
         //        mu::dbgLog("x=%.1f y=%.1f w=%.1f h=%.1f", rDraw.left, rDraw.top, rDraw.width(), rDraw.height());
         _model.draw(rDraw);
 
-        cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
-        if (selectedComponents.isEmpty())
-            return;
-        for (GridComponent *pC : selectedComponents)
-        {
-            gui::Rect r;
-            pC->getBoundingRect(r);
-            gui::Shape::drawSelectionRect(r);
-        }
+        // cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
+        // if (selectedComponents.isEmpty())
+        //     return;
+        // for (GridComponent *pC : selectedComponents)
+        // {
+        //     gui::Rect r;
+        //     pC->getBoundingRect(r);
+        //     gui::Shape::drawSelectionRect(r);
+        // }
     }
 
     bool onActionItem(gui::ActionItemDescriptor &aiDesc) override

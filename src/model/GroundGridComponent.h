@@ -28,14 +28,14 @@ public:
         return Type::Ground;
     }
 
-    void draw() const override
+    void draw(bool isSelected) const override
     {
         for (const gui::Shape &shape : _componentShapes)
         {
-            shape.drawWire(td::ColorID::Yellow);
+            shape.drawWire(isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow);
         }
-        _wiresShape.drawWire(td::ColorID::Yellow);
-        startNode->draw();
+        _wiresShape.drawWire(isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow);
+        startNode->draw(isSelected);
     }
 
     void init() override

@@ -137,15 +137,15 @@ public:
         return {point_D, point_E, theta};
     }
 
-    void draw() const override
+    void draw(bool isSelected) const override
     {
         for (const gui::Shape &shape : _componentShapes)
         {
-            shape.drawWire(td::ColorID::Yellow);
+            shape.drawWire(isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow);
         }
-        _wiresShape.drawWire(td::ColorID::Yellow);
-        startNode->draw();
-        endNode->draw();
+        _wiresShape.drawWire(isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow);
+        startNode->draw(isSelected);
+        endNode->draw(isSelected);
     }
 
     void translate(const gui::Point &delta) override

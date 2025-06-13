@@ -85,7 +85,8 @@ public:
             pGridComponent->getBoundingRect(boundingRect);
             if (boundingRect.intersects(rDraw))
             {
-                pGridComponent->draw();
+                bool isSelected = selectedGridComponents.find(pGridComponent) != -1;
+                pGridComponent->draw(isSelected);
             }
         }
     }
@@ -271,8 +272,6 @@ public:
 
         if (pGridComponent)
         {
-            // TODO: Za vjezbu
-
             auto pos = _gridComponents.find(pGridComponent);
             if (pos < nComponents - 1)
                 return _gridComponents.move(pos, nComponents - 1);

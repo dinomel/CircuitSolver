@@ -53,7 +53,7 @@ public:
     }
 
     // IGridComponent interface
-    virtual void draw() const = 0;
+    virtual void draw(bool isSelected) const = 0;
     virtual void getBoundingRect(gui::Rect &boundRect) = 0;
     virtual void load(arch::ArchiveIn &ar) = 0;
     virtual void save(arch::ArchiveOut &ar) const = 0;

@@ -29,9 +29,9 @@ public:
         isFloating = floating;
     }
 
-    void draw() const override
+    void draw(bool isSelected) const override
     {
-        td::ColorID nodeColor = isFloating ? td::ColorID::Red : td::ColorID::Yellow;
+        td::ColorID nodeColor = isFloating ? td::ColorID::Red : isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow;
         _nodeShape.drawFillAndWire(nodeColor, nodeColor);
     }
 
