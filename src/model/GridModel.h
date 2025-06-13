@@ -255,7 +255,6 @@ public:
 
         if (pGridComponent)
         {
-            // TODO: Za vjezbu
             auto pos = _gridComponents.find(pGridComponent);
             if (pos > 0)
                 return _gridComponents.move(pos, 0);
