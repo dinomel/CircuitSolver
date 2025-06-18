@@ -15,9 +15,9 @@ public:
     double reactance;
 
     Resistor(double resistance, double reactance = 0)
-        : PassiveComponent("Resistor", "R", "resistor.png"), resistance(resistance), reactance(reactance) {}
+        : PassiveComponent("Resistor", "R"), resistance(resistance), reactance(reactance) {}
 
-    std::complex<double> getImpedance() override
+    std::complex<double> getImpedance(double frequency) override
     {
         return std::complex<double>(resistance, reactance);
     }

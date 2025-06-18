@@ -13,7 +13,6 @@ class SourceComponent : public Component
 public:
     SourceComponent(
         const td::String &name,
-        const td::String &symbol,
-        const td::String &image = "")
-        : Component(name, symbol, image) {}
+        const td::String &symbol)
+        : Component(name, symbol) {}
 };

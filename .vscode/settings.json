@@ -62,6 +62,9 @@
         "variant": "cpp",
         "algorithm": "cpp",
         "dense": "cpp",
-        "core": "cpp"
+        "core": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "utility": "cpp"
     }
 }

@@ -14,5 +14,5 @@ public:
     double current;
 
     CurrentSource(double current)
-        : SourceComponent("Current Source", "I", "dc_voltage_source.png"), current(current) {}
+        : SourceComponent("Current Source", "I"), current(current) {}
 };

@@ -79,7 +79,8 @@ private:
             PassiveComponent *passiveComponent = dynamic_cast<PassiveComponent *>(graph.edges[i].gridComponent->getComponent());
             if (passiveComponent == nullptr)
                 continue;
-            Z(i, i) = passiveComponent->getImpedance();
+            // TODO: get frequency from properties
+            Z(i, i) = passiveComponent->getImpedance(50);
         }
     }
 

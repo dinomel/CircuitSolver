@@ -7,7 +7,6 @@ public:
     int id;
     td::String name;
     td::String symbol;
-    td::String image;
 
     static int nextID;
 
@@ -19,12 +18,10 @@ public:
 
     Component(
         const td::String &name,
-        const td::String &symbol,
-        const td::String &image = "")
+        const td::String &symbol)
         : id(getNextID()),
           name(name),
-          symbol(symbol),
-          image(image) {}
+          symbol(symbol) {}
 
     virtual ~Component() = default;
 };

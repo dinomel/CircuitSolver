@@ -90,6 +90,12 @@ public:
             prop.set((td::UINT4)PropID::MaxVoltage, "Max Voltage", valV);
         }
 
+        td::Variant valFi(_acVoltageSource.phaseAngle);
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::PhaseAngle, "Phase Angle", valFi);
+        }
+
         GridComponent::initProperties(properties);
     }
 
@@ -99,6 +105,9 @@ public:
         td::Variant valV(_acVoltageSource.maxVoltage);
         propValues.setValueByKey((td::UINT4)PropID::MaxVoltage, valV);
 
+        td::Variant valFi(_acVoltageSource.phaseAngle);
+        propValues.setValueByKey((td::UINT4)PropID::PhaseAngle, valFi);
+
         GridComponent::getValues(propValues);
     }
 
@@ -106,6 +115,9 @@ public:
     {
         td::Variant maxVoltage = propValues.getValueByKey((td::UINT4)PropID::MaxVoltage);
         maxVoltage.getValue(_acVoltageSource.maxVoltage);
+
+        td::Variant phaseAngle = propValues.getValueByKey((td::UINT4)PropID::PhaseAngle);
+        phaseAngle.getValue(_acVoltageSource.phaseAngle);
 
         GridComponent::setValues(propValues);
     }

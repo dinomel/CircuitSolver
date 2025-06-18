@@ -13,9 +13,8 @@ class VoltageSourceComponent : public SourceComponent
 public:
   VoltageSourceComponent(
       const td::String &name,
-      const td::String &symbol,
-      const td::String &image = "")
-      : SourceComponent(name, symbol, image) {}
+      const td::String &symbol)
+      : SourceComponent(name, symbol) {}
 
   virtual std::complex<double> getVoltage() = 0;
 };

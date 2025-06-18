@@ -7,6 +7,8 @@
 
 #pragma once
 #include "PassiveComponent.h"
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 class Capacitor : public PassiveComponent
 {
@@ -14,11 +16,12 @@ public:
     double capacitance;
 
     Capacitor(double capacitance)
-        : PassiveComponent("Capacitor", "C", "capacitor.png"), capacitance(capacitance) {}
+        : PassiveComponent("Capacitor", "C"), capacitance(capacitance) {}
 
-    std::complex<double> getImpedance() override
+    std::complex<double> getImpedance(double frequency) override
     {
-        // TODO: Provjeri ovo
-        return std::complex<double>(0, -1 / (3.14 * 50 * capacitance));
+        // Z = 1 / (jωC) = -j / (ωC)
+        double omega = 2 * M_PI * frequency;
+        return std::complex<double>(0, -1 / (omega * capacitance));
     }
 };

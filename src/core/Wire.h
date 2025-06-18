@@ -11,6 +11,5 @@
 class Wire : public Component
 {
 public:
-    Wire()
-        : Component("Wire", "W", "") {}
+    Wire() : Component("Wire", "W") {}
 };

@@ -13,9 +13,8 @@ class PassiveComponent : public Component
 public:
     PassiveComponent(
         const td::String &name,
-        const td::String &symbol,
-        const td::String &image)
-        : Component(name, symbol, image) {}
+        const td::String &symbol)
+        : Component(name, symbol) {}
 
-    virtual std::complex<double> getImpedance() = 0;
+    virtual std::complex<double> getImpedance(double frequency) = 0;
 };

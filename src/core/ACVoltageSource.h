@@ -12,13 +12,11 @@ class ACVoltageSource : public VoltageSourceComponent
 {
 public:
   double maxVoltage;
-  double frequency;
   double phaseAngle; // Radians
 
-  ACVoltageSource(double maxVoltage, double frequency = 50, double phaseAngle = 0)
-      : VoltageSourceComponent("AC Voltage Source", "V", "ac_voltage_source.png"),
+  ACVoltageSource(double maxVoltage, double phaseAngle = 0)
+      : VoltageSourceComponent("AC Voltage Source", "V"),
         maxVoltage(maxVoltage),
-        frequency(frequency),
         phaseAngle(phaseAngle) {}
 
   std::complex<double> getVoltage() override

@@ -14,7 +14,7 @@ public:
     double voltage;
 
     DCVoltageSource(double voltage)
-        : VoltageSourceComponent("DC Voltage Source", "V", "dc_voltage_source.png"), voltage(voltage) {}
+        : VoltageSourceComponent("DC Voltage Source", "V"), voltage(voltage) {}
 
     std::complex<double> getVoltage() override
     {
