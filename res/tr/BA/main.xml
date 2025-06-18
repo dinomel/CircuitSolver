@@ -5,47 +5,38 @@
 		<Res id="Properties" tr="Podešenja"/>
 		<Res id="settings" tr="Podešavanja"/>
 		<Res id="settingsTT" tr="Podešenja aplikacije kao što su jezik i ostali parametri."/>
-		<Res id="rect" tr="Pravougaonik"/>
-		<Res id="rectTT" tr="Crtanje pravougaonika"/>	
-		<Res id="rndRct" tr="Obli pravougaonik"/>
-		<Res id="rndRctTT" tr="Crtanje zaobljenih pravougaonika"/>
-		<Res id="circ" tr="Krug"/>
-		<Res id="circTT" tr="Crtanje kružnica"/>
-		<Res id="Open" tr="Otvori"/>
-		<Res id="openTT" tr="Otvori postojeći model"/>
+
+		<Res id="resistorTT" tr="Crtanje otpornika"/>
+		<Res id="capacitorTT" tr="Crtanje kondenzatora"/>
+		<Res id="inductorTT" tr="Crtanje zavojnice"/>
+		<Res id="dcVoltageTT" tr="Crtanje istosmjernog naponskog izvora"/>
+		<Res id="acVoltageTT" tr="Crtanje naizmjeničnog naponskog izvora"/>
+		<Res id="currentTT" tr="Crtanje strujnog izvora"/>
+		<Res id="wireTT" tr="Crtanje žice"/>
+
+		<Res id="wire" tr="Žica"/>
+		<Res id="resistor" tr="Otpornik"/>
+		<Res id="capacitor" tr="Kondenzator"/>
+		<Res id="inductor" tr="Zavojnica"/>
+		<Res id="dcVoltage" tr="Istosmjerni naponski izvor"/>
+		<Res id="acVoltage" tr="Naizmjenićni naponski izvor"/>
+		<Res id="currentSource" tr="Strujni izvor"/>
+		
+		<Res id="parameters" tr="Parametri"/>
+		<Res id="startNodePosition" tr="Početna pozicija čvora"/>
+		<Res id="endNodePosition" tr="Krajnja pozicija čvora"/>
+		<Res id="resultValues" tr="Proračunate vrijednosti"/>
+
+		<Res id="resistance" tr="Otpornost"/>
+		<Res id="reactance" tr="Reaktansa"/>
+		<Res id="inductance" tr="Induktivitet"/>
+		<Res id="capacitance" tr="Kapacitet"/>
+		<Res id="voltage" tr="Napon"/>
+		<Res id="maxVoltage" tr="Amplituda"/>
+		<Res id="phaseAngle" tr="Fazni ugao"/>
+		<Res id="current" tr="Jačina struje"/>
 
 		<Res id="Defaults" tr="Zadane postavke"/>
-		<Res id="GeomData" tr="Geometrijski parametri"/>
-		<Res id="RectWidth" tr="Širina pravougaonika:"/>
-		<Res id="RectWidthTT" tr="Širina pravougaonika i zaobljenih pravougaonika"/>
-		<Res id="RectHeight" tr="Visina pravougaonika:"/>
-		<Res id="RectHeightTT" tr="Visina pravougaonika i zaobljenih pravougaonika"/>
-		<Res id="RoundRadius" tr="Radijus zakrivljenja:"/>
-		<Res id="RoundRadiusTT" tr="Radijus zakrivljenja za zaobljene pravougaonike"/>
-		
-		<Res id="LineWidth" tr="Debljina linije:"/>
-		<Res id="LineWidthTT" tr="Debljina linije"/>
-		<Res id="CircleRadius" tr="Radijus:"/>
-		<Res id="CircleRadiusTT" tr="Radijus kružnice"/>
-		
-
-		<Res id="VisualData" tr="Vizuelni parametri"/>
-		<Res id="Attribs" tr="Aributi:"/>
-		<Res id="FillColor" tr="Boja ispune:"/>
-		<Res id="LineColor" tr="Boja linije:"/>
-		<Res id="LinePattern" tr="Oblike linije:"/>
-		<Res id="TestBool" tr="Testiranje bool-a:"/>
-
-		<Res id="Rectangle" tr="Pravougaonik"/>
-		<Res id="RoundedRect" tr="Zaobljeni pravougaonik"/>
-		<Res id="Circle" tr="Krug / kružnica"/>
-
-		<Res id="PosAndRadius" tr="Pozicija i radijus"/>
-		<Res id="SizeAndPosition" tr="Dimenzija i pozicija"/>
-		<Res id="Left" tr="Lijevo:"/>
-		<Res id="Top" tr="Vrh:"/>
-		<Res id="With" tr="Širina:"/>
-		<Res id="Height" tr="Visina:"/>
 
 		<Res id="SetFront" tr="Postavi naprijed"/>
 		<Res id="SetBack" tr="Postavi nazad"/>

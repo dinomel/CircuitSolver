@@ -82,19 +82,19 @@ public:
     {
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
+            prop.setGroup(gui::tr("parameters"));
         }
 
         td::Variant valR(_resistor.resistance);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Resistance, "Resistance", valR);
+            prop.set((td::UINT4)PropID::Resistance, gui::tr("resistance"), valR);
         }
 
         valR = td::Variant(_resistor.reactance);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Reactance, "Reactance", valR);
+            prop.set((td::UINT4)PropID::Reactance, gui::tr("reactance"), valR);
         }
 
         GridComponent::initProperties(properties);

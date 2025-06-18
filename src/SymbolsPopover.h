@@ -4,7 +4,7 @@
 //
 #pragma once
 #include <gui/SymbolPopoverView.h>
-#include <gui/Symbol.h>
+// #include <gui/Symbol.h>
 
 class SymbolsPopover : public gui::SymbolPopoverView
 {
@@ -24,13 +24,13 @@ public:
     {
         gui::Symbol *nullSymbol = nullptr;
         addItem(&_pointer, nullSymbol, tr("pointer"), tr("pointerTT"), false, 0);
-        addItem(&_wire, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
-        addItem(&_resistor, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
-        addItem(&_capacitor, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
-        addItem(&_inductor, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
-        addItem(&_dcVoltage, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
-        addItem(&_acVoltage, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
-        addItem(&_current, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
+        addItem(&_wire, nullSymbol, tr("wire"), tr("wireTT"), true, 0);
+        addItem(&_resistor, nullSymbol, tr("resistor"), tr("resistorTT"), true, 0);
+        addItem(&_capacitor, nullSymbol, tr("capacitor"), tr("capacitorTT"), true, 0);
+        addItem(&_inductor, nullSymbol, tr("inductor"), tr("inductorTT"), true, 0);
+        addItem(&_dcVoltage, nullSymbol, tr("dcVoltage"), tr("dcVoltageTT"), true, 0);
+        addItem(&_acVoltage, nullSymbol, tr("acVoltage"), tr("acVoltageTT"), true, 0);
+        addItem(&_current, nullSymbol, tr("currentSource"), tr("currentTT"), true, 0);
         addItem(&_ground, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
         //        setItem(itemPos++, &_img, tr("Save"), tr("SaveTT"), 3.0f, 3.0f);
 

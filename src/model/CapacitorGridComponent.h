@@ -81,13 +81,13 @@ public:
     {
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
+            prop.setGroup(gui::tr("parameters"));
         }
 
         td::Variant valC(_capacitor.capacitance);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Capacitance, "Capacitance", valC);
+            prop.set((td::UINT4)PropID::Capacitance, gui::tr("capacitance"), valC);
         }
 
         GridComponent::initProperties(properties);

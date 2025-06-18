@@ -96,13 +96,13 @@ public:
     {
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
+            prop.setGroup(gui::tr("parameters"));
         }
 
         td::Variant valI(_currentSource.current);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Current, "Current", valI);
+            prop.set((td::UINT4)PropID::Current, gui::tr("current"), valI);
         }
 
         GridComponent::initProperties(properties);

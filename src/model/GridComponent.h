@@ -258,7 +258,7 @@ public:
         // group
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Start Node Position");
+            prop.setGroup(gui::tr("startNodePosition"));
         }
 
         CoordinatePoint startCoordinate = getStartCoordinate();
@@ -278,7 +278,7 @@ public:
         // group
         {
             auto &prop = properties->push_back();
-            prop.setGroup("End Node Position");
+            prop.setGroup(gui::tr("endNodePosition"));
         }
 
         CoordinatePoint endCoordinate = getEndCoordinate();
@@ -298,7 +298,7 @@ public:
         // group
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Result values");
+            prop.setGroup(gui::tr("resultValues"));
         }
 
         val = td::Variant(_current);

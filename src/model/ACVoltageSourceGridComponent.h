@@ -81,19 +81,19 @@ public:
     {
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
+            prop.setGroup(gui::tr("parameters"));
         }
 
         td::Variant valV(_acVoltageSource.maxVoltage);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::MaxVoltage, "Max Voltage", valV);
+            prop.set((td::UINT4)PropID::MaxVoltage, gui::tr("maxVoltage"), valV);
         }
 
         td::Variant valFi(_acVoltageSource.phaseAngle);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::PhaseAngle, "Phase Angle", valFi);
+            prop.set((td::UINT4)PropID::PhaseAngle, gui::tr("phaseAngle"), valFi);
         }
 
         GridComponent::initProperties(properties);

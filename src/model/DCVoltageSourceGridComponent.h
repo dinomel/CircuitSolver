@@ -82,13 +82,13 @@ public:
     {
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
+            prop.setGroup(gui::tr("parameters"));
         }
 
         td::Variant valV(_dcVoltageSource.voltage);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Voltage, "Voltage", valV);
+            prop.set((td::UINT4)PropID::Voltage, gui::tr("voltage"), valV);
         }
 
         GridComponent::initProperties(properties);

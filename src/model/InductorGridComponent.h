@@ -83,13 +83,13 @@ public:
     {
         {
             auto &prop = properties->push_back();
-            prop.setGroup("Parameters");
+            prop.setGroup(gui::tr("parameters"));
         }
 
         td::Variant valL(_inductor.inductance);
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::Inductance, "Inductance", valL);
+            prop.set((td::UINT4)PropID::Inductance, gui::tr("inductance"), valL);
         }
 
         GridComponent::initProperties(properties);
