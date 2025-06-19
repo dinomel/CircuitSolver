@@ -21,7 +21,7 @@ public:
     std::complex<double> getImpedance(double frequency) override
     {
         // Z = 1 / (jωC) = -j / (ωC)
-        double omega = 2 * M_PI * frequency;
+        double omega = frequency == 0 ? 0.00001 : 2 * M_PI * frequency;
         return std::complex<double>(0, -1 / (omega * capacitance));
     }
 };

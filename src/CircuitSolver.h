@@ -13,6 +13,10 @@
 #include <Eigen/Dense>
 #include "core/PassiveComponent.h"
 #include "core/VoltageSourceComponent.h"
+#include "property/DefaultSettings.h"
+
+// global parameters
+extern DefaultSettings g_defaultSettings;
 
 class CircuitSolver
 {
@@ -80,7 +84,7 @@ private:
             if (passiveComponent == nullptr)
                 continue;
             // TODO: get frequency from properties
-            Z(i, i) = passiveComponent->getImpedance(50);
+            Z(i, i) = passiveComponent->getImpedance(g_defaultSettings.getFrequency());
         }
     }
 

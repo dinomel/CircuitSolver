@@ -8,6 +8,10 @@
 #pragma once
 #include <gui/Shape.h>
 #include "IGridComponent.h"
+#include "../property/DefaultSettings.h"
+
+// global parameters
+extern DefaultSettings g_defaultSettings;
 
 class NodeGridComponent : public IGridComponent
 {
@@ -31,7 +35,7 @@ public:
 
     void draw(bool isSelected) const override
     {
-        td::ColorID nodeColor = isFloating ? td::ColorID::Red : isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow;
+        td::ColorID nodeColor = isFloating ? td::ColorID::Red : isSelected ? g_defaultSettings.getSelectedComponentColor() : g_defaultSettings.getComponentColor();
         _nodeShape.drawFillAndWire(nodeColor, nodeColor);
     }
 

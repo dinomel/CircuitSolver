@@ -32,9 +32,9 @@ public:
     {
         for (const gui::Shape &shape : _componentShapes)
         {
-            shape.drawWire(isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow);
+            shape.drawWire(isSelected ? g_defaultSettings.getSelectedComponentColor() : g_defaultSettings.getComponentColor());
         }
-        _wiresShape.drawWire(isSelected ? td::ColorID::SpringGreen : td::ColorID::Yellow);
+        _wiresShape.drawWire(isSelected ? g_defaultSettings.getSelectedComponentColor() : g_defaultSettings.getComponentColor());
         startNode->draw(isSelected);
     }
 

@@ -12,16 +12,12 @@
 #include <gui/Image.h>
 #include <gui/Shape.h>
 #include <gui/DrawableString.h>
-#include "property/DefaultSettings.h"
 #include "model/GridModel.h"
 #include <gui/Cursor.h>
 #include <gui/PropertyEditorSwitcher.h>
 #include <iostream>
 #include "model/GridComponent.h"
 #include "CircuitSolver.h"
-
-// global parameters
-extern DefaultSettings g_defaultSettings;
 
 extern const int gridSize;
 
@@ -426,6 +422,7 @@ protected:
 
         case 's':
         {
+            reDraw();
             CircuitSolver st = CircuitSolver(_model.getGridComponents());
             st.solve();
             st.setValues();

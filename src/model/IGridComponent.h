@@ -122,7 +122,7 @@ public:
     }
 
     // some limits
-    static float maxLineWidth;
+    static float maxFrequency;
     static gui::CoordType selectionDisance2;
     static gui::CoordType refreshOffset;
 

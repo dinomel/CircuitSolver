@@ -12,7 +12,7 @@
 int Component::nextID = 0;
 
 IGridComponent::Tool IGridComponent::currentTool = IGridComponent::Tool::Selector;
-float IGridComponent::maxLineWidth = 20;
+float IGridComponent::maxFrequency = 1000;
 gui::CoordType IGridComponent::selectionDisance2 = 5 * 5;
 gui::CoordType IGridComponent::refreshOffset = 2;
 
