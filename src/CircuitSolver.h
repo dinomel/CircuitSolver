@@ -8,11 +8,15 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <string>
 #include <complex>
 #include "graph/Graph.h"
 #include <Eigen/Dense>
 #include "core/PassiveComponent.h"
 #include "core/VoltageSourceComponent.h"
+#include "core/Resistor.h"
+#include "core/Inductor.h"
+#include "core/Capacitor.h"
 #include "property/DefaultSettings.h"
 
 // global parameters
@@ -277,5 +281,160 @@ public:
             gridComponents[i]->setCurrent(I(i).real());
             gridComponents[i]->setVoltage(V(i).real());
         }
+    }
+
+    void exportModel()
+    {
+        std::string model = "Header:\n\tmaxIter=50\n\treport=AllDetails //Solved - only final solved solution, All - shows solved and nonSolved with iterations, AllWithDetails - All + debug information\nend  //end of header\n";
+        model += "// Model created by CircuitSolver\n\n";
+        model += "\tVars [out=true]:\n";
+        for (int i = 0; i < graph.edgesCount; i++)
+        {
+            model += "\t\tI" + std::to_string(i + 1) + "\n";
+            model += "\t\tV" + std::to_string(i + 1) + "\n";
+        }
+        model += "\tParams:\n";
+        model += "\t\tf = " + std::to_string(g_defaultSettings.getFrequency()) + "\n";
+        model += "\t\tomega = 2 * pi * f\n";
+
+        std::vector<int> capacitorIndexes = {};
+        std::vector<int> inductorIndexes = {};
+        std::vector<int> currentSourceIndexes = {};
+
+        for (int i = 0; i < graph.edgesCount; i++)
+        {
+            VoltageSourceComponent *voltageSource = dynamic_cast<VoltageSourceComponent *>(graph.edges[i].gridComponent->getComponent());
+            if (voltageSource != nullptr)
+            {
+                // TODO: Rijesi za kompleksne br
+                model += "\t\tVg" + std::to_string(i + 1) + " = " + std::to_string(voltageSource->getVoltage().real()) + "\n";
+                continue;
+            }
+            CurrentSource *currentSource = dynamic_cast<CurrentSource *>(graph.edges[i].gridComponent->getComponent());
+            if (currentSource != nullptr)
+            {
+                currentSourceIndexes.push_back(i);
+                model += "\t\tIg" + std::to_string(i + 1) + " = " + std::to_string(currentSource->current) + "\n";
+                continue;
+            }
+            Resistor *resistor = dynamic_cast<Resistor *>(graph.edges[i].gridComponent->getComponent());
+            if (resistor != nullptr)
+            {
+                // TODO: Rijesi za kompleksne br
+                model += "\t\tR" + std::to_string(i + 1) + " = " + std::to_string(resistor->resistance) + "\n";
+                continue;
+            }
+            Inductor *inductor = dynamic_cast<Inductor *>(graph.edges[i].gridComponent->getComponent());
+            if (inductor != nullptr)
+            {
+                inductorIndexes.push_back(i);
+                model += "\t\tL" + std::to_string(i + 1) + " = " + std::to_string(inductor->inductance) + "\n";
+                continue;
+            }
+            Capacitor *capacitor = dynamic_cast<Capacitor *>(graph.edges[i].gridComponent->getComponent());
+            if (capacitor != nullptr)
+            {
+                capacitorIndexes.push_back(i);
+                model += "\t\tC" + std::to_string(i + 1) + " = " + std::to_string(capacitor->capacitance) + "\n";
+                continue;
+            }
+        }
+
+        model += "\tNLEs:\n";
+
+        for (int i = 0; i < capacitorIndexes.size(); i++)
+        {
+            model += "\t\tZc" + std::to_string(capacitorIndexes[i] + 1) + " = 1 / (j * omega * C" + std::to_string(capacitorIndexes[i] + 1) + ")\n";
+        }
+        for (int i = 0; i < inductorIndexes.size(); i++)
+        {
+            model += "\t\tZl" + std::to_string(inductorIndexes[i] + 1) + " = j * omega * L" + std::to_string(inductorIndexes[i] + 1) + "\n";
+        }
+        for (int i = 0; i < currentSourceIndexes.size(); i++)
+        {
+            model += "\t\tI" + std::to_string(currentSourceIndexes[i] + 1) + " = Ig" + std::to_string(currentSourceIndexes[i] + 1) + "\n";
+        }
+
+        if (!capacitorIndexes.empty() || !inductorIndexes.empty() || !currentSourceIndexes.empty())
+            model += "\n";
+
+        model += "\t\t// KZS\n";
+
+        for (int i = 0; i < graph.nodesCount - 1; i++)
+        {
+            model += "\t\t";
+            bool isFirst = true;
+            for (int j = 0; j < graph.edgesCount; j++)
+            {
+                std::string edgeName = "I" + std::to_string(j + 1);
+                if (graph.edges[j].endNode == i)
+                {
+                    model += isFirst ? edgeName : " + " + edgeName;
+                    isFirst = false;
+                }
+                else if (graph.edges[j].startNode == i)
+                {
+                    model += (isFirst ? "- " : " - ") + edgeName;
+                    isFirst = false;
+                }
+            }
+            model += " = 0\n";
+        }
+
+        model += "\n\t\t// KZN\n";
+
+        for (int i = 0; i < B.rows(); i++)
+        {
+            bool hasCurrentSource = false;
+            for (int j = 0; j < currentContours.size(); j++)
+            {
+                if (std::get<0>(currentContours[j]) == i)
+                {
+                    hasCurrentSource = true;
+                    break;
+                }
+            }
+            if (hasCurrentSource)
+                continue;
+
+            model += "\t\t";
+            bool isFirst = true;
+            for (int j = 0; j < B.cols(); j++)
+            {
+                if (B(i, j) == 0)
+                    continue;
+                switch (graph.edges[j].gridComponent->getType())
+                {
+                case IGridComponent::Type::Resistor:
+                    model += B(i, j) < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += "R" + std::to_string(j + 1) + " * " + "I" + std::to_string(j + 1);
+                    isFirst = false;
+                    break;
+                case IGridComponent::Type::Capacitor:
+                    model += B(i, j) < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += "Zc" + std::to_string(j + 1) + " * " + "I" + std::to_string(j + 1);
+                    isFirst = false;
+                    break;
+                case IGridComponent::Type::Inductor:
+                    model += B(i, j) < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += "Zl" + std::to_string(j + 1) + " * " + "I" + std::to_string(j + 1);
+                    isFirst = false;
+                    break;
+                case IGridComponent::Type::DCVoltageSource:
+                case IGridComponent::Type::ACVoltageSource:
+                    model += B(i, j) > 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += "Vg" + std::to_string(j + 1);
+                    isFirst = false;
+                    break;
+                default:
+                    break;
+                }
+            }
+            model += " = 0\n";
+        }
+
+        model += "end";
+
+        std::cout << model << std::endl;
     }
 };

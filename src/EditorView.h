@@ -426,6 +426,7 @@ protected:
             CircuitSolver st = CircuitSolver(_model.getGridComponents());
             st.solve();
             st.setValues();
+            st.exportModel();
             updatePropertyValues();
         }
         break;
