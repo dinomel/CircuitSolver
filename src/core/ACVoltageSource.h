@@ -7,12 +7,14 @@
 
 #pragma once
 #include "VoltageSourceComponent.h"
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 class ACVoltageSource : public VoltageSourceComponent
 {
 public:
   double maxVoltage;
-  double phaseAngle; // Radians
+  double phaseAngle; // Degrees
 
   ACVoltageSource(double maxVoltage, double phaseAngle = 0)
       : VoltageSourceComponent("AC Voltage Source", "V"),
@@ -21,6 +23,6 @@ public:
 
   std::complex<double> getVoltage() override
   {
-    return std::polar(maxVoltage / sqrt(2), phaseAngle);
+    return std::polar(maxVoltage / sqrt(2), phaseAngle / 180 * M_PI);
   }
 };
