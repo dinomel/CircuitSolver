@@ -13,8 +13,10 @@
 		<Res id="acVoltageTT" tr="Crtanje naizmjeničnog naponskog izvora"/>
 		<Res id="currentTT" tr="Crtanje strujnog izvora"/>
 		<Res id="wireTT" tr="Crtanje žice"/>
+		<Res id="groundTT" tr="Crtanje uzemljenja"/>
 
 		<Res id="wire" tr="Žica"/>
+		<Res id="ground" tr="Uzemljenje"/>
 		<Res id="resistor" tr="Otpornik"/>
 		<Res id="capacitor" tr="Kondenzator"/>
 		<Res id="inductor" tr="Zavojnica"/>
@@ -25,7 +27,9 @@
 		<Res id="parameters" tr="Parametri"/>
 		<Res id="startNodePosition" tr="Početna pozicija čvora"/>
 		<Res id="endNodePosition" tr="Krajnja pozicija čvora"/>
-		<Res id="resultValues" tr="Proračunate vrijednosti"/>
+		<Res id="resultCurrent" tr="Struja grane"/>
+		<Res id="resultVoltage" tr="Napon grane"/>
+		<Res id="resultPower" tr="Snaga grane"/>
 
 		<Res id="resistance" tr="Otpornost"/>
 		<Res id="reactance" tr="Reaktansa"/>
@@ -41,6 +45,11 @@
 		<Res id="SetFront" tr="Postavi naprijed"/>
 		<Res id="SetBack" tr="Postavi nazad"/>
 		<Res id="Delete" tr="Pobriši"/>
+
+		<Res id="Export" tr="Eksportaj"/>
+		<Res id="VisualParams" tr="Vizualni Parametri"/>
+		<Res id="CompColor" tr="Boja komponente"/>
+		<Res id="SelCompColor" tr="Boja označene komponente"/>
 		
 		<!-- Settings -->
 

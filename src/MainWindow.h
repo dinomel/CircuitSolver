@@ -140,7 +140,7 @@ protected:
             case 20:
             {
                 // PRIMJER snimanja fajla
-                td::String dlgTitle(tr("SaveT"));
+                td::String dlgTitle(tr("Export"));
                 const char *defaultFileName = "MyCustomModel";
 
                 gui::SaveFileDialog::show(this, dlgTitle, {{tr("dTwin model"), "*.dmodl"}}, actionID, [this](gui::FileDialog *pFileDlg)

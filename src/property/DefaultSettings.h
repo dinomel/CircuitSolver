@@ -124,20 +124,20 @@ public:
             }
 
             {
-                td::String lbl(tr("GeomData"));
+                td::String lbl(tr("VisualParams"));
                 auto &prop = properties.push_back();
                 prop.setGroup(lbl);
             }
 
             {
-                td::String lbl(tr("LineColor"));
+                td::String lbl(tr("CompColor"));
                 td::Variant var(_componentColor);
                 auto &prop = properties.push_back();
                 prop.set((td::UINT4)PropID::ComponentColor, lbl, var);
             }
 
             {
-                td::String lbl(tr("LineColor"));
+                td::String lbl(tr("SelCompColor"));
                 td::Variant var(_selectedComponentColor);
                 auto &prop = properties.push_back();
                 prop.set((td::UINT4)PropID::SelectedComponentColor, lbl, var);

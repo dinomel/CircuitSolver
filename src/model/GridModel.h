@@ -48,11 +48,9 @@ public:
         std::vector<std::pair<std::complex<double>, std::complex<double>>> results = circuitSolver.solve();
         for (int i = 0; i < _gridComponents.size(); i++)
         {
-            _gridComponents[i]->setCurrent(results[i].first.real());
-            _gridComponents[i]->setVoltage(results[i].second.real());
-
-            // _gridComponents[i]->setCurrent(I(i).real());
-            // _gridComponents[i]->setVoltage(V(i).real());
+            _gridComponents[i]->setCurrent(results[i].first);
+            _gridComponents[i]->setVoltage(results[i].second);
+            _gridComponents[i]->calculatePower();
         }
     }
 

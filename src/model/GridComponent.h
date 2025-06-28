@@ -26,12 +26,9 @@ protected:
     std::vector<gui::Shape> _componentShapes;
     double _width;
     double _height;
-    //    std::complex<double> _current;
-    //    std::complex<double> _voltage;
-    //    std::complex<double> _power;
-    double _current;
-    double _voltage;
-    double _power;
+    std::complex<double> _current;
+    std::complex<double> _voltage;
+    std::complex<double> _power;
 
 public:
     NodeGridComponent *startNode;
@@ -57,9 +54,12 @@ public:
         MaxVoltage,
         PhaseAngle,
         Current,
-        ResI,
-        ResVd,
+        ResIReal,
+        ResIImag,
+        ResVdReal,
+        ResVdImag,
         ResP,
+        ResQ,
     };
 
     void getBoundingRect(gui::Rect &boundRect) override
@@ -166,14 +166,19 @@ public:
         updateShape();
     }
 
-    void setCurrent(double current)
+    void setCurrent(std::complex<double> current)
     {
         _current = current;
     }
 
-    void setVoltage(double voltage)
+    void setVoltage(std::complex<double> voltage)
     {
         _voltage = voltage;
+    }
+
+    void calculatePower()
+    {
+        _power = _voltage * conj(_current);
     }
 
     void updateEndPoint(const gui::Point &newEndPoint)
@@ -301,27 +306,60 @@ public:
         // group
         {
             auto &prop = properties->push_back();
-            prop.setGroup(gui::tr("resultValues"));
+            prop.setGroup(gui::tr("resultCurrent"));
         }
 
-        val = td::Variant(_current);
+        val = td::Variant(_current.real());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResI, "I", val);
+            prop.set((td::UINT4)PropID::ResIReal, "real(I)", val);
             prop.setReadOnly();
         }
 
-        val = td::Variant(_voltage);
+        val = td::Variant(_current.imag());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResVd, "Vd", val);
+            prop.set((td::UINT4)PropID::ResIImag, "imag(I)", val);
             prop.setReadOnly();
         }
 
-        val = td::Variant(_power);
+        // group
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup(gui::tr("resultVoltage"));
+        }
+
+        val = td::Variant(_voltage.real());
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::ResVdReal, "real(Vd)", val);
+            prop.setReadOnly();
+        }
+
+        val = td::Variant(_voltage.imag());
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::ResVdImag, "imag(Vd)", val);
+            prop.setReadOnly();
+        }
+
+        // group
+        {
+            auto &prop = properties->push_back();
+            prop.setGroup(gui::tr("resultPower"));
+        }
+
+        val = td::Variant(_power.real());
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::ResP, "P", val);
+            prop.setReadOnly();
+        }
+
+        val = td::Variant(_power.imag());
+        {
+            auto &prop = properties->push_back();
+            prop.set((td::UINT4)PropID::ResQ, "Q", val);
             prop.setReadOnly();
         }
     }
@@ -343,14 +381,23 @@ public:
         td::Variant y2(endCoordinate.getY());
         propValues.setValueByKey((td::UINT4)PropID::Y2, y2);
 
-        td::Variant resI(_current);
-        propValues.setValueByKey((td::UINT4)PropID::ResI, resI);
+        td::Variant resIReal(_current.real());
+        propValues.setValueByKey((td::UINT4)PropID::ResIReal, resIReal);
 
-        td::Variant resVd(_voltage);
-        propValues.setValueByKey((td::UINT4)PropID::ResVd, resVd);
+        td::Variant resIImag(_current.imag());
+        propValues.setValueByKey((td::UINT4)PropID::ResIImag, resIImag);
 
-        td::Variant resP(_power);
+        td::Variant resVdReal(_voltage.real());
+        propValues.setValueByKey((td::UINT4)PropID::ResVdReal, resVdReal);
+
+        td::Variant resVdImag(_voltage.imag());
+        propValues.setValueByKey((td::UINT4)PropID::ResVdImag, resVdImag);
+
+        td::Variant resP(_power.real());
         propValues.setValueByKey((td::UINT4)PropID::ResP, resP);
+
+        td::Variant resQ(_power.imag());
+        propValues.setValueByKey((td::UINT4)PropID::ResQ, resQ);
     }
 
     virtual void setValues(gui::PropertyValues &propValues) override

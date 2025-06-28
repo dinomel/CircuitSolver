@@ -279,15 +279,6 @@ public:
         return results;
     }
 
-    void setValues()
-    {
-        for (int i = 0; i < gridComponents.size(); i++)
-        {
-            gridComponents[i]->setCurrent(I(i).real());
-            gridComponents[i]->setVoltage(V(i).real());
-        }
-    }
-
     std::string exportModel() const
     {
         std::string model = "Header:\n\tmaxIter=50\n\treport=AllDetails //Solved - only final solved solution, All - shows solved and nonSolved with iterations, AllWithDetails - All + debug information\nend  //end of header\n";

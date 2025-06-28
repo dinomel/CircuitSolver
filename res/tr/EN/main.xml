@@ -13,8 +13,10 @@
 		<Res id="acVoltageTT" tr="AC Voltage tool"/>
 		<Res id="currentTT" tr="Current source tool"/>
 		<Res id="wireTT" tr="Wire tool"/>
+		<Res id="groundTT" tr="Ground tool"/>
 		
 		<Res id="wire" tr="Wire"/>
+		<Res id="ground" tr="Ground"/>
 		<Res id="resistor" tr="Resistor"/>
 		<Res id="capacitor" tr="Capacitor"/>
 		<Res id="inductor" tr="Inductor"/>
@@ -25,7 +27,9 @@
 		<Res id="parameters" tr="Parameters"/>
 		<Res id="startNodePosition" tr="Start Node Position"/>
 		<Res id="endNodePosition" tr="End Node Position"/>
-		<Res id="resultValues" tr="Result Values"/>
+		<Res id="resultCurrent" tr="Result Current"/>
+		<Res id="resultVoltage" tr="Result Voltage"/>
+		<Res id="resultPower" tr="Result Power"/>
 
 		<Res id="resistance" tr="Resistance"/>
 		<Res id="reactance" tr="Reactance"/>
@@ -41,6 +45,11 @@
 		<Res id="SetFront" tr="Bring to front"/>
 		<Res id="SetBack" tr="Bring to background"/>
 		<Res id="Delete" tr="Delete"/>
+
+		<Res id="Export" tr="Export"/>
+		<Res id="VisualParams" tr="Visual Parameters"/>
+		<Res id="CompColor" tr="Component Color"/>
+		<Res id="SelCompColor" tr="Selected Color"/>
 
 		<!-- Settings -->
 

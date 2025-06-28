@@ -151,49 +151,49 @@ void IGridComponent::initProperties()
 
     {
         ResistorGridComponent sh(0, pnC, pnC);
-        _resistorProperties.reserve(13);
+        _resistorProperties.reserve(18);
         sh.initProperties(&_resistorProperties);
     }
 
     {
         CapacitorGridComponent sh(0, pnC, pnC);
-        _capacitorProperties.reserve(12);
+        _capacitorProperties.reserve(18);
         sh.initProperties(&_capacitorProperties);
     }
 
     {
         InductorGridComponent sh(0, pnC, pnC);
-        _inductorProperties.reserve(12);
+        _inductorProperties.reserve(18);
         sh.initProperties(&_inductorProperties);
     }
 
     {
         WireGridComponent sh(pnC, pnC);
-        _wireProperties.reserve(12);
+        _wireProperties.reserve(18);
         sh.initProperties(&_wireProperties);
     }
 
     {
         DCVoltageSourceGridComponent sh(0, pnC, pnC);
-        _dcVoltageProperties.reserve(12);
+        _dcVoltageProperties.reserve(18);
         sh.initProperties(&_dcVoltageProperties);
     }
 
     {
         ACVoltageSourceGridComponent sh(0, pnC, pnC);
-        _acVoltageProperties.reserve(12);
+        _acVoltageProperties.reserve(18);
         sh.initProperties(&_acVoltageProperties);
     }
 
     {
         CurrentSourceGridComponent sh(0, pnC, pnC);
-        _currentProperties.reserve(12);
+        _currentProperties.reserve(18);
         sh.initProperties(&_currentProperties);
     }
 
     {
         GroundGridComponent sh(pnC, pnC);
-        _groundProperties.reserve(12);
+        _groundProperties.reserve(18);
         sh.initProperties(&_groundProperties);
     }
 }
