@@ -6,6 +6,7 @@
 		<Res id="settings" tr="Podešavanja"/>
 		<Res id="settingsTT" tr="Podešenja aplikacije kao što su jezik i ostali parametri."/>
 
+		<Res id="pointerTT" tr="Označi i premjesti komponente"/>
 		<Res id="resistorTT" tr="Crtanje otpornika"/>
 		<Res id="capacitorTT" tr="Crtanje kondenzatora"/>
 		<Res id="inductorTT" tr="Crtanje zavojnice"/>
@@ -15,13 +16,14 @@
 		<Res id="wireTT" tr="Crtanje žice"/>
 		<Res id="groundTT" tr="Crtanje uzemljenja"/>
 
+		<Res id="pointer" tr="Kursor"/>
 		<Res id="wire" tr="Žica"/>
 		<Res id="ground" tr="Uzemljenje"/>
 		<Res id="resistor" tr="Otpornik"/>
 		<Res id="capacitor" tr="Kondenzator"/>
 		<Res id="inductor" tr="Zavojnica"/>
 		<Res id="dcVoltage" tr="Istosmjerni naponski izvor"/>
-		<Res id="acVoltage" tr="Naizmjenićni naponski izvor"/>
+		<Res id="acVoltage" tr="Naizmjenični naponski izvor"/>
 		<Res id="currentSource" tr="Strujni izvor"/>
 		
 		<Res id="parameters" tr="Parametri"/>
@@ -37,16 +39,18 @@
 		<Res id="capacitance" tr="Kapacitet"/>
 		<Res id="voltage" tr="Napon"/>
 		<Res id="maxVoltage" tr="Amplituda"/>
-		<Res id="phaseAngle" tr="Fazni ugao"/>
+		<Res id="phaseAngle" tr="Fazni ugao [Deg]"/>
 		<Res id="current" tr="Jačina struje"/>
 
 		<Res id="Defaults" tr="Zadane postavke"/>
+		<Res id="Frequency" tr="Frekvencija [Hz]"/>
 
 		<Res id="SetFront" tr="Postavi naprijed"/>
 		<Res id="SetBack" tr="Postavi nazad"/>
 		<Res id="Delete" tr="Pobriši"/>
 
-		<Res id="Export" tr="Eksportaj"/>
+		<Res id="Export" tr="Eksport"/>
+		<Res id="ExportTT" tr="Exportuj model za dTwin"/>
 		<Res id="VisualParams" tr="Vizualni Parametri"/>
 		<Res id="CompColor" tr="Boja komponente"/>
 		<Res id="SelCompColor" tr="Boja označene komponente"/>

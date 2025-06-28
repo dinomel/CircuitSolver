@@ -17,7 +17,7 @@ protected:
 
 public:
     DefaultSettingsPropertyEditor()
-        : gui::PropertyEditor("Defaults", true)
+        : gui::PropertyEditor(gui::tr("Defaults"), true)
     {
         g_defaultSettings.createPropertiesForEditor(_properties);
         setProperties(&_properties);

@@ -23,8 +23,7 @@ protected:
     void populateSubFileMenu()
     {
         auto &items = subFile.getItems();
-        items[0].initAsActionItem(tr("Open"), 10, "o");
-        items[1].initAsActionItem(tr("Save"), 20, "s");
+        items[0].initAsActionItem(tr("Export"), 20, "s");
     }
 
 public:
@@ -33,7 +32,7 @@ public:
           ,
           subApp(10, "App", 2) // allocate items for the Application subMenu
           ,
-          subFile(20, "Model", 2) // allocate items for the Edit subMenu
+          subFile(20, "Model", 1) // allocate items for the Edit subMenu
     {
         populateSubAppMenu();
         populateSubFileMenu();

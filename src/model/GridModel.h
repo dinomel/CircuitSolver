@@ -44,6 +44,8 @@ public:
 
     void solve()
     {
+        if (_gridComponents.isEmpty())
+            return;
         circuitSolver = CircuitSolver(_gridComponents);
         std::vector<std::pair<std::complex<double>, std::complex<double>>> results = circuitSolver.solve();
         for (int i = 0; i < _gridComponents.size(); i++)

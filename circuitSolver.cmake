@@ -1,4 +1,4 @@
-set(CIRCUITSOLVER_NAME circuitSolver)				#Naziv prvog projekta u solution-u
+set(CIRCUITSOLVER_NAME CircuitSolver)				#Naziv prvog projekta u solution-u
 
 file(GLOB CIRCUITSOLVER_SOURCES  ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 file(GLOB CIRCUITSOLVER_INCS  ${CMAKE_CURRENT_LIST_DIR}/src/*.h)

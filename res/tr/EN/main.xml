@@ -6,6 +6,7 @@
 		<Res id="settings" tr="Settings"/>
 		<Res id="settingsTT" tr="Application adjustments (language and other visual properties.s)"/>
 
+		<Res id="pointerTT" tr="Select and move components"/>
 		<Res id="resistorTT" tr="Resistor tool"/>
 		<Res id="capacitorTT" tr="Capacitor tool"/>
 		<Res id="inductorTT" tr="Inductor tool"/>
@@ -15,6 +16,7 @@
 		<Res id="wireTT" tr="Wire tool"/>
 		<Res id="groundTT" tr="Ground tool"/>
 		
+		<Res id="pointer" tr="Pointer"/>
 		<Res id="wire" tr="Wire"/>
 		<Res id="ground" tr="Ground"/>
 		<Res id="resistor" tr="Resistor"/>
@@ -37,16 +39,18 @@
 		<Res id="capacitance" tr="Capacitance"/>
 		<Res id="voltage" tr="Voltage"/>
 		<Res id="maxVoltage" tr="Max Voltage"/>
-		<Res id="phaseAngle" tr="Phase Angle"/>
+		<Res id="phaseAngle" tr="Phase Angle [Deg]"/>
 		<Res id="current" tr="Current"/>
 
 		<Res id="Defaults" tr="Defaults"/>
+		<Res id="Frequency" tr="Frequency [Hz]"/>
 
 		<Res id="SetFront" tr="Bring to front"/>
 		<Res id="SetBack" tr="Bring to background"/>
 		<Res id="Delete" tr="Delete"/>
 
 		<Res id="Export" tr="Export"/>
+		<Res id="ExportTT" tr="Export model to dTwin"/>
 		<Res id="VisualParams" tr="Visual Parameters"/>
 		<Res id="CompColor" tr="Component Color"/>
 		<Res id="SelCompColor" tr="Selected Color"/>

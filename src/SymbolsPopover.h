@@ -31,7 +31,7 @@ public:
         addItem(&_dcVoltage, nullSymbol, tr("dcVoltage"), tr("dcVoltageTT"), true, 0);
         addItem(&_acVoltage, nullSymbol, tr("acVoltage"), tr("acVoltageTT"), true, 0);
         addItem(&_current, nullSymbol, tr("currentSource"), tr("currentTT"), true, 0);
-        addItem(&_ground, nullSymbol, tr("rndRct"), tr("rndRctTT"), true, 0);
+        addItem(&_ground, nullSymbol, tr("ground"), tr("groundTT"), true, 0);
         //        setItem(itemPos++, &_img, tr("Save"), tr("SaveTT"), 3.0f, 3.0f);
 
         styleOnParent(false); // remove this line if you want to see color symbols on toolbar
