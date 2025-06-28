@@ -94,6 +94,8 @@ public:
         {
             auto &prop = properties->push_back();
             prop.set((td::UINT4)PropID::PhaseAngle, gui::tr("phaseAngle"), valFi);
+            prop.setMinValue(-360);
+            prop.setMaxValue(360);
         }
 
         GridComponent::initProperties(properties);

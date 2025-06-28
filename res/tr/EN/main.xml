@@ -33,12 +33,12 @@
 		<Res id="resultVoltage" tr="Result Voltage"/>
 		<Res id="resultPower" tr="Result Power"/>
 
-		<Res id="resistance" tr="Resistance"/>
-		<Res id="reactance" tr="Reactance"/>
-		<Res id="inductance" tr="Inductance"/>
-		<Res id="capacitance" tr="Capacitance"/>
-		<Res id="voltage" tr="Voltage"/>
-		<Res id="maxVoltage" tr="Max Voltage"/>
+		<Res id="resistance" tr="Resistance [kΩ]"/>
+		<Res id="reactance" tr="Reactance [kΩ]"/>
+		<Res id="inductance" tr="Inductance [H]"/>
+		<Res id="capacitance" tr="Capacitance [μF]"/>
+		<Res id="voltage" tr="Voltage [V]"/>
+		<Res id="maxVoltage" tr="Max Voltage [V]"/>
 		<Res id="phaseAngle" tr="Phase Angle [Deg]"/>
 		<Res id="current" tr="Current"/>
 

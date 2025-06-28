@@ -1,7 +1,3 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/SplitterLayout.h>
 #include "EditorViewScroller.h"
@@ -14,7 +10,6 @@ class MainView : public gui::View
 protected:
     gui::SplitterLayout _splitter;
     EditorViewScroller _viewScroller;
-    // DefaultSettingsPropertyEditor _propertyEditorForDefaultSettings;
     PropertyEditors _propEditors;
 
 public:
@@ -23,7 +18,6 @@ public:
     {
         IGridComponent::initProperties();
 
-        //_propertyEditorForDefaultSettings.setPropertyConsumer(&g_defaultSettings);
         _splitter.setToolTipForMinimizedAux("Property Editor");
         setMargins(0, 0, 0, 0);
         _splitter.setContent(_viewScroller, _propEditors);

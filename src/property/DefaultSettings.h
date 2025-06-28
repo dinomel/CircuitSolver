@@ -1,7 +1,3 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/Shape.h>
 #include <gui/IProperty.h>
@@ -87,10 +83,6 @@ public:
         case PropID::Frequency:
         {
             propValue.getValue(_frequency);
-            // // slider returns double value
-            // double dblVal;
-            // propValue.getValue(dblVal);
-            // _frequency = (float)dblVal;
         }
         break;
         case PropID::ComponentColor:

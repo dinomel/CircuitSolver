@@ -44,14 +44,6 @@ public:
         boundRect = gui::Rect(gui::Circle(centerPoint, _nodeRadius));
     }
 
-    void load(arch::ArchiveIn &ar) override
-    {
-    }
-
-    void save(arch::ArchiveOut &ar) const override
-    {
-    }
-
     Type getType() const override
     {
         return Type::Node;

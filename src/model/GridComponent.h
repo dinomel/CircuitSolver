@@ -26,9 +26,9 @@ protected:
     std::vector<gui::Shape> _componentShapes;
     double _width;
     double _height;
-    std::complex<double> _current;
-    std::complex<double> _voltage;
-    std::complex<double> _power;
+    std::complex<double> _current; // [mA]
+    std::complex<double> _voltage; // [V]
+    std::complex<double> _power;   // [W]
 
 public:
     NodeGridComponent *startNode;
@@ -168,7 +168,7 @@ public:
 
     void setCurrent(std::complex<double> current)
     {
-        _current = current;
+        _current = current * std::complex<double>(1000, 0);
     }
 
     void setVoltage(std::complex<double> voltage)
@@ -178,7 +178,7 @@ public:
 
     void calculatePower()
     {
-        _power = _voltage * conj(_current);
+        _power = _voltage * conj(_current / std::complex<double>(1000, 0));
     }
 
     void updateEndPoint(const gui::Point &newEndPoint)
@@ -228,26 +228,6 @@ public:
     bool canBeSelected(const gui::Point &pt) const override
     {
         return distanceToPointSquared(pt) < 144;
-    }
-
-    virtual void load(arch::ArchiveIn &ar) override
-    {
-        ////        td::BYTE attr = 0 ; //(td::BYTE) _attribs;
-        ////        td::BYTE lnPattern = 0; //(td::BYTE) _linePattern;
-        //        arch::EnumLoader<gui::Shape::Attribs> attr(_attribs, gui::Shape::Attribs::LineAndFill, gui::Shape::Attribs::LineAndFill);
-        //        arch::EnumLoader<td::LinePattern> lnPattern(_linePattern, td::LinePattern::NA, td::LinePattern::Solid);
-        //        ar >> _lineWidth >> attr >> _fillColor >> _lineColor >> lnPattern;
-        ////        _attribs = (gui::Shape::Attribs) attr;
-        ////        _linePattern = (td::LinePattern) lnPattern;
-    }
-
-    virtual void save(arch::ArchiveOut &ar) const override
-    {
-        ////        td::BYTE attr = (td::BYTE) _attribs;
-        ////        td::BYTE lnPattern = (td::BYTE) _linePattern;
-        //        arch::EnumSaver<gui::Shape::Attribs> attr(_attribs);
-        //        arch::EnumSaver<td::LinePattern> lnPattern(_linePattern);
-        //        ar << _lineWidth << attr << _fillColor << _lineColor << lnPattern;
     }
 
     void release() override
@@ -312,14 +292,14 @@ public:
         val = td::Variant(_current.real());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResIReal, "real(I)", val);
+            prop.set((td::UINT4)PropID::ResIReal, "real(I) [mA]", val);
             prop.setReadOnly();
         }
 
         val = td::Variant(_current.imag());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResIImag, "imag(I)", val);
+            prop.set((td::UINT4)PropID::ResIImag, "imag(I) [mA]", val);
             prop.setReadOnly();
         }
 
@@ -332,14 +312,14 @@ public:
         val = td::Variant(_voltage.real());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResVdReal, "real(Vd)", val);
+            prop.set((td::UINT4)PropID::ResVdReal, "real(Vd) [V]", val);
             prop.setReadOnly();
         }
 
         val = td::Variant(_voltage.imag());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResVdImag, "imag(Vd)", val);
+            prop.set((td::UINT4)PropID::ResVdImag, "imag(Vd) [V]", val);
             prop.setReadOnly();
         }
 
@@ -352,14 +332,14 @@ public:
         val = td::Variant(_power.real());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResP, "P", val);
+            prop.set((td::UINT4)PropID::ResP, "P [W]", val);
             prop.setReadOnly();
         }
 
         val = td::Variant(_power.imag());
         {
             auto &prop = properties->push_back();
-            prop.set((td::UINT4)PropID::ResQ, "Q", val);
+            prop.set((td::UINT4)PropID::ResQ, "Q [W]", val);
             prop.setReadOnly();
         }
     }

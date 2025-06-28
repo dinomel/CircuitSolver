@@ -1,7 +1,3 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/PropertyEditorSwitcher.h>
 #include "DefaultSettingsPropertyEditor.h"
@@ -25,7 +21,6 @@ public:
     PropertyEditors()
         : gui::PropertyEditorSwitcher(9), _wirePropEditor(gui::tr("wire"), IGridComponent::getProperties(IGridComponent::Type::Wire)), _resistorPropEditor(gui::tr("resistor"), IGridComponent::getProperties(IGridComponent::Type::Resistor)), _capacitorPropEditor(gui::tr("capacitor"), IGridComponent::getProperties(IGridComponent::Type::Capacitor)), _inductorPropEditor(gui::tr("inductor"), IGridComponent::getProperties(IGridComponent::Type::Inductor)), _dcVoltagePropEditor(gui::tr("dcVoltage"), IGridComponent::getProperties(IGridComponent::Type::DCVoltageSource)), _acVoltagePropEditor(gui::tr("acVoltage"), IGridComponent::getProperties(IGridComponent::Type::ACVoltageSource)), _currentPropEditor(gui::tr("currentSource"), IGridComponent::getProperties(IGridComponent::Type::CurrentSource)), _groundPropEditor("Ground", IGridComponent::getProperties(IGridComponent::Type::Ground))
     {
-        //        setMargins(0, 0, 15, 5);
         addView(&_defaultPropEditor);
         addView(&_wirePropEditor);
         addView(&_resistorPropEditor);

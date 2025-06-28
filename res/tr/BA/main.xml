@@ -33,14 +33,14 @@
 		<Res id="resultVoltage" tr="Napon grane"/>
 		<Res id="resultPower" tr="Snaga grane"/>
 
-		<Res id="resistance" tr="Otpornost"/>
-		<Res id="reactance" tr="Reaktansa"/>
-		<Res id="inductance" tr="Induktivitet"/>
-		<Res id="capacitance" tr="Kapacitet"/>
-		<Res id="voltage" tr="Napon"/>
-		<Res id="maxVoltage" tr="Amplituda"/>
+		<Res id="resistance" tr="Otpornost [kΩ]"/>
+		<Res id="reactance" tr="Reaktansa [kΩ]"/>
+		<Res id="inductance" tr="Induktivitet [H]"/>
+		<Res id="capacitance" tr="Kapacitet [μF]"/>
+		<Res id="voltage" tr="Napon [V]"/>
+		<Res id="maxVoltage" tr="Amplituda [V]"/>
 		<Res id="phaseAngle" tr="Fazni ugao [Deg]"/>
-		<Res id="current" tr="Jačina struje"/>
+		<Res id="current" tr="Jačina struje [A]"/>
 
 		<Res id="Defaults" tr="Zadane postavke"/>
 		<Res id="Frequency" tr="Frekvencija [Hz]"/>

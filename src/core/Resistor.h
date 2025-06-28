@@ -11,14 +11,24 @@
 class Resistor : public PassiveComponent
 {
 public:
-    double resistance;
-    double reactance;
+    double resistance; // [kOhm]
+    double reactance;  // [kOhm]
 
     Resistor(double resistance, double reactance = 0)
         : PassiveComponent("Resistor", "R"), resistance(resistance), reactance(reactance) {}
 
+    double resistanceInOhms() const
+    {
+        return resistance * 1000;
+    }
+
+    double reactanceInOhms() const
+    {
+        return reactance * 1000;
+    }
+
     std::complex<double> getImpedance(double frequency) override
     {
-        return std::complex<double>(resistance, reactance);
+        return std::complex<double>(resistanceInOhms(), reactanceInOhms());
     }
 };

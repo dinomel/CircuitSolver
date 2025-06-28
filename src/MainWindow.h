@@ -1,7 +1,3 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/Window.h>
 #include "MenuBar.h"
@@ -19,17 +15,13 @@ protected:
     ToolBar _toolBar;
     MainView _view;
     ContextMenus _contextMenus;
-    //    gui::FileDialog::CallBack _callBackHandleOpenDlg;
-    //    gui::FileDialog::CallBack _callBackHandleSaveDlg;
+
 public:
     MainWindow()
         : gui::Window(gui::Size(1200, 800))
-    //    , _callBackHandleOpenDlg(std::bind(&MainWindow::openFile, this, std::placeholders::_1))
-    //    , _callBackHandleSaveDlg(std::bind(&MainWindow::saveFile, this, std::placeholders::_1))
     {
         setTitle(tr("Circuit Solver"));
         _mainMenuBar.setAsMain(this);
-        //_mainMenuBar.forwardMessagesTo(this);
         _toolBar.forwardMessagesTo(this);
         _toolBar.setIconSize(gui::ToolBar::IconSize::SystemDefault);
 
@@ -93,53 +85,13 @@ protected:
 
         if (menuID == 100)
         {
-
             // context menu;
             return true;
         }
         if (menuID == 20 && firstSubMenuID == 0 && lastSubMenuID == 0)
         {
-            switch (actionID)
+            if (actionID == 20)
             {
-            case 10:
-            {
-                // PRIMJER Otvaranja fajla/modela
-                //                    pAI->disable();
-                td::String dlgTitle(tr("openF"));
-                gui::OpenFileDialog::show(this, dlgTitle, {{tr("Vector graphics format"), "*.getf"}, {tr("Binary format graphics"), "*.bin"}}, actionID, [this](gui::FileDialog *pFileDlg)
-                                          {
-                          auto status = pFileDlg->getStatus();
-                          if (status == gui::FileDialog::Status::OK)
-                          {
-                              EditorView* pEditor = _view.getEditor();
-                              td::String fileName = pFileDlg->getFileName();
-                              pEditor->load(fileName);
-                              mu::dbgLog("User pressed OK! Selected file to open =%s", fileName.c_str());
-                          }
-                          else
-                              mu::dbgLog("User cancelled opening!"); });
-
-                //                    gui::OpenFileDialog* pFD = new gui::OpenFileDialog(this, dlgTitle,  { {tr("Vector graphics format"),"*.getf"}, {tr("Binary format graphics"), "*.bin"}});
-                ////                    pFD->openModal(&_callBackHandleOpenDlg);
-                //                    pFD->open([this](gui::FileDialog* pFileDlg)
-                //                    {
-                //                        auto status = pFileDlg->getStatus();
-                //                        if (status == gui::FileDialog::Status::OK)
-                //                        {
-                //                            EditorView* pEditor = _view.getEditor();
-                //                            td::String fileName = pFileDlg->getFileName();
-                //                            pEditor->load(fileName);
-                //                            mu::dbgLog("User pressed OK! Selected file to open =%s", fileName.c_str());
-                //                        }
-                //                        else
-                //                            mu::dbgLog("User cancelled opening!");
-                //                    });
-                return true;
-            }
-
-            case 20:
-            {
-                // PRIMJER snimanja fajla
                 td::String dlgTitle(tr("Export"));
                 const char *defaultFileName = "MyCustomModel";
 
@@ -149,8 +101,6 @@ protected:
                           if (status == gui::FileDialog::Status::OK)
                           {
                               gui::SaveFileDialog* saveFD = (gui::SaveFileDialog*) pFileDlg;
-  //                            int docIndex = saveFD->getSelectedDocumentDescriptionIndex();
-  //                            mu::dbgLog("Selected document description index = %d", docIndex);
                               
                               EditorView* pEditor = _view.getEditor();
                               td::String fileName = pFileDlg->getFileName();
@@ -160,56 +110,23 @@ protected:
                           }
                           else
                               mu::dbgLog("User cancelled saving!"); }, defaultFileName);
-                //                    gui::SaveFileDialog* pFD = new gui::SaveFileDialog(this, dlgTitle, { {tr("Vector graphics format"),"*.getf"}, {tr("Binary format graphics"), "*.bin"}}, defaultFileName);
-                //
-                //                    pFD->open([this](gui::FileDialog* pFileDlg)
-                //                    {
-                //                        auto status = pFileDlg->getStatus();
-                //                        if (status == gui::FileDialog::Status::OK)
-                //                        {
-                //                            gui::SaveFileDialog* saveFD = (gui::SaveFileDialog*) pFileDlg;
-                ////                            int docIndex = saveFD->getSelectedDocumentDescriptionIndex();
-                ////                            mu::dbgLog("Selected document description index = %d", docIndex);
-                //
-                //                            EditorView* pEditor = _view.getEditor();
-                //                            td::String fileName = pFileDlg->getFileName();
-                //                            pEditor->save(fileName);
-                //
-                //                            mu::dbgLog("User pressed OK! Selected file to save =%s", fileName.c_str());
-                //                        }
-                //                        else
-                //                            mu::dbgLog("User cancelled saving!");
-                //                    });
                 return true;
-            }
-            default:
-                return false;
             }
         }
         if (menuID == 20 && firstSubMenuID == 0 && lastSubMenuID == 0)
         {
             if (actionID == 20)
             {
-                // td::String msgText("Handling To je to");
-                // td::String infoText("To je to! Sad nastavi ovdje");
-                // showAlert(msgText, infoText);
-                //                ScrollCanvasWindow* canvasWnd = new ScrollCanvasWindow(this);
-                //                canvasWnd->show(gui::Window::InitialSize::Maximized);
                 return true;
             }
 
             if (actionID == 40)
             {
-                // Show switcher (Prikazi switcher)
-
                 return true;
             }
 
             if (actionID == 50)
             {
-                // Show navigator
-                //                NavigatorWindow* pNavWindow = new NavigatorWindow(this);
-                //                pNavWindow->show(gui::Window::InitialSize::Normal);
                 return true;
             }
         }
@@ -217,22 +134,10 @@ protected:
         {
             if (actionID == 10)
             {
-                // increase window size
-                //                gui::Geometry g;
-                //                getGeometry(g);
-                //                g.size.width *= 1.2f;
-                //                g.size.height *= 1.2f;
-                //                setGeometry(g, true, gui::Frame::Animation::Yes);
                 return true;
             }
             else if (actionID == 20)
             {
-                // decrease window size
-                //                gui::Geometry g;
-                //                getGeometry(g);
-                //                g.size.width *= 0.8f;
-                //                g.size.height *= 0.8f;
-                //                setGeometry(g, true, gui::Frame::Animation::Yes);
                 return true;
             }
         }

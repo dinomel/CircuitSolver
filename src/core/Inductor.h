@@ -11,7 +11,7 @@
 class Inductor : public PassiveComponent
 {
 public:
-    double inductance;
+    double inductance; // [H]
 
     Inductor(double inductance)
         : PassiveComponent("Inductor", "L"), inductance(inductance) {}

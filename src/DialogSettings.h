@@ -1,7 +1,3 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/Dialog.h>
 #include "ViewSettings.h"
@@ -22,11 +18,8 @@ protected:
             td::String strTr = _viewSettings.getTranslationExt();
             if (strTr.length() > 0)
             {
-                // write translation info back to properties
                 appProperties->setValue("translation", strTr);
             }
-            //            bool showLabels = _viewSettings.isTBWithLabels();
-            //            appProperties->setTBLabelVisibility(mu::IAppProperties::ToolBarType::Main, showLabels);
         }
         return true;
     }
@@ -37,7 +30,6 @@ public:
     {
         setTitle(tr("dlgSettings"));
         setCentralView(&_viewSettings);
-        //        composeContent();
     }
 
     void setMainTB(gui::ToolBar *pTB)
@@ -54,7 +46,6 @@ public:
                 if (answer == gui::Alert::Answer::Yes)
                 {
                     auto pApp = getApplication();
-                    //clean up and save here whatever you need, the application is about to terminate... and restart fresh....
                     pApp->restart();
                 } });
         }

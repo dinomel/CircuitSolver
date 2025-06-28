@@ -133,7 +133,7 @@ private:
 
         for (int i = 0; i < currentContours.size(); i++)
         {
-            Is(i) = std::get<2>(currentContours[i])->current;
+            Is(i) = std::get<2>(currentContours[i])->currentInAmpers();
         }
 
         int indexEu = 0;
@@ -211,7 +211,7 @@ private:
         }
         for (int i = 0; i < currentContours.size(); i++)
         {
-            vJk.insert(vJk.begin() + std::get<0>(currentContours[i]), std::get<2>(currentContours[i])->current);
+            vJk.insert(vJk.begin() + std::get<0>(currentContours[i]), std::get<2>(currentContours[i])->currentInAmpers());
         }
 
         Jk = Eigen::VectorXcd(vJk.size());
@@ -229,7 +229,6 @@ private:
     void calculateV()
     {
         V = Z * I + Vg;
-        // V = - (Z * I + Vg);
 
         for (int i = 0; i < currentContours.size(); i++)
         {
@@ -240,13 +239,6 @@ private:
             }
             V(std::get<1>(currentContours[i])) = v;
         }
-
-        // std::cout << "V: " << std::endl;
-        // for (int i = 0; i < V.rows(); i++)
-        // {
-        //     std::cout << V(i) << " ";
-        // }
-        // std::cout << std::endl;
     }
 
 public:
@@ -321,13 +313,13 @@ public:
             if (currentSource != nullptr)
             {
                 currentSourceIndexes.push_back(i);
-                model += "\t\tIg" + std::to_string(i + 1) + " = " + std::to_string(currentSource->current) + "\n";
+                model += "\t\tIg" + std::to_string(i + 1) + " = " + std::to_string(currentSource->currentInAmpers()) + "\n";
                 continue;
             }
             Resistor *resistor = dynamic_cast<Resistor *>(graph.edges[i].gridComponent->getComponent());
             if (resistor != nullptr)
             {
-                model += "\t\tR" + std::to_string(i + 1) + " = " + std::to_string(resistor->resistance) + " + 1i * " + std::to_string(resistor->reactance) + "\n";
+                model += "\t\tR" + std::to_string(i + 1) + " = " + std::to_string(resistor->resistanceInOhms()) + " + 1i * " + std::to_string(resistor->reactanceInOhms()) + "\n";
                 continue;
             }
             Inductor *inductor = dynamic_cast<Inductor *>(graph.edges[i].gridComponent->getComponent());
@@ -341,7 +333,7 @@ public:
             if (capacitor != nullptr)
             {
                 capacitorIndexes.push_back(i);
-                model += "\t\tC" + std::to_string(i + 1) + " = " + std::to_string(capacitor->capacitance) + "\n";
+                model += "\t\tC" + std::to_string(i + 1) + " = " + std::to_string(capacitor->capacitanceInFarads()) + "\n";
                 continue;
             }
         }

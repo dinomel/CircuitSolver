@@ -1,10 +1,5 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/SymbolPopoverView.h>
-// #include <gui/Symbol.h>
 
 class SymbolsPopover : public gui::SymbolPopoverView
 {
@@ -32,8 +27,7 @@ public:
         addItem(&_acVoltage, nullSymbol, tr("acVoltage"), tr("acVoltageTT"), true, 0);
         addItem(&_current, nullSymbol, tr("currentSource"), tr("currentTT"), true, 0);
         addItem(&_ground, nullSymbol, tr("ground"), tr("groundTT"), true, 0);
-        //        setItem(itemPos++, &_img, tr("Save"), tr("SaveTT"), 3.0f, 3.0f);
 
-        styleOnParent(false); // remove this line if you want to see color symbols on toolbar
+        styleOnParent(false);
     }
 };

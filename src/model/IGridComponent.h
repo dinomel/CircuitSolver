@@ -55,8 +55,6 @@ public:
     // IGridComponent interface
     virtual void draw(bool isSelected) const = 0;
     virtual void getBoundingRect(gui::Rect &boundRect) = 0;
-    virtual void load(arch::ArchiveIn &ar) = 0;
-    virtual void save(arch::ArchiveOut &ar) const = 0;
     virtual Type getType() const = 0;
     virtual bool canBeSelected(const gui::Point &pt) const = 0;
     virtual void init() = 0;
@@ -123,15 +121,9 @@ public:
 
     // some limits
     static float maxFrequency;
-    static gui::CoordType selectionDisance2;
-    static gui::CoordType refreshOffset;
 
     // PropertyManager
-    static void createProperties(IGridComponent::Type gridComponentType, gui::Properties &properties);
-
     static gui::Properties *getProperties(IGridComponent::Type gridComponentType);
-
-    static td::String *getAttribsDesc();
 
     static void initProperties();
 };

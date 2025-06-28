@@ -13,15 +13,20 @@
 class Capacitor : public PassiveComponent
 {
 public:
-    double capacitance;
+    double capacitance; // [μF]
 
     Capacitor(double capacitance)
         : PassiveComponent("Capacitor", "C"), capacitance(capacitance) {}
+
+    double capacitanceInFarads() const
+    {
+        return capacitance / 1000000;
+    }
 
     std::complex<double> getImpedance(double frequency) override
     {
         // Z = 1 / (jωC) = -j / (ωC)
         double omega = frequency == 0 ? 0.0000000001 : 2 * M_PI * frequency;
-        return std::complex<double>(0, -1 / (omega * capacitance));
+        return std::complex<double>(0, -1 / (omega * capacitanceInFarads()));
     }
 };

@@ -13,8 +13,6 @@ int Component::nextID = 0;
 
 IGridComponent::Tool IGridComponent::currentTool = IGridComponent::Tool::Selector;
 float IGridComponent::maxFrequency = 1000;
-gui::CoordType IGridComponent::selectionDisance2 = 5 * 5;
-gui::CoordType IGridComponent::refreshOffset = 2;
 
 gui::Properties IGridComponent::_resistorProperties;
 gui::Properties IGridComponent::_capacitorProperties;
@@ -32,7 +30,7 @@ IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint)
     NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
     NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
 
-    ResistorGridComponent *pComp = new ResistorGridComponent(10, startNode, endNode);
+    ResistorGridComponent *pComp = new ResistorGridComponent(1, startNode, endNode);
     pComp->init();
     return pComp;
 }
@@ -42,7 +40,7 @@ IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint)
     NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
     NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
 
-    CapacitorGridComponent *pComp = new CapacitorGridComponent(0.1, startNode, endNode);
+    CapacitorGridComponent *pComp = new CapacitorGridComponent(10, startNode, endNode);
     pComp->init();
     return pComp;
 }
@@ -82,7 +80,7 @@ IGridComponent *IGridComponent::createACVoltage(const gui::Point &initPoint)
     NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
     NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
 
-    ACVoltageSourceGridComponent *pComp = new ACVoltageSourceGridComponent(5, startNode, endNode);
+    ACVoltageSourceGridComponent *pComp = new ACVoltageSourceGridComponent(220, startNode, endNode);
     pComp->init();
     return pComp;
 }
@@ -92,7 +90,7 @@ IGridComponent *IGridComponent::createCurrent(const gui::Point &initPoint)
     NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
     NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
 
-    CurrentSourceGridComponent *pComp = new CurrentSourceGridComponent(5, startNode, endNode);
+    CurrentSourceGridComponent *pComp = new CurrentSourceGridComponent(10, startNode, endNode);
     pComp->init();
     return pComp;
 }
@@ -196,17 +194,4 @@ void IGridComponent::initProperties()
         _groundProperties.reserve(18);
         sh.initProperties(&_groundProperties);
     }
-}
-
-td::String *IGridComponent::getAttribsDesc()
-{
-    if (s_attribStrings.size() == 0)
-    {
-        s_attribStrings.reserve(3);
-        s_attribStrings[0] = "Line only";
-        s_attribStrings[1] = "Fill only";
-        s_attribStrings[2] = "Line & fill";
-    }
-
-    return s_attribStrings.begin();
 }

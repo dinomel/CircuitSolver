@@ -81,18 +81,7 @@ protected:
 
     void onDraw(const gui::Rect &rDraw) override
     {
-        //        mu::dbgLog("x=%.1f y=%.1f w=%.1f h=%.1f", rDraw.left, rDraw.top, rDraw.width(), rDraw.height());
         _model.draw(rDraw);
-
-        // cnt::PushBackVector<GridComponent *> selectedComponents = _model.selectedGridComponents;
-        // if (selectedComponents.isEmpty())
-        //     return;
-        // for (GridComponent *pC : selectedComponents)
-        // {
-        //     gui::Rect r;
-        //     pC->getBoundingRect(r);
-        //     gui::Shape::drawSelectionRect(r);
-        // }
     }
 
     bool onActionItem(gui::ActionItemDescriptor &aiDesc) override
@@ -299,7 +288,7 @@ protected:
         Frame::openContextMenu(ctxMenuID, inputDevice);
     }
 
-    void onCursorDragged(const gui::InputDevice &inputDevice) override // onMouseDragged(const gui::Point& modelPoint, td::UINT4 keyModifiers)
+    void onCursorDragged(const gui::InputDevice &inputDevice) override
     {
 
         if ((_lastEvent != LastEvent::Drag) && (_lastEvent != LastEvent::MouseClick))
@@ -347,7 +336,7 @@ protected:
         reDraw();
     }
 
-    bool onZoom(const gui::InputDevice &inputDevice) override // onScrollWheel(const gui::Point& modelPoint, const gui::Point& dXdY, td::UINT4 keyModifiers)
+    bool onZoom(const gui::InputDevice &inputDevice) override
     {
         auto &modelPoint = inputDevice.getModelPoint();
         double scale = inputDevice.getScale();
@@ -440,7 +429,7 @@ protected:
             updatePropertyValues();
         }
         break;
-    }
+        }
 
         if (!selectedComponents.isEmpty())
         {
@@ -520,7 +509,6 @@ public:
     EditorView()
         : gui::Canvas({gui::InputDevice::Event::CursorShape, gui::InputDevice::Event::PrimaryClicks, gui::InputDevice::Event::SecondaryClicks, gui::InputDevice::Event::CursorDrag, gui::InputDevice::Event::Zoom, gui::InputDevice::Event::Keyboard}), _callBackDeleteSelectedShape(std::bind(&EditorView::checkDeleteSelectedAnswer, this, std::placeholders::_1))
     {
-        //        setCursor(gui::Cursor::Type::Default);
     }
 
     void setSymbolsPopover(SymbolsPopover *popover)
@@ -541,21 +529,6 @@ public:
         }
     }
 
-    void load(const td::String &fileName)
-    {
-        //        _pSelectedShape = nullptr;
-        //        if (_pPropSwitcher)
-        //        {
-        //            _pPropSwitcher->showView(0);
-        //        }
-        //        if (_model.load(fileName))
-        //        {
-        //            mu::dbgLog("Shapes opened from file = %s", fileName.c_str());
-        //        }
-        //        scale(1.0);
-        //        reDraw();
-    }
-
     void setPropSwitcher(gui::PropertyEditorSwitcher *pPropSwitcher)
     {
         _pPropSwitcher = pPropSwitcher;
@@ -566,14 +539,10 @@ public:
         if (IGridComponent::currentTool == IGridComponent::Tool::Selector)
         {
             setCursor(gui::Cursor::Type::Default, true);
-            //            gui::Cursor cursor = gui::Cursor(gui::Cursor::Type::Default);
-            //            cursor.push();
         }
         else
         {
             setCursor(gui::Cursor::Type::Adder, true);
-            //            gui::Cursor cursor = gui::Cursor(gui::Cursor::Type::Adder);
-            //            cursor.push();
         }
     }
 };

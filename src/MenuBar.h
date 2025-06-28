@@ -1,7 +1,3 @@
-//
-//  Created by Izudin Dzafic on 28/07/2020.
-//  Copyright © 2020 IDz. All rights reserved.
-//
 #pragma once
 #include <gui/MenuBar.h>
 
@@ -16,7 +12,6 @@ protected:
     {
         auto &items = subApp.getItems();
         items[0].initAsActionItem(tr("Properties"), 10, "p");
-        // tems[1] is separator
         items[1].initAsQuitAppActionItem(tr("Quit"), "q"); // id 0 is used to terminate app
     }
 
@@ -38,7 +33,6 @@ public:
         populateSubFileMenu();
         _menus[0] = &subApp;
         _menus[1] = &subFile;
-        //        prepare();
     }
 
     ~MenuBar()
