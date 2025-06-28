@@ -17,7 +17,6 @@
 #include <gui/PropertyEditorSwitcher.h>
 #include <iostream>
 #include "model/GridComponent.h"
-#include "CircuitSolver.h"
 
 extern const int gridSize;
 
@@ -423,10 +422,7 @@ protected:
         case 's':
         {
             reDraw();
-            CircuitSolver st = CircuitSolver(_model.getGridComponents());
-            st.solve();
-            st.setValues();
-            st.exportModel();
+            _model.solve();
             updatePropertyValues();
         }
         break;
@@ -527,7 +523,7 @@ public:
     {
         if (_model.save(fileName))
         {
-            mu::dbgLog("Shapes saved in file = %s", fileName.c_str());
+            mu::dbgLog("Model exported to file = %s", fileName.c_str());
         }
     }
 

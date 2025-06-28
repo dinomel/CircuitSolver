@@ -11,6 +11,7 @@
 #include <arch/FileSerializer.h>
 #include <arch/ArchiveIn.h>
 #include <arch/ArchiveOut.h>
+#include "../CircuitSolver.h"
 
 class GridModel
 {
@@ -28,10 +29,11 @@ protected:
 
 public:
     cnt::PushBackVector<GridComponent *> selectedGridComponents;
+    CircuitSolver circuitSolver;
 
 public:
     GridModel()
-        : _modelSize(10, 10)
+        : _modelSize(10, 10), circuitSolver({})
     {
     }
 
@@ -39,12 +41,26 @@ public:
     {
         clean();
     }
-    
+
+    void solve()
+    {
+        circuitSolver = CircuitSolver(_gridComponents);
+        std::vector<std::pair<std::complex<double>, std::complex<double>>> results = circuitSolver.solve();
+        for (int i = 0; i < _gridComponents.size(); i++)
+        {
+            _gridComponents[i]->setCurrent(results[i].first.real());
+            _gridComponents[i]->setVoltage(results[i].second.real());
+
+            // _gridComponents[i]->setCurrent(I(i).real());
+            // _gridComponents[i]->setVoltage(V(i).real());
+        }
+    }
+
     const cnt::PushBackVector<GridComponent *, 1024> &getGridComponents() const
     {
         return _gridComponents;
     }
-    
+
     const gui::Size &getModelSize() const
     {
         return _modelSize;
@@ -182,29 +198,22 @@ public:
 
     bool save(const td::String &fileName) const
     {
-        //        arch::FileSerializerOut fs;
-        //        if (!fs.open(fileName))
-        //            return false;
-        //        arch::ArchiveOut ar("GETF", fs);
-        //        try
-        //        {
-        //            td::UINT4 nElems = (td::UINT4)_gridComponents.size();
-        //            double modelW = _modelSize.width;
-        //            double modelH = _modelSize.height;
-        //            ar << nElems << modelW << modelH;
-        //            // td::UINT4 iElem = 0;
-        //            for (auto pShape : _gridComponents)
-        //            {
-        //                td::BYTE shType = (td::BYTE)pShape->getType();
-        //                ar << shType;
-        //                pShape->save(ar);
-        //                //++iElem;
-        //            }
-        //        }
-        //        catch (...)
-        //        {
-        //            return false;
-        //        }
+        arch::FileSerializerOut fs;
+        if (!fs.open(fileName))
+            return false;
+        arch::ArchiveOut ar("GETF", fs);
+        try
+        {
+            std::string s = circuitSolver.exportModel();
+            for (int i = 0; i < s.size(); i++)
+            {
+                ar << s[i];
+            }
+        }
+        catch (...)
+        {
+            return false;
+        }
         return true;
     }
 

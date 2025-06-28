@@ -141,9 +141,9 @@ protected:
             {
                 // PRIMJER snimanja fajla
                 td::String dlgTitle(tr("SaveT"));
-                const char *defaultFileName = "ImeFajla";
+                const char *defaultFileName = "MyCustomModel";
 
-                gui::SaveFileDialog::show(this, dlgTitle, {{tr("Vector graphics format"), "*.getf"}, {tr("Binary format graphics"), "*.bin"}}, actionID, [this](gui::FileDialog *pFileDlg)
+                gui::SaveFileDialog::show(this, dlgTitle, {{tr("dTwin model"), "*.dmodl"}}, actionID, [this](gui::FileDialog *pFileDlg)
                                           {
                           auto status = pFileDlg->getStatus();
                           if (status == gui::FileDialog::Status::OK)
