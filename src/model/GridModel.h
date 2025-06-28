@@ -17,6 +17,7 @@ class GridModel
 {
     cnt::PushBackVector<GridComponent *, 1024> _gridComponents;
     gui::Size _modelSize;
+    std::unique_ptr<CircuitSolver> _circuitSolver;
 
 protected:
     void clean()
@@ -29,11 +30,10 @@ protected:
 
 public:
     cnt::PushBackVector<GridComponent *> selectedGridComponents;
-    CircuitSolver circuitSolver;
 
 public:
     GridModel()
-        : _modelSize(10, 10), circuitSolver({})
+        : _modelSize(10, 10)
     {
     }
 
@@ -46,8 +46,10 @@ public:
     {
         if (_gridComponents.isEmpty())
             return;
-        circuitSolver = CircuitSolver(_gridComponents);
-        std::vector<std::pair<std::complex<double>, std::complex<double>>> results = circuitSolver.solve();
+
+        _circuitSolver = std::make_unique<CircuitSolver>(_gridComponents);
+        std::vector<std::pair<std::complex<double>, std::complex<double>>> results = _circuitSolver->solve();
+
         for (int i = 0; i < _gridComponents.size(); i++)
         {
             _gridComponents[i]->setCurrent(results[i].first);
@@ -127,7 +129,7 @@ public:
         arch::ArchiveOut ar("GETF", fs);
         try
         {
-            std::string s = circuitSolver.exportModel();
+            std::string s = _circuitSolver->exportModel();
             for (int i = 0; i < s.size(); i++)
             {
                 ar << s[i];
