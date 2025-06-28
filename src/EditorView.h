@@ -60,6 +60,8 @@ protected:
         _pPropSwitcher->showView(0);
         setFocus(); // to this
         reDraw();
+        _model.solve();
+        updatePropertyValues();
     }
 
     void checkDeleteSelectedAnswer(gui::Alert::Answer answer)
@@ -217,6 +219,9 @@ protected:
 
             _model.appendGridComponent(_pCreatingComponent);
             reDraw();
+
+            _model.solve();
+            updatePropertyValues();
         }
         break;
         default:
@@ -235,6 +240,9 @@ protected:
             }
             _model.updateFloatingNodes();
             reDraw();
+
+            _model.solve();
+            updatePropertyValues();
         }
         if (_pCreatingComponent)
         {
@@ -243,6 +251,9 @@ protected:
                 _model.remove(_pCreatingComponent);
             _model.updateFloatingNodes();
             reDraw();
+
+            _model.solve();
+            updatePropertyValues();
         }
         if (_selectedNode != 0)
         {
@@ -253,6 +264,9 @@ protected:
                 _model.updateFloatingNodes();
                 _pPropSwitcher->showView(0);
                 reDraw();
+
+                _model.solve();
+                updatePropertyValues();
             }
         }
         _selectedNode = 0;
@@ -418,15 +432,15 @@ protected:
             updateCursor();
         }
         break;
-
         case 's':
+        case 'S':
         {
             reDraw();
             _model.solve();
             updatePropertyValues();
         }
         break;
-        }
+    }
 
         if (!selectedComponents.isEmpty())
         {
