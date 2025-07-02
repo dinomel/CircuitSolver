@@ -253,7 +253,7 @@ public:
     std::vector<std::pair<std::complex<double>, std::complex<double>>> solve()
     {
         if (gridComponents.isEmpty())
-            return;
+            return {};
         mst = graph.bfsMST();
         generateB();
         generateZ();

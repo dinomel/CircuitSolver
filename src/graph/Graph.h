@@ -33,6 +33,7 @@ private:
                 return edges[i];
             }
         }
+        throw("No edge with these nodes found");
     }
 
 public:
