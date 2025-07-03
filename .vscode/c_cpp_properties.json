@@ -5,7 +5,6 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/Users/dino/Work/Common/Include",
-                "${workspaceFolder}/external/eigen-3.4.0"
             ],
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c17",

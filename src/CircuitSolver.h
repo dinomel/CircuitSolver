@@ -11,13 +11,13 @@
 #include <string>
 #include <complex>
 #include "graph/Graph.h"
-#include <Eigen/Dense>
 #include "core/PassiveComponent.h"
 #include "core/VoltageSourceComponent.h"
 #include "core/Resistor.h"
 #include "core/Inductor.h"
 #include "core/Capacitor.h"
 #include "property/DefaultSettings.h"
+#include "SimpleMatrix.h"
 
 // global parameters
 extern DefaultSettings g_defaultSettings;
@@ -28,21 +28,21 @@ class CircuitSolver
     Graph graph;
 
     std::vector<Edge> mst;                                                  // Minimum spanning tree
-    Eigen::MatrixXd B;                                                      // Matrica incidencije fundamentalnih kontura i grana
-    Eigen::Matrix<std::complex<double>, Eigen::Dynamic, Eigen::Dynamic> Z;  // Matrica impedansi grana
-    Eigen::Matrix<std::complex<double>, Eigen::Dynamic, Eigen::Dynamic> Zk; // Matrica impedansi kontura
-    Eigen::VectorXcd Vg;                                                    // Vektor napona grana
-    Eigen::VectorXcd Ek;                                                    // Vektor napona kontura
-    Eigen::VectorXcd Jk;                                                    // Vektor struja kontura
-    Eigen::VectorXcd I;                                                     // Vektor struja grana
-    Eigen::VectorXcd V;                                                     // Vektor napona grana
+    SimpleMatrix B;                                                      // Matrica incidencije fundamentalnih kontura i grana
+    SimpleMatrix Z;  // Matrica impedansi grana
+    SimpleMatrix Zk; // Matrica impedansi kontura
+    SimpleMatrix Vg;                                                    // Vektor napona grana
+    SimpleMatrix Ek;                                                    // Vektor napona kontura
+    SimpleMatrix Jk;                                                    // Vektor struja kontura
+    SimpleMatrix I;                                                     // Vektor struja grana
+    SimpleMatrix V;                                                     // Vektor napona grana
     std::vector<std::tuple<int, int, CurrentSource *>> currentContours;     // Vektor kontura u kojima se nalazi strujni izvor (contourIndex, edgeIndex, CurrentSource)
 
 private:
     void generateB()
     {
-        B = Eigen::MatrixXd(graph.edgesCount - mst.size(), graph.edgesCount);
-        B.setZero();
+        B.resize(graph.edgesCount - mst.size(), graph.edgesCount);
+        B.reset();
 
         int contourIndex = 0;
         for (int i = 0; i < graph.edgesCount; i++)
@@ -79,8 +79,8 @@ private:
 
     void generateZ()
     {
-        Z = Eigen::Matrix<std::complex<double>, Eigen::Dynamic, Eigen::Dynamic>(graph.edgesCount, graph.edgesCount);
-        Z.setZero();
+        Z.resize(graph.edgesCount, graph.edgesCount);
+        Z.reset();
 
         for (int i = 0; i < Z.rows(); i++)
         {
@@ -98,20 +98,20 @@ private:
 
     void generateVg()
     {
-        Vg = Eigen::VectorXd(graph.edgesCount);
-        Vg.setZero();
+        Vg.resize(graph.edgesCount, 1);
+        Vg.reset();
         for (int i = 0; i < Vg.rows(); i++)
         {
             VoltageSourceComponent *voltageSourceComponent = dynamic_cast<VoltageSourceComponent *>(graph.edges[i].gridComponent->getComponent());
             if (voltageSourceComponent == nullptr)
                 continue;
-            Vg(i) = -voltageSourceComponent->getVoltage();
+            Vg(i, 0) = -voltageSourceComponent->getVoltage();
         }
     }
 
     void calculateEk()
     {
-        Ek = -B * Vg;
+        Ek = (-1) * B * Vg;
     }
 
     void calculateJk()
@@ -122,18 +122,18 @@ private:
             return;
         }
 
-        Eigen::MatrixXcd Zuu(Zk.rows() - currentContours.size(), Zk.rows() - currentContours.size());
-        Eigen::MatrixXcd Zus(Zk.rows() - currentContours.size(), currentContours.size());
-        Eigen::VectorXcd Eu(Zk.rows() - currentContours.size());
-        Eigen::VectorXcd Is(currentContours.size());
-        Zuu.setZero();
-        Zus.setZero();
-        Eu.setZero();
-        Is.setZero();
+        SimpleMatrix Zuu(Zk.rows() - currentContours.size(), Zk.rows() - currentContours.size());
+        SimpleMatrix Zus(Zk.rows() - currentContours.size(), currentContours.size());
+        SimpleMatrix Eu(Zk.rows() - currentContours.size(), 1);
+        SimpleMatrix Is(currentContours.size(), 1);
+        Zuu.reset();
+        Zus.reset();
+        Eu.reset();
+        Is.reset();
 
         for (int i = 0; i < currentContours.size(); i++)
         {
-            Is(i) = std::get<2>(currentContours[i])->currentInAmpers();
+            Is(i, 0) = std::get<2>(currentContours[i])->currentInAmpers();
         }
 
         int indexEu = 0;
@@ -150,7 +150,7 @@ private:
             }
             if (!containsI)
             {
-                Eu(indexEu) = Ek(i);
+                Eu(indexEu, 0) = Ek(i, 0);
                 indexEu++;
             }
         }
@@ -201,23 +201,23 @@ private:
             indexJus = 0;
         }
 
-        Eigen::VectorXcd Ju = Zuu.inverse() * (Eu - Zus * Is);
+        SimpleMatrix Ju = Zuu.inverse() * (Eu - Zus * Is);
 
         std::vector<std::complex<double>> vJk;
 
-        for (int i = 0; i < Ju.size(); i++)
+        for (int i = 0; i < Ju.rows(); i++)
         {
-            vJk.push_back(Ju(i));
+            vJk.push_back(Ju(i, 0));
         }
         for (int i = 0; i < currentContours.size(); i++)
         {
             vJk.insert(vJk.begin() + std::get<0>(currentContours[i]), std::get<2>(currentContours[i])->currentInAmpers());
         }
 
-        Jk = Eigen::VectorXcd(vJk.size());
+        Jk = SimpleMatrix(vJk.size(), 1);
         for (int i = 0; i < vJk.size(); i++)
         {
-            Jk(i) = vJk[i];
+            Jk(i, 0) = vJk[i];
         }
     }
 
@@ -233,11 +233,11 @@ private:
         for (int i = 0; i < currentContours.size(); i++)
         {
             std::complex<double> v = 0;
-            for (int j = 0; j < V.size(); j++)
+            for (int j = 0; j < V.rows(); j++)
             {
-                v -= B(std::get<0>(currentContours[i]), j) * V[j];
+                v -= B(std::get<0>(currentContours[i]), j) * V(j, 0);
             }
-            V(std::get<1>(currentContours[i])) = v;
+            V(std::get<1>(currentContours[i]), 0) = v;
         }
     }
 
@@ -266,7 +266,7 @@ public:
         std::vector<std::pair<std::complex<double>, std::complex<double>>> results = {};
         for (int i = 0; i < gridComponents.size(); i++)
         {
-            results.push_back(std::pair(I(i), V(i)));
+            results.push_back(std::pair(I(i, 0), V(i, 0)));
         }
         return results;
     }
@@ -399,28 +399,28 @@ public:
             bool isFirst = true;
             for (int j = 0; j < B.cols(); j++)
             {
-                if (B(i, j) == 0)
+                if (B(i, j).real() == 0)
                     continue;
                 switch (graph.edges[j].gridComponent->getType())
                 {
                 case IGridComponent::Type::Resistor:
-                    model += B(i, j) < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += B(i, j).real() < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
                     model += "R" + std::to_string(j + 1) + " * " + "I" + std::to_string(j + 1);
                     isFirst = false;
                     break;
                 case IGridComponent::Type::Capacitor:
-                    model += B(i, j) < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += B(i, j).real() < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
                     model += "Zc" + std::to_string(j + 1) + " * " + "I" + std::to_string(j + 1);
                     isFirst = false;
                     break;
                 case IGridComponent::Type::Inductor:
-                    model += B(i, j) < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += B(i, j).real() < 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
                     model += "Zl" + std::to_string(j + 1) + " * " + "I" + std::to_string(j + 1);
                     isFirst = false;
                     break;
                 case IGridComponent::Type::DCVoltageSource:
                 case IGridComponent::Type::ACVoltageSource:
-                    model += B(i, j) > 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
+                    model += B(i, j).real() > 0 ? (isFirst ? "" : " + ") : (isFirst ? "- " : " - ");
                     model += "Vg" + std::to_string(j + 1);
                     isFirst = false;
                     break;
@@ -468,7 +468,7 @@ public:
                 if (j == std::get<1>(currentContours[i]))
                     continue;
 
-                int b = B(std::get<0>(currentContours[i]), j);
+                double b = B(std::get<0>(currentContours[i]), j).real();
                 if (b == 0)
                     continue;
 
