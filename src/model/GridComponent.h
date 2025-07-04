@@ -11,8 +11,8 @@
 #include "NodeGridComponent.h"
 #include "CoordinatePoint.h"
 #include "../core/Component.h"
-#include <iostream>
 #include "../property/DefaultSettings.h"
+#include <iostream>
 
 // global parameters
 extern DefaultSettings g_defaultSettings;
@@ -61,6 +61,23 @@ public:
         ResP,
         ResQ,
     };
+
+    void save(arch::ArchiveOut &ar) const override
+    {
+        arch::EnumSaver<IGridComponent::Type> type(getType());
+        ar << startNode->centerPoint.x << startNode->centerPoint.y << endNode->centerPoint.x << endNode->centerPoint.y << type;
+    }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        //        td::BYTE attr = 0 ; //(td::BYTE) _attribs;
+        //        td::BYTE lnPattern = 0; //(td::BYTE) _linePattern;
+        // arch::EnumLoader<gui::Shape::Attribs> attr(_attribs, gui::Shape::Attribs::LineAndFill, gui::Shape::Attribs::LineAndFill);
+        // arch::EnumLoader<td::LinePattern> lnPattern(_linePattern, td::LinePattern::NA, td::LinePattern::Solid);
+        ar >> startNode->centerPoint.x >> startNode->centerPoint.y >> endNode->centerPoint.x >> endNode->centerPoint.y;
+        //        _attribs = (gui::Shape::Attribs) attr;
+        //        _linePattern = (td::LinePattern) lnPattern;
+    }
 
     void getBoundingRect(gui::Rect &boundRect) override
     {

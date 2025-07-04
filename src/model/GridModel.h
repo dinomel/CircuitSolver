@@ -47,8 +47,9 @@ public:
 
     void solve(bool forceSolve)
     {
-        if (!forceSolve && !g_defaultSettings.getAutoSolve()) return;
-        
+        if (!forceSolve && !g_defaultSettings.getAutoSolve())
+            return;
+
         if (_gridComponents.isEmpty())
             return;
 
@@ -127,6 +128,111 @@ public:
     }
 
     bool save(const td::String &fileName) const
+    {
+        arch::FileSerializerOut fs;
+        if (!fs.open(fileName))
+            return false;
+        arch::ArchiveOut ar("GETF", fs);
+        try
+        {
+            td::UINT4 nElems = (td::UINT4)_gridComponents.size();
+            double modelW = _modelSize.width;
+            double modelH = _modelSize.height;
+            ar << nElems << modelW << modelH;
+            
+            for (auto pGridComponent : _gridComponents)
+            {
+                pGridComponent->save(ar);
+            }
+        }
+        catch (...)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool load(const td::String &fileName)
+    {
+        // _model.reset();
+        // arch::FileSerializerIn fs;
+        // if (!fs.open(fileName))
+        //     return false;
+        // clean();
+        // _shapes.clean();
+
+        // arch::ArchiveIn ar(fs);
+        // ar.setSupportedMajorVersion("GETF");
+        // try
+        // {
+        //     td::UINT4 nElems = 0;
+        //     double modelW = 0;
+        //     double modelH = 0;
+        //     ar >> nElems >> modelW >> modelH;
+        //     _modelSize.width = modelW;
+        //     _modelSize.height = modelH;
+
+        //     if (nElems == 0)
+        //         return false;
+
+        //     _shapes.reserve(nElems);
+
+        //     for (td::UINT4 iElem = 0; iElem < nElems; ++iElem)
+        //     {
+        //         td::BYTE sht = 0;
+        //         ar >> sht;
+        //         IShape2D::Type shType = (IShape2D::Type)sht;
+        //         switch (shType)
+        //         {
+        //         case IShape2D::Type::Rect:
+        //         {
+        //             gui::Rect r(0, 0, 0, 0);
+        //             IShape2D *pShape = IShape2D::createRect(gui::Shape::Attribs::LineAndFill, r, td::ColorID::SysText, td::ColorID::SysText, 1.0f, td::LinePattern::Solid);
+        //             pShape->load(ar);
+        //             pShape->init();
+        //             appendShape(pShape, false);
+        //         }
+        //         break;
+        //         case IShape2D::Type::RoundRect:
+        //         {
+        //             gui::Rect r(0, 0, 0, 0);
+        //             float radius = 0;
+        //             IShape2D *pShape = IShape2D::createRoundedRect(gui::Shape::Attribs::LineAndFill, r, radius, td::ColorID::SysText, td::ColorID::SysText, 1.0f, td::LinePattern::Solid);
+        //             pShape->load(ar);
+        //             pShape->init();
+        //             appendShape(pShape, false);
+        //         }
+        //         break;
+        //         case IShape2D::Type::Circle:
+        //         {
+        //             gui::Point pt(0, 0);
+        //             float radius = 0;
+        //             IShape2D *pShape = IShape2D::createCircle(gui::Shape::Attribs::LineAndFill, pt, radius, td::ColorID::SysText, td::ColorID::SysText, 1.0f, td::LinePattern::Solid);
+        //             pShape->load(ar);
+        //             pShape->init();
+        //             appendShape(pShape, false);
+        //         }
+        //         break;
+        //         default:
+        //         {
+        //             assert(false);
+        //             return false;
+        //         }
+        //         }
+        //     }
+        //     // update prop editor all at once
+        //     updateNoOfShapesInProps();
+        // }
+        // catch (...)
+        // {
+        //     // update prop editor all at once
+        //     updateNoOfShapesInProps();
+        //     return false;
+        // }
+        return true;
+    }
+
+    bool exportModel(const td::String &fileName) const
     {
         arch::FileSerializerOut fs;
         if (!fs.open(fileName))

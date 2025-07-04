@@ -35,7 +35,8 @@ public:
 
     void draw(bool isSelected) const override
     {
-        td::ColorID nodeColor = isFloating ? td::ColorID::Red : isSelected ? g_defaultSettings.getSelectedComponentColor() : g_defaultSettings.getComponentColor();
+        td::ColorID nodeColor = isFloating ? td::ColorID::Red : isSelected ? g_defaultSettings.getSelectedComponentColor()
+                                                                           : g_defaultSettings.getComponentColor();
         _nodeShape.drawFillAndWire(nodeColor, nodeColor);
     }
 
@@ -98,6 +99,14 @@ public:
     }
 
     void setValue(td::UINT4 key, gui::PropertyValues &propValues) override
+    {
+    }
+
+    void save(arch::ArchiveOut &ar) const override
+    {
+    }
+
+    void load(arch::ArchiveIn &ar) override
     {
     }
 };

@@ -521,12 +521,35 @@ public:
         return &_model;
     }
 
+    void exportModel(const td::String &fileName)
+    {
+        if (_model.exportModel(fileName))
+        {
+            mu::dbgLog("Model exported to file = %s", fileName.c_str());
+        }
+    }
+
     void save(const td::String &fileName)
     {
         if (_model.save(fileName))
         {
-            mu::dbgLog("Model exported to file = %s", fileName.c_str());
+            mu::dbgLog("Circuit saved to file = %s", fileName.c_str());
         }
+    }
+
+    
+    void load(const td::String& fileName)
+    {
+        if (_pPropSwitcher)
+        {
+            _pPropSwitcher->showView(0);
+        }
+        if (_model.load(fileName))
+        {
+            mu::dbgLog("Circuit opened from file = %s", fileName.c_str());
+        }
+        scale(1.0);
+        reDraw();
     }
 
     void setPropSwitcher(gui::PropertyEditorSwitcher *pPropSwitcher)
