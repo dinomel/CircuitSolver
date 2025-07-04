@@ -60,7 +60,7 @@ protected:
         _pPropSwitcher->showView(0);
         setFocus(); // to this
         reDraw();
-        _model.solve();
+        _model.solve(false);
         updatePropertyValues();
     }
 
@@ -209,7 +209,7 @@ protected:
             _model.appendGridComponent(_pCreatingComponent);
             reDraw();
 
-            _model.solve();
+            _model.solve(false);
             updatePropertyValues();
         }
         break;
@@ -230,7 +230,7 @@ protected:
             _model.updateFloatingNodes();
             reDraw();
 
-            _model.solve();
+            _model.solve(false);
             updatePropertyValues();
         }
         if (_pCreatingComponent)
@@ -241,7 +241,7 @@ protected:
             _model.updateFloatingNodes();
             reDraw();
 
-            _model.solve();
+            _model.solve(false);
             updatePropertyValues();
         }
         if (_selectedNode != 0)
@@ -254,7 +254,7 @@ protected:
                 _pPropSwitcher->showView(0);
                 reDraw();
 
-                _model.solve();
+                _model.solve(false);
                 updatePropertyValues();
             }
         }
@@ -425,7 +425,7 @@ protected:
         case 'S':
         {
             reDraw();
-            _model.solve();
+            _model.solve(true);
             updatePropertyValues();
         }
         break;

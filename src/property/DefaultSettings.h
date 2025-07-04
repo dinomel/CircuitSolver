@@ -9,12 +9,14 @@ class DefaultSettings : public gui::IProperty
     enum class PropID : td::UINT4
     {
         Frequency,
+        AutoSolve,
         ComponentColor,
         SelectedComponentColor
     };
 
 protected:
     float _frequency = 50;
+    bool _autoSolve = true;
     td::ColorID _componentColor = td::ColorID::Yellow;
     td::ColorID _selectedComponentColor = td::ColorID::SpringGreen;
 
@@ -39,6 +41,11 @@ public:
         return _frequency;
     }
 
+    float getAutoSolve() const
+    {
+        return _autoSolve;
+    }
+
     td::ColorID getComponentColor() const
     {
         return _componentColor;
@@ -55,6 +62,9 @@ public:
         td::Variant frequency(_frequency);
         setValueByKey(propValues, PropID::Frequency, frequency);
 
+        td::Variant autoSolve(_autoSolve);
+        setValueByKey(propValues, PropID::AutoSolve, autoSolve);
+
         td::Variant componentColor(_componentColor);
         setValueByKey(propValues, PropID::ComponentColor, componentColor);
 
@@ -66,6 +76,9 @@ public:
     {
         td::Variant frequency = getValueByKey(propValues, PropID::Frequency);
         frequency.getValue(_frequency);
+
+        td::Variant autoSolve = getValueByKey(propValues, PropID::AutoSolve);
+        autoSolve.getValue(_autoSolve);
 
         td::Variant componentColor = getValueByKey(propValues, PropID::ComponentColor);
         componentColor.getValue(_componentColor);
@@ -83,6 +96,11 @@ public:
         case PropID::Frequency:
         {
             propValue.getValue(_frequency);
+        }
+        break;
+        case PropID::AutoSolve:
+        {
+            propValue.getValue(_autoSolve);
         }
         break;
         case PropID::ComponentColor:
@@ -114,6 +132,13 @@ public:
                 prop.setMaxValue((double)IGridComponent::maxFrequency);
                 prop.setDecimalPointsAndThSep(0, true);
             }
+            
+            {
+                td::String lbl(tr("AutoSolve"));
+                td::Variant var(_autoSolve);
+                auto& prop = properties.push_back();
+                prop.set((td::UINT4) PropID::AutoSolve, lbl, var);
+            }
 
             {
                 td::String lbl(tr("VisualParams"));
@@ -136,6 +161,6 @@ public:
             }
         }
 
-        assert(properties.size() == 4);
+        assert(properties.size() == 5);
     }
 };

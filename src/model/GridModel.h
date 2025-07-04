@@ -13,6 +13,9 @@
 #include <arch/ArchiveOut.h>
 #include "../CircuitSolver.h"
 
+// global parameters
+extern DefaultSettings g_defaultSettings;
+
 class GridModel
 {
     cnt::PushBackVector<GridComponent *, 1024> _gridComponents;
@@ -42,8 +45,10 @@ public:
         clean();
     }
 
-    void solve()
+    void solve(bool forceSolve)
     {
+        if (!forceSolve && !g_defaultSettings.getAutoSolve()) return;
+        
         if (_gridComponents.isEmpty())
             return;
 

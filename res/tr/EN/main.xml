@@ -44,6 +44,8 @@
 
 		<Res id="Defaults" tr="Defaults"/>
 		<Res id="Frequency" tr="Frequency [Hz]"/>
+		<Res id="AutoSolve" tr="Automatic Solving"/>
+		<Res id="AutoSolveTT" tr="Automatic solving is not recommended for large models. Press 's' to solve manually."/>
 
 		<Res id="SetFront" tr="Bring to front"/>
 		<Res id="SetBack" tr="Bring to background"/>
