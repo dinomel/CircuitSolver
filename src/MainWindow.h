@@ -90,7 +90,51 @@ protected:
         }
         if (menuID == 20 && firstSubMenuID == 0 && lastSubMenuID == 0)
         {
-            if (actionID == 20)
+            switch (actionID)
+            {
+            case 10:
+            {
+                td::String dlgTitle(tr("OpenT"));
+                gui::OpenFileDialog::show(this, dlgTitle, {{"Circuit Solver file", "*.csol"}}, actionID, [this](gui::FileDialog *pFileDlg)
+                                          {
+                          auto status = pFileDlg->getStatus();
+                          if (status == gui::FileDialog::Status::OK)
+                          {
+                              EditorView* pEditor = _view.getEditor();
+                              td::String fileName = pFileDlg->getFileName();
+                              pEditor->load(fileName);
+                              mu::dbgLog("User pressed OK! Selected file to open =%s", fileName.c_str());
+                          }
+                          else
+                          {
+                              mu::dbgLog("User cancelled opening!");
+                          } });
+                return true;
+            }
+
+            case 20:
+            {
+                td::String dlgTitle(tr("SaveT"));
+                const char *defaultFileName = "MyCircuit";
+
+                gui::SaveFileDialog::show(this, dlgTitle, {{"Circuit Solver file", "*.csol"}}, actionID, [this](gui::FileDialog *pFileDlg)
+                                          {
+                          auto status = pFileDlg->getStatus();
+                          if (status == gui::FileDialog::Status::OK)
+                          {
+                              gui::SaveFileDialog* saveFD = (gui::SaveFileDialog*) pFileDlg;
+                              EditorView* pEditor = _view.getEditor();
+                              td::String fileName = pFileDlg->getFileName();
+                              pEditor->save(fileName);
+                              
+                              mu::dbgLog("User pressed OK! Selected file to save =%s", fileName.c_str());
+                          }
+                          else
+                              mu::dbgLog("User cancelled saving!"); }, defaultFileName);
+                return true;
+            }
+
+            case 30:
             {
                 td::String dlgTitle(tr("Export"));
                 const char *defaultFileName = "MyCustomModel";
@@ -104,13 +148,16 @@ protected:
                               
                               EditorView* pEditor = _view.getEditor();
                               td::String fileName = pFileDlg->getFileName();
-                              pEditor->save(fileName);
+                              pEditor->exportModel(fileName);
                               
                               mu::dbgLog("User pressed OK! Selected file to save =%s", fileName.c_str());
                           }
                           else
                               mu::dbgLog("User cancelled saving!"); }, defaultFileName);
                 return true;
+            }
+            default:
+                return false;
             }
         }
         if (menuID == 20 && firstSubMenuID == 0 && lastSubMenuID == 0)

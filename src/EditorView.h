@@ -60,7 +60,7 @@ protected:
         _pPropSwitcher->showView(0);
         setFocus(); // to this
         reDraw();
-        _model.solve();
+        _model.solve(false);
         updatePropertyValues();
     }
 
@@ -202,14 +202,14 @@ protected:
         case IGridComponent::Tool::AddCurrentSource:
         case IGridComponent::Tool::AddGround:
         {
-            IGridComponent *iGridComp = IGridComponent::createGridComponent(modelPoint, IGridComponent::currentTool);
+            IGridComponent *iGridComp = IGridComponent::createGridComponent(modelPoint, modelPoint, IGridComponent::currentTool);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
             _model.appendGridComponent(_pCreatingComponent);
             reDraw();
 
-            _model.solve();
+            _model.solve(false);
             updatePropertyValues();
         }
         break;
@@ -230,7 +230,7 @@ protected:
             _model.updateFloatingNodes();
             reDraw();
 
-            _model.solve();
+            _model.solve(false);
             updatePropertyValues();
         }
         if (_pCreatingComponent)
@@ -241,7 +241,7 @@ protected:
             _model.updateFloatingNodes();
             reDraw();
 
-            _model.solve();
+            _model.solve(false);
             updatePropertyValues();
         }
         if (_selectedNode != 0)
@@ -254,7 +254,7 @@ protected:
                 _pPropSwitcher->showView(0);
                 reDraw();
 
-                _model.solve();
+                _model.solve(false);
                 updatePropertyValues();
             }
         }
@@ -425,7 +425,7 @@ protected:
         case 'S':
         {
             reDraw();
-            _model.solve();
+            _model.solve(true);
             updatePropertyValues();
         }
         break;
@@ -521,12 +521,37 @@ public:
         return &_model;
     }
 
+    void exportModel(const td::String &fileName)
+    {
+        if (_model.exportModel(fileName))
+        {
+            mu::dbgLog("Model exported to file = %s", fileName.c_str());
+        }
+    }
+
     void save(const td::String &fileName)
     {
         if (_model.save(fileName))
         {
-            mu::dbgLog("Model exported to file = %s", fileName.c_str());
+            mu::dbgLog("Circuit saved to file = %s", fileName.c_str());
         }
+    }
+
+    void load(const td::String &fileName)
+    {
+        if (_pPropSwitcher)
+        {
+            _pPropSwitcher->showView(0);
+        }
+        if (_model.load(fileName))
+        {
+            mu::dbgLog("Circuit opened from file = %s", fileName.c_str());
+        }
+        scale(1.0);
+        reDraw();
+
+        _model.solve(false);
+        updatePropertyValues();
     }
 
     void setPropSwitcher(gui::PropertyEditorSwitcher *pPropSwitcher)

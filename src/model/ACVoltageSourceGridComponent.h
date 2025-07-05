@@ -123,4 +123,15 @@ public:
 
         GridComponent::setValues(propValues);
     }
+
+    void save(arch::ArchiveOut &ar) const override
+    {
+        GridComponent::save(ar);
+        ar << _acVoltageSource.maxVoltage << _acVoltageSource.phaseAngle;
+    }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _acVoltageSource.maxVoltage >> _acVoltageSource.phaseAngle;
+    }
 };

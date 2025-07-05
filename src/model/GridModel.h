@@ -13,6 +13,9 @@
 #include <arch/ArchiveOut.h>
 #include "../CircuitSolver.h"
 
+// global parameters
+extern DefaultSettings g_defaultSettings;
+
 class GridModel
 {
     cnt::PushBackVector<GridComponent *, 1024> _gridComponents;
@@ -42,8 +45,11 @@ public:
         clean();
     }
 
-    void solve()
+    void solve(bool forceSolve)
     {
+        if (!forceSolve && !g_defaultSettings.getAutoSolve())
+            return;
+
         if (_gridComponents.isEmpty())
             return;
 
@@ -122,6 +128,87 @@ public:
     }
 
     bool save(const td::String &fileName) const
+    {
+        arch::FileSerializerOut fs;
+        if (!fs.open(fileName))
+            return false;
+        arch::ArchiveOut ar("GETF", fs);
+        try
+        {
+            td::UINT4 nElems = (td::UINT4)_gridComponents.size();
+            double modelW = _modelSize.width;
+            double modelH = _modelSize.height;
+            ar << g_defaultSettings.getFrequency() << (int)g_defaultSettings.getAutoSolve() << nElems << modelW << modelH;
+
+            for (auto pGridComponent : _gridComponents)
+            {
+                pGridComponent->save(ar);
+            }
+        }
+        catch (...)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool load(const td::String &fileName)
+    {
+        arch::FileSerializerIn fs;
+        if (!fs.open(fileName))
+            return false;
+        clean();
+        _gridComponents.clean();
+        selectedGridComponents.clean();
+
+        arch::ArchiveIn ar(fs);
+        ar.setSupportedMajorVersion("GETF");
+        try
+        {
+            float frequency = 50;
+            int autoSolve = 1;
+            td::UINT4 nElems = 0;
+            double modelW = 0;
+            double modelH = 0;
+            ar >> frequency >> autoSolve >> nElems >> modelW >> modelH;
+            g_defaultSettings.setFrequency(frequency);
+            g_defaultSettings.setAutoSolve(autoSolve);
+            _modelSize.width = modelW;
+            _modelSize.height = modelH;
+
+            if (nElems == 0)
+                return false;
+
+            _gridComponents.reserve(nElems);
+
+            for (td::UINT4 iElem = 0; iElem < nElems; ++iElem)
+            {
+                double startNodeX, startNodeY, endNodeX, endNodeY;
+
+                ar >> startNodeX >> startNodeY >> endNodeX >> endNodeY;
+                gui::Point startNode(startNodeX, startNodeY);
+                gui::Point endNode(endNodeX, endNodeY);
+
+                td::BYTE gct = 0;
+                ar >> gct;
+                IGridComponent::Type gridComponentType = (IGridComponent::Type)gct;
+
+                IGridComponent *iGridComp = IGridComponent::createGridComponent(startNode, endNode, gridComponentType);
+                GridComponent *pGridComponent = dynamic_cast<GridComponent *>(iGridComp);
+                pGridComponent->load(ar);
+
+                appendGridComponent(pGridComponent);
+                pGridComponent->updateShape();
+            }
+        }
+        catch (...)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    bool exportModel(const td::String &fileName) const
     {
         arch::FileSerializerOut fs;
         if (!fs.open(fileName))

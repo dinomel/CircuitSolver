@@ -124,4 +124,15 @@ public:
 
         GridComponent::setValues(propValues);
     }
+
+    void save(arch::ArchiveOut &ar) const override
+    {
+        GridComponent::save(ar);
+        ar << _currentSource.current;
+    }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _currentSource.current;
+    }
 };

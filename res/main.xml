@@ -3,6 +3,7 @@
 	<Images>
 		<Res id="imgOpen" path="Work/Common/Icons/openSave/open64.png"/>
 		<Res id="imgSave" path="Work/Common/Icons/openSave/save64.png"/>
+		<Res id="imgExport" path="Work/Common/Icons/export48.png"/>
 		<Res id="settings" path = "Work/Common/Icons/SettingsBlue48.png"/>
 	</Images>
 	<Symbols>

@@ -122,4 +122,15 @@ public:
 
         GridComponent::setValues(propValues);
     }
+
+    void save(arch::ArchiveOut &ar) const override
+    {
+        GridComponent::save(ar);
+        ar << _resistor.resistance << _resistor.reactance;
+    }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _resistor.resistance >> _resistor.reactance;
+    }
 };

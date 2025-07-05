@@ -44,6 +44,8 @@
 
 		<Res id="Defaults" tr="Defaults"/>
 		<Res id="Frequency" tr="Frequency [Hz]"/>
+		<Res id="AutoSolve" tr="Automatic Solving"/>
+		<Res id="AutoSolveTT" tr="Automatic solving is not recommended for large models. Press 's' to solve manually."/>
 
 		<Res id="SetFront" tr="Bring to front"/>
 		<Res id="SetBack" tr="Bring to background"/>
@@ -51,6 +53,10 @@
 
 		<Res id="Export" tr="Export"/>
 		<Res id="ExportTT" tr="Export model to dTwin"/>
+		<Res id="SaveT" tr="Save circuit"/>
+		<Res id="SaveTT" tr="Save circuit to a file"/>
+		<Res id="OpenT" tr="Open"/>
+		<Res id="OpenTT" tr="Open existing circuit"/>
 		<Res id="VisualParams" tr="Visual Parameters"/>
 		<Res id="CompColor" tr="Component Color"/>
 		<Res id="SelCompColor" tr="Selected Color"/>

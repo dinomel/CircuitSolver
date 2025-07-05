@@ -44,6 +44,8 @@
 
 		<Res id="Defaults" tr="Zadane postavke"/>
 		<Res id="Frequency" tr="Frekvencija [Hz]"/>
+		<Res id="AutoSolve" tr="Automatsko Rješavanje"/>
+		<Res id="AutoSolveTT" tr="Automatsko rješavanje nije preporučeno za velike modele. Klikom na tipku 's' se vrši račun manuelno."/>
 
 		<Res id="SetFront" tr="Postavi naprijed"/>
 		<Res id="SetBack" tr="Postavi nazad"/>
@@ -51,6 +53,10 @@
 
 		<Res id="Export" tr="Eksport"/>
 		<Res id="ExportTT" tr="Exportuj model za dTwin"/>
+		<Res id="SaveT" tr="Snimi kolo"/>
+		<Res id="SaveTT" tr="Snimi kolo u fajl"/>
+		<Res id="OpenT" tr="Otvori"/>
+		<Res id="OpenTT" tr="Otvori postojeće kolo"/>
 		<Res id="VisualParams" tr="Vizualni Parametri"/>
 		<Res id="CompColor" tr="Boja komponente"/>
 		<Res id="SelCompColor" tr="Boja označene komponente"/>
