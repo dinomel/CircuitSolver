@@ -41,6 +41,16 @@ public:
         return _frequency;
     }
 
+    void setFrequency(float frequency)
+    {
+        _frequency = frequency;
+    }
+
+    void setAutoSolve(int autoSolve)
+    {
+        _autoSolve = (bool)autoSolve;
+    }
+
     float getAutoSolve() const
     {
         return _autoSolve;
@@ -132,12 +142,12 @@ public:
                 prop.setMaxValue((double)IGridComponent::maxFrequency);
                 prop.setDecimalPointsAndThSep(0, true);
             }
-            
+
             {
                 td::String lbl(tr("AutoSolve"));
                 td::Variant var(_autoSolve);
-                auto& prop = properties.push_back();
-                prop.set((td::UINT4) PropID::AutoSolve, lbl, var);
+                auto &prop = properties.push_back();
+                prop.set((td::UINT4)PropID::AutoSolve, lbl, var);
             }
 
             {

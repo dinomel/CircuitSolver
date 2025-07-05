@@ -8,12 +8,13 @@ class ToolBar : public gui::ToolBar
 protected:
     gui::Image _imgOpen;
     gui::Image _imgSave;
+    gui::Image _imgExport;
     SymbolsPopover _symbolsPopover;
     gui::Image _settings;
 
 public:
     ToolBar()
-        : gui::ToolBar("mainToolBar", 6, 6), _imgOpen(":imgOpen"), _imgSave(":imgSave"), _settings(":settings")
+        : gui::ToolBar("mainToolBar", 6, 6), _imgOpen(":imgOpen"), _imgSave(":imgSave"), _imgExport(":imgExport"), _settings(":settings")
     {
         addItem(tr("settings"), &_settings, tr("settingsTT"), 10, 0, 0, 10);
 
@@ -23,7 +24,7 @@ public:
         
         addItem(tr("Save"), &_imgSave, tr("SaveTT"), 20, 0, 0, 20);
 
-        addItem(tr("Export"), &_imgSave, tr("ExportTT"), 20, 0, 0, 30);
+        addItem(tr("Export"), &_imgExport, tr("ExportTT"), 20, 0, 0, 30);
 
         addSpaceItem();
 

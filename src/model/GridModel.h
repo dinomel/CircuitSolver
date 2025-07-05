@@ -138,7 +138,7 @@ public:
             td::UINT4 nElems = (td::UINT4)_gridComponents.size();
             double modelW = _modelSize.width;
             double modelH = _modelSize.height;
-            ar << nElems << modelW << modelH;
+            ar << g_defaultSettings.getFrequency() << (int)g_defaultSettings.getAutoSolve() << nElems << modelW << modelH;
 
             for (auto pGridComponent : _gridComponents)
             {
@@ -165,10 +165,14 @@ public:
         ar.setSupportedMajorVersion("GETF");
         try
         {
+            float frequency = 50;
+            int autoSolve = 1;
             td::UINT4 nElems = 0;
             double modelW = 0;
             double modelH = 0;
-            ar >> nElems >> modelW >> modelH;
+            ar >> frequency >> autoSolve >> nElems >> modelW >> modelH;
+            g_defaultSettings.setFrequency(frequency);
+            g_defaultSettings.setAutoSolve(autoSolve);
             _modelSize.width = modelW;
             _modelSize.height = modelH;
 
