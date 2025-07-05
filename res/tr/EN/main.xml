@@ -53,6 +53,10 @@
 
 		<Res id="Export" tr="Export"/>
 		<Res id="ExportTT" tr="Export model to dTwin"/>
+		<Res id="SaveT" tr="Save circuit"/>
+		<Res id="SaveTT" tr="Save circuit to a file"/>
+		<Res id="OpenT" tr="Open"/>
+		<Res id="OpenTT" tr="Open existing circuit"/>
 		<Res id="VisualParams" tr="Visual Parameters"/>
 		<Res id="CompColor" tr="Component Color"/>
 		<Res id="SelCompColor" tr="Selected Color"/>

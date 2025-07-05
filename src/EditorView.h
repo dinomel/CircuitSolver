@@ -202,7 +202,7 @@ protected:
         case IGridComponent::Tool::AddCurrentSource:
         case IGridComponent::Tool::AddGround:
         {
-            IGridComponent *iGridComp = IGridComponent::createGridComponent(modelPoint, IGridComponent::currentTool);
+            IGridComponent *iGridComp = IGridComponent::createGridComponent(modelPoint, modelPoint, IGridComponent::currentTool);
 
             _pCreatingComponent = dynamic_cast<GridComponent *>(iGridComp);
 
@@ -537,8 +537,7 @@ public:
         }
     }
 
-    
-    void load(const td::String& fileName)
+    void load(const td::String &fileName)
     {
         if (_pPropSwitcher)
         {
@@ -550,6 +549,9 @@ public:
         }
         scale(1.0);
         reDraw();
+
+        _model.solve(false);
+        updatePropertyValues();
     }
 
     void setPropSwitcher(gui::PropertyEditorSwitcher *pPropSwitcher)

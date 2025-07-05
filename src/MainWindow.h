@@ -94,7 +94,7 @@ protected:
             {
             case 10:
             {
-                td::String dlgTitle(tr("OpenF"));
+                td::String dlgTitle(tr("OpenT"));
                 gui::OpenFileDialog::show(this, dlgTitle, {{"Circuit Solver file", "*.csol"}}, actionID, [this](gui::FileDialog *pFileDlg)
                                           {
                           auto status = pFileDlg->getStatus();

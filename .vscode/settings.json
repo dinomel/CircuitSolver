@@ -65,6 +65,8 @@
         "core": "cpp",
         "iterator": "cpp",
         "memory": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "__availability": "cpp",
+        "atomic": "cpp"
     }
 }

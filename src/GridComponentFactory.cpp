@@ -25,89 +25,89 @@ gui::Properties IGridComponent::_groundProperties;
 
 static cnt::SafeFullVector<td::String> s_attribStrings;
 
-IGridComponent *IGridComponent::createResistor(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createResistor(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     ResistorGridComponent *pComp = new ResistorGridComponent(1, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createCapacitor(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createCapacitor(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     CapacitorGridComponent *pComp = new CapacitorGridComponent(10, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createInductor(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createInductor(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     InductorGridComponent *pComp = new InductorGridComponent(1, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createWire(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createWire(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     WireGridComponent *pComp = new WireGridComponent(startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createDCVoltage(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createDCVoltage(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     DCVoltageSourceGridComponent *pComp = new DCVoltageSourceGridComponent(5, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createACVoltage(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createACVoltage(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     ACVoltageSourceGridComponent *pComp = new ACVoltageSourceGridComponent(220, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createCurrent(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createCurrent(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     CurrentSourceGridComponent *pComp = new CurrentSourceGridComponent(10, startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createGround(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createGround(const gui::Point &startPoint, const gui::Point &endPoint)
 {
-    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
-    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(initPoint));
+    NodeGridComponent *startNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(startPoint));
+    NodeGridComponent *endNode = dynamic_cast<NodeGridComponent *>(IGridComponent::createNode(endPoint));
 
     GroundGridComponent *pComp = new GroundGridComponent(startNode, endNode);
     pComp->init();
     return pComp;
 }
 
-IGridComponent *IGridComponent::createNode(const gui::Point &initPoint)
+IGridComponent *IGridComponent::createNode(const gui::Point &point)
 {
-    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(initPoint));
+    NodeGridComponent *pComp = new NodeGridComponent(IGridComponent::getClosestGridPoint(point));
     pComp->init();
     return pComp;
 }

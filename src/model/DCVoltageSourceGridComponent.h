@@ -116,4 +116,9 @@ public:
         GridComponent::save(ar);
         ar << _dcVoltageSource.voltage;
     }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _dcVoltageSource.voltage;
+    }
 };

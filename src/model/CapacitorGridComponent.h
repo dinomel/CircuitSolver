@@ -115,4 +115,9 @@ public:
         GridComponent::save(ar);
         ar << _capacitor.capacitance;
     }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _capacitor.capacitance;
+    }
 };

@@ -117,4 +117,9 @@ public:
         GridComponent::save(ar);
         ar << _inductor.inductance;
     }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _inductor.inductance;
+    }
 };

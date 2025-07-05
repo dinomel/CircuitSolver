@@ -128,4 +128,9 @@ public:
         GridComponent::save(ar);
         ar << _resistor.resistance << _resistor.reactance;
     }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _resistor.resistance >> _resistor.reactance;
+    }
 };

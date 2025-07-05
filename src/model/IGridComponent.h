@@ -21,7 +21,7 @@ private:
 public:
     enum class Type : unsigned char
     {
-        Wire = 0,
+        Wire,
         Resistor,
         Capacitor,
         Inductor,
@@ -55,8 +55,8 @@ public:
     // IGridComponent interface
     virtual void draw(bool isSelected) const = 0;
     virtual void getBoundingRect(gui::Rect &boundRect) = 0;
-    virtual void load(arch::ArchiveIn& ar) = 0;
-    virtual void save(arch::ArchiveOut& ar) const = 0;
+    virtual void load(arch::ArchiveIn &ar) = 0;
+    virtual void save(arch::ArchiveOut &ar) const = 0;
     virtual Type getType() const = 0;
     virtual bool canBeSelected(const gui::Point &pt) const = 0;
     virtual void init() = 0;
@@ -67,44 +67,74 @@ public:
     virtual void release() = 0;
 
     // GridComponentFactory
-    static IGridComponent *createResistor(const gui::Point &initPoint);
+    static IGridComponent *createResistor(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createCapacitor(const gui::Point &initPoint);
+    static IGridComponent *createCapacitor(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createInductor(const gui::Point &initPoint);
+    static IGridComponent *createInductor(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createWire(const gui::Point &initPoint);
+    static IGridComponent *createWire(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createDCVoltage(const gui::Point &initPoint);
+    static IGridComponent *createDCVoltage(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createACVoltage(const gui::Point &initPoint);
+    static IGridComponent *createACVoltage(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createCurrent(const gui::Point &initPoint);
+    static IGridComponent *createCurrent(const gui::Point &startPoint, const gui::Point &endPoint);
 
     static IGridComponent *createNode(const gui::Point &initPoint);
 
-    static IGridComponent *createGround(const gui::Point &initPoint);
+    static IGridComponent *createGround(const gui::Point &startPoint, const gui::Point &endPoint);
 
-    static IGridComponent *createGridComponent(const gui::Point &initPoint, Tool tool)
+    static Tool typeToTool(Type type)
+    {
+        switch (type)
+        {
+        case Type::Wire:
+            return Tool::AddWire;
+        case Type::Resistor:
+            return Tool::AddResistor;
+        case Type::Capacitor:
+            return Tool::AddCapacitor;
+        case Type::Inductor:
+            return Tool::AddInductor;
+        case Type::DCVoltageSource:
+            return Tool::AddDCVoltageSource;
+        case Type::ACVoltageSource:
+            return Tool::AddACVoltageSource;
+        case Type::CurrentSource:
+            return Tool::AddCurrentSource;
+        case Type::Ground:
+            return Tool::AddGround;
+        default:
+            return Tool::Selector;
+        }
+    }
+
+    static IGridComponent *createGridComponent(const gui::Point &startPoint, const gui::Point &endPoint, Type type)
+    {
+        return createGridComponent(startPoint, endPoint, typeToTool(type));
+    }
+
+    static IGridComponent *createGridComponent(const gui::Point &startPoint, const gui::Point &endPoint, Tool tool)
     {
         switch (tool)
         {
         case Tool::AddWire:
-            return createWire(initPoint);
+            return createWire(startPoint, endPoint);
         case Tool::AddResistor:
-            return createResistor(initPoint);
+            return createResistor(startPoint, endPoint);
         case Tool::AddCapacitor:
-            return createCapacitor(initPoint);
+            return createCapacitor(startPoint, endPoint);
         case Tool::AddInductor:
-            return createInductor(initPoint);
+            return createInductor(startPoint, endPoint);
         case Tool::AddDCVoltageSource:
-            return createDCVoltage(initPoint);
+            return createDCVoltage(startPoint, endPoint);
         case Tool::AddACVoltageSource:
-            return createACVoltage(initPoint);
+            return createACVoltage(startPoint, endPoint);
         case Tool::AddCurrentSource:
-            return createCurrent(initPoint);
+            return createCurrent(startPoint, endPoint);
         case Tool::AddGround:
-            return createGround(initPoint);
+            return createGround(startPoint, endPoint);
         default:
             return nullptr;
         }

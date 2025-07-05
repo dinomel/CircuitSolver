@@ -53,6 +53,10 @@
 
 		<Res id="Export" tr="Eksport"/>
 		<Res id="ExportTT" tr="Exportuj model za dTwin"/>
+		<Res id="SaveT" tr="Snimi kolo"/>
+		<Res id="SaveTT" tr="Snimi kolo u fajl"/>
+		<Res id="OpenT" tr="Otvori"/>
+		<Res id="OpenTT" tr="Otvori postojeće kolo"/>
 		<Res id="VisualParams" tr="Vizualni Parametri"/>
 		<Res id="CompColor" tr="Boja komponente"/>
 		<Res id="SelCompColor" tr="Boja označene komponente"/>

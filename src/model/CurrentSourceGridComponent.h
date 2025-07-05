@@ -130,4 +130,9 @@ public:
         GridComponent::save(ar);
         ar << _currentSource.current;
     }
+
+    void load(arch::ArchiveIn &ar) override
+    {
+        ar >> _currentSource.current;
+    }
 };

@@ -19,7 +19,7 @@ public:
 
         addSpaceItem();
         
-        addItem(tr("Open"), &_imgOpen, tr("openTT"), 20, 0, 0, 10);
+        addItem(tr("Open"), &_imgOpen, tr("OpenTT"), 20, 0, 0, 10);
         
         addItem(tr("Save"), &_imgSave, tr("SaveTT"), 20, 0, 0, 20);
 
